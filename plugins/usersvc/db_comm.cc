@@ -39,7 +39,7 @@ bool DBComm::OnThirdLogin(usersvc_logic::UserInfo& userinfo,
 	}
 
     //call buddha.proc_ThirdRegister('123123',1,1,'北京','老K','s123123123',1,'1986','http://123123')
-	os<<"call proc_ThirdRegister(\'"<<userinfo.imei()<<"\',"<<userinfo.machine()
+	os<<"call proc_ThirdLogin(\'"<<userinfo.imei()<<"\',"<<userinfo.machine()
 			<<","<<userinfo.type()<<",\'"<<lbsinfo->city()<<"\',\'"<<userinfo.nickname()
 			<<"\',\'"<<userinfo.session()<<"\',"<<userinfo.sex()<<",\'"<<userinfo.birthday()
 			<<"\',\'"<<userinfo.head()<<"\');";

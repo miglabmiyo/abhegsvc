@@ -5,8 +5,9 @@
 #include "logic/logic_infos.h"
 #include "lbs/lbs_connector.h"
 #include "lbs/lbs_logic_unit.h"
-#include "basic/scoped_ptr.h"
 #include "pushmsg/basic_push_info.h"
+#include "pushmsg/push_connector.h"
+#include "basic/scoped_ptr.h"
 #include "logic/logic_comm.h"
 #include "config/config.h"
 #include "common.h"
@@ -22,6 +23,9 @@ Userlogic::Userlogic(){
 }
 
 Userlogic::~Userlogic(){
+	base_lbs::LbsConnectorEngine::FreeLbsConnectorEngine();
+	base_push::PushConnectorEngine::FreePushConnectorEngine();
+	usersvc_logic::DBComm::Dest();
 }
 
 bool Userlogic::Init(){
@@ -32,9 +36,13 @@ bool Userlogic::Init(){
 		return false;
 	}
 	r = config->LoadConfig(path);
+
+	usersvc_logic::DBComm::Init(config->mysql_db_list_);
 	base_lbs::LbsConnectorEngine::Create(base_lbs::IMPL_BAIDU);
 	base_lbs::LbsConnector* engine = base_lbs::LbsConnectorEngine::GetLbsConnectorEngine();
 	engine->Init(config->mysql_db_list_);
+	base_push::PushConnectorEngine::Create(base_push::IMPL_BAIDU);
+	base_push::PushConnectorEngine::GetPushConnectorEngine()->Init(config->mysql_db_list_);
     return true;
 }
 
@@ -88,6 +96,9 @@ bool Userlogic::OnUserMessage(struct server *srv, const int socket, const void *
 			break;
 		case THIRID_LOGIN:
 			OnThirdLogin(srv,socket,value);
+			break;
+		case BD_BIND_PUSH:
+			OnBDBindPush(srv,socket,value);
 			break;
 	}
 
@@ -218,8 +229,9 @@ bool Userlogic::OnBDBindPush(struct server *srv,const int socket,netcomm_recv::N
 	base_push::BaiduBindPushInfo bindinfo(bind->platform(),bind->uid(),bind->channel(),
 			bind->bduserid(),bind->pkg_name(),bind->tag(),bind->appid(),bind->request(),
 			bind->machine());
+	base_push::PushConnectorEngine::GetPushConnectorEngine()->BindPushUserinfo(bindinfo);
 
-
+	return true;
 }
 
 }

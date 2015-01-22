@@ -17,13 +17,13 @@ static void *OnUserStart(){
     signal(SIGPIPE,SIG_IGN);
     struct userplugin* user=(struct userplugin*)calloc(1,sizeof(struct userplugin));
 
-    user->id="";
+    user->id="user";
 
-    user->name="";
+    user->name="user";
 
-    user->version="";
+    user->version="1.0.0";
 
-    user->provider="";
+    user->provider="kerry";
 
     if(!usersvc_logic::Userlogic::GetInstance())
         assert(0);
