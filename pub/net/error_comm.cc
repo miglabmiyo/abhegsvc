@@ -11,8 +11,8 @@ buddha_strerror(int error_code){
 	switch (error_code) {
 	  case STRUCT_ERROR:
 		  return STRUCT_ERROR_STR;
-	  case TYPE_LACK:
-		  return TYPE_LACK_STR;
+	  case LOGIN_TYPE_LACK:
+		  return LOGIN_TYPE_LACK_STR;
 	  case IMEI_LACK:
 		  return IMEI_LACK_STR;
 	  case MACHINE_LACK:

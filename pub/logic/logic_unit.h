@@ -20,14 +20,14 @@ public:
 
 	static void CreateToken(const int64 uid,std::string& token);
 
-//	static void SendMessage(const int socket,netcomm_send::HeadPacket* packet);
+	static void SendMessage(const int socket,netcomm_send::HeadPacket* packet);
 
-//	static void SendErrorMsg(const int32 error_code,const int socket);
+	static void SendErrorMsg(const int32 error_code,const int socket);
 };
 }
 
-//#define send_error      base_logic::LogicUnit::SendErrorMsg
-//#define send_message    base_logic::LogicUnit::SendMessage
+#define send_error      base_logic::LogicUnit::SendErrorMsg
+#define send_message    base_logic::LogicUnit::SendMessage
 
 #endif
 

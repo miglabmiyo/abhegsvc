@@ -77,7 +77,7 @@ public:
 		bool r = false;
 		GETBIGINTTOINT(L"type",type_);
 		if(!r)
-			error_code_ = TYPE_LACK;
+			error_code_ = LOGIN_TYPE_LACK;
 		r = m_->GetString(L"remote_addr",&remote_addr_);
 		r = m_->GetReal(L"latitude",&latitude_);
 		r = m_->GetReal(L"longitude",&longitude_);

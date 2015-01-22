@@ -23,7 +23,7 @@ void DBComm::Dest(){
 #endif
 }
 
-bool DBComm::OnThirdRegister(usersvc_logic::UserInfo& userinfo,
+bool DBComm::OnThirdLogin(usersvc_logic::UserInfo& userinfo,
 		base_logic::LBSInfos* lbsinfo){
 	bool r = false;
 #if defined (_DB_POOL_)

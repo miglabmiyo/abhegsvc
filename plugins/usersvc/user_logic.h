@@ -1,7 +1,11 @@
 #ifndef __ABHEG__USERSVC__USER_LOGIC___
 #define __ABHEG__USERSVC__USER_LOGIC___
+#include "net/user_comm_head.h"
+#include "net/operator_code.h"
+#include "net/error_comm.h"
 #include "common.h"
 
+#define DEFAULT_CONFIG_PATH     "./plugins/usersvc/usersvc_config.xml"
 
 namespace usersvc_logic{
 
@@ -35,6 +39,16 @@ public:
 
     bool OnTimeout (struct server *srv, char* id, int opcode, int time);
 
+private:
+private:
+    bool OnQuickLogin(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnThirdLogin(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnBDBindPush(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
 
 private:
 

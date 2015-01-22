@@ -20,7 +20,7 @@ public:
 	static void Init(std::list<base::ConnAddr>& addrlist);
 	static void Dest();
 public:
-	static bool OnThirdRegister(usersvc_logic::UserInfo& userinfo,
+	static bool OnThirdLogin(usersvc_logic::UserInfo& userinfo,
 			base_logic::LBSInfos* lbsinfo);
 
 	static bool OnQuickRegister(usersvc_logic::UserInfo& userinfo,

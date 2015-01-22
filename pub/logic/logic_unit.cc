@@ -110,7 +110,7 @@ void LogicUnit::CreateToken(const int64 uid,std::string& token){
 	base::MD5Sum md5(os.str());
 	token = md5.GetHash();
 }
-/*
+
 void LogicUnit::SendMessage(const int socket,netcomm_send::HeadPacket* packet){
 	std::string json;
 	packet->GetJsonSerialize(&json);
@@ -125,7 +125,7 @@ void LogicUnit::SendErrorMsg(const int32 error_code,const int socket){
 	packet->set_msg(error_msg);
 	packet->set_status(0);
 	SendMessage(socket,packet.get());
-}*/
+}
 
 
 }
