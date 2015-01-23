@@ -10,6 +10,7 @@
 
 enum errorcode{
 	STRUCT_ERROR = -100,
+	NULL_DATA = -200,
 	////用户管理相关错误
 	//登陆
 	LOGIN_TYPE_LACK = -1100,
@@ -34,6 +35,7 @@ enum errorcode{
 
 
 #define STRUCT_ERROR_STR                  "请求结构错误"
+#define NULL_DATA_STR                     "空数据"
 
 ////USER PLUGIN////
 #define LOGIN_TYPE_LACK_STR               "登陆类别不存在"

@@ -35,10 +35,18 @@ public:
 
     bool OnTimeout (struct server *srv, char* id, int opcode, int time);
 
+private:
+    bool OnFindAppStore(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
 
 private:
 
     bool Init();
+
+private:
+    std::list<base_logic::AppInfos>      app_store_list_;
+    //添加读写锁
+    struct threadrw_t*                   lock_;
 };
 
 

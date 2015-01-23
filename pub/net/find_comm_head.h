@@ -43,7 +43,7 @@ public:
 	inline void set_advert(const int64 id,const int32 type,const int32 order,const int64 down,
 			const std::string& name,const std::string& pic){
 		this->SetBigInteger(L"id",id);
-		this->SetInteger(L"type",1);
+		this->SetInteger(L"type",type);
 		this->SetInteger(L"order",order);
 		this->SetInteger(L"down",down);
 		this->SetString(L"name",name);
@@ -54,7 +54,7 @@ public:
 			const int32 order,const std::string& logo,const std::string& name,
 			const std::string& summary){
 		this->SetBigInteger(L"id",id);
-		this->SetInteger(L"type",1);
+		this->SetInteger(L"type",type);
 		this->SetInteger(L"order",order);
 		this->SetInteger(L"down",down);
 		this->SetString(L"logo",logo);
