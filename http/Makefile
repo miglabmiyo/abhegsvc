@@ -52,7 +52,7 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc 
+proc: otherproc userproc findproc
 
 	
 ######################otherproc###############################################
@@ -95,6 +95,18 @@ thirdlogin.o:
 	$(COMPILE) .$(USERPROC_PATH)$(OTJERPROC_VERSION)/thirdlogin/thirdlogin.cc
 	
 	
+######################findproc###############################################
+FINDPROC_PATH = /find
+OTJERPROC_VERSION = /1
+findproc:appstore.fcgi
+
+appstore.fcgi: appstore.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
+	
+### 编译
+
+appstore.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore/appstore.cc
 
 clean:
 	-rm -f *.o

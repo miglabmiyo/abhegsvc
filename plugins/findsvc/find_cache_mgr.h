@@ -8,9 +8,11 @@
 #ifndef FIND_CACHE_MANAGER_H_
 #define FIND_CACHE_MANAGER_H_
 
+#include "net/find_comm_head.h"
 #include "logic/logic_infos.h"
 #include "thread/base_thread_handler.h"
 #include "thread/base_thread_lock.h"
+#include <list>
 
 namespace findsvc_logic{
 class FindCache{
@@ -27,11 +29,14 @@ public:
 	virtual ~FindCacheManager();
 
 	//获取商场APP
-	bool GetFindAppInfos();
+	//bool GetFindAppInfos();
+	bool SendFindAppInfos(netcomm_send::FindAppStore* appfind);
 	//获取商场广告
-	bool GetAdverInfos();
+	//bool GetAdverInfos();
+	bool SendAdverAppInfos(netcomm_send::FindAppStore* appfind);
 	//获取商城专题
-	bool GetTopicsInfos();
+	//bool GetTopicsInfos();
+	bool SendTopicsAppInfos(netcomm_send::FindAppStore* appfind);
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}
 private:
@@ -50,13 +55,13 @@ private:
 	virtual ~CacheManagerOp();
 public:
 	static FindCacheManager* GetFindCacheManager(){
-		if(find_cache_manager_)
+		if(find_cache_manager_==NULL)
 			find_cache_manager_ = new FindCacheManager();
 		return find_cache_manager_;
 	}
 
 	static CacheManagerOp* GetCacheManagerOp(){
-		if(cache_manager_op_)
+		if(cache_manager_op_==NULL)
 			cache_manager_op_ = new CacheManagerOp();
 		return cache_manager_op_;
 	}

@@ -19,6 +19,14 @@ Findlogic::~Findlogic(){
 }
 
 bool Findlogic::Init(){
+	bool r = false;
+	std::string path = DEFAULT_CONFIG_PATH;
+	config::FileConfig* config = config::FileConfig::GetFileConfig();
+	if(config==NULL)
+		return false;
+	r = config->LoadConfig(path);
+
+	findsvc_logic::DBComm::Init(config->mysql_db_list_);
 
 	findsvc_logic::CacheManagerOp::GetCacheManagerOp();
 	findsvc_logic::CacheManagerOp::GetFindCacheManager();
@@ -127,28 +135,14 @@ bool Findlogic::OnFindAppStore(struct server *srv,const int socket,netcomm_recv:
 		return false;
 	}
 
-	if(this->app_store_list_.size()<=0)
-		send_error(NULL_DATA,socket);
 
 	//构造发送数据
 	scoped_ptr<netcomm_send::FindAppStore> appstore(new netcomm_send::FindAppStore());
 
-	// 推荐广告 推荐APP 推荐专题
-	{
-		base_logic::RLockGd lk(lock_);
-		std::list<base_logic::AppInfos>::iterator appinfo_iterator;
-		for(appinfo_iterator=this->app_store_list_.begin();
-				appinfo_iterator!=this->app_store_list_.end();
-				appinfo_iterator++){
-			base_logic::AppInfos appinfo = (*appinfo_iterator);
-			if(appinfo.attr()==0)
-				appstore->set_important(appinfo.Release());
-			else if(appinfo.attr()==1)
-				appstore->set_popularity(appinfo.Release());
-			else if(appinfo.attr()==2)
-				appstore->set_hot(appinfo.Release());
-		}
-	}
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendFindAppInfos(appstore.get());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendAdverAppInfos(appstore.get());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendTopicsAppInfos(appstore.get());
+
 	send_message(socket,(netcomm_send::HeadPacket*)appstore.get());
 	return true;
 }
