@@ -181,6 +181,69 @@ private:
 };
 
 
+class BookInfo{
+public:
+	explicit BookInfo();
+	BookInfo(const BookInfo& book_info);
+	BookInfo& operator = (const BookInfo& book_info);
+
+	base_logic::DictionaryValue* Release();
+
+	const int64 id() const {return data_->id_;}
+	const int32 type() const {return data_->type_;}
+	const int32 parent() const {return data_->parent_;}
+	const int64 chapter() const {return data_->chapter_;}
+	const int32 attr() const {return data_->attr_;}
+	const double star() const {return data_->star_;}
+	const std::string& free_url() const {return data_->free_url_;}
+	const std::string& name() const {return data_->name_;}
+	const std::string& author() const {return data_->author_;}
+	const std::string& pic() const {return data_->pic_;}
+	const std::string& summary() const {return data_->summary_;}
+
+	void set_id(const int64 id){data_->id_ = id;}
+	void set_type(const int32 type){data_->type_ = type;}
+	void set_parent(const int32 parent){data_->parent_ = parent;}
+	void set_chapter(const int64 chapter){data_->chapter_ = chapter;}
+	void set_attr(const int32 attr){data_->attr_ = attr;}
+	void set_star(const double star){data_->star_ = star;}
+	void set_free_url(const std::string& free_url){data_->free_url_ = free_url;}
+	void set_name(const std::string& name){data_->name_ = name;}
+	void set_pic(const std::string& pic){data_->pic_ = pic;}
+	void set_author(const std::string& author) {data_->author_ = author;}
+	void set_summary(const std::string& summary) {data_->summary_ = summary;}
+
+	class Data{
+	public:
+		Data()
+		:refcount_(1)
+		,id_(-1)
+		,type_(-1)
+		,parent_(-1)
+		,chapter_(-1)
+		,attr_(0)
+		,star_(0.0){}
+	public:
+		void AddRef(){refcount_ ++;}
+		void Release(){if (!--refcount_)delete this;}
+	public:
+		int64        id_;
+		int32        type_;
+		int32        parent_;
+		int64        chapter_;
+		int32        attr_;
+		double       star_;
+		std::string  author_;
+		std::string  free_url_;
+		std::string  name_;
+		std::string  pic_;
+		std::string  summary_;
+	private:
+		int refcount_;
+	};
+	Data*    data_;
+};
+
 
 class LBSInfos{
 public:

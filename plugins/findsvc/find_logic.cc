@@ -32,6 +32,7 @@ bool Findlogic::Init(){
 	findsvc_logic::CacheManagerOp::GetFindCacheManager();
 	//读取APP商城信息
 	findsvc_logic::CacheManagerOp::FetchDBFindAppStore();
+	findsvc_logic::CacheManagerOp::FetchDBFindBookStore();
     return true;
 }
 
@@ -83,6 +84,10 @@ bool Findlogic::OnFindMessage(struct server *srv, const int socket, const void *
 	   case FIND_STORE_APP:
 		   OnFindAppStore(srv,socket,value);
 		   break;
+	   case FIND_STORE_BOOK:
+		   OnFindBookStore(srv,socket,value);
+		   break;
+
 	}
 
 	return true;
@@ -144,6 +149,29 @@ bool Findlogic::OnFindAppStore(struct server *srv,const int socket,netcomm_recv:
 	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendTopicsAppInfos(appstore.get());
 
 	send_message(socket,(netcomm_send::HeadPacket*)appstore.get());
+	return true;
+}
+
+bool Findlogic::OnFindBookStore(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+        		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::FindType> findbook(new netcomm_recv::FindType(netbase));
+	bool r = false;
+	int error_code = findbook->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+
+	//构造发送数据
+	scoped_ptr<netcomm_send::FindBookStore> bookstore(new netcomm_send::FindBookStore());
+
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendAdverBookInfos(bookstore.get());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendFindBookInfos(bookstore.get());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendTopicsBookInfos(bookstore.get());
+
+	send_message(socket,(netcomm_send::HeadPacket*)bookstore.get());
 	return true;
 }
 

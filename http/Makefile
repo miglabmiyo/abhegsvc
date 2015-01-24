@@ -98,15 +98,20 @@ thirdlogin.o:
 ######################findproc###############################################
 FINDPROC_PATH = /find
 OTJERPROC_VERSION = /1
-findproc:appstore.fcgi
+findproc:appstore.fcgi bookstore.fcgi
 
 appstore.fcgi: appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
 	
+bookstore.fcgi: bookstore.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/bookstore.fcgi
 ### 编译
 
 appstore.o:
 	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore/appstore.cc
+
+bookstore.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/bookstore/bookstore.cc
 
 clean:
 	-rm -f *.o

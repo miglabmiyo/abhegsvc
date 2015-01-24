@@ -20,6 +20,13 @@ public:
 	std::list<base_logic::AppInfos>      app_store_list_; //应用商场推荐，热门，人气APP
 	std::list<base_logic::AdvertInfos>   app_adver_list_;//应用商场广告
 	std::list<base_logic::Topics>        app_topics_list_;//应用商场专题
+
+	std::list<base_logic::AppInfos>      game_store_list_; //游戏商场推荐，热门，人气APP
+	base_logic::AppInfos                 game_store_top_;//首推游戏
+
+	std::list<base_logic::BookInfo>      book_store_list_; //书城推荐
+	std::list<base_logic::AdvertInfos>   book_adver_list_;//书城广告
+	std::list<base_logic::Topics>        book_topics_list_;//书城专题
 };
 
 
@@ -37,6 +44,14 @@ public:
 	//获取商城专题
 	//bool GetTopicsInfos();
 	bool SendTopicsAppInfos(netcomm_send::FindAppStore* appfind);
+
+	//书城
+	bool SendFindBookInfos(netcomm_send::FindBookStore* bookfind);
+
+	bool SendAdverBookInfos(netcomm_send::FindBookStore* bookfind);
+
+	bool SendTopicsBookInfos(netcomm_send::FindBookStore* bookfind);
+
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}
 private:
@@ -69,6 +84,8 @@ public:
 public:
 	//获取APP商城的推荐
 	static void FetchDBFindAppStore();
+	//获取书城的推荐
+	static void FetchDBFindBookStore();
 };
 }
 

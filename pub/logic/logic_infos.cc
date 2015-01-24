@@ -39,7 +39,7 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 		dict->SetString(L"name",data_->name_);
 	if(data_->type_!=-1)
 		dict->SetInteger(L"type",data_->type_);
-	if(!data_->name_.empty())
+	if(!data_->pic_.empty())
 		dict->SetString(L"pic",data_->pic_);
 	return dict.release();
 }
@@ -141,7 +141,54 @@ base_logic::DictionaryValue* AppInfos::Release(){
 	return dict.release();
 }
 
+BookInfo::BookInfo(){
+	data_ = new Data();
+}
 
+BookInfo::BookInfo(const BookInfo& book_info)
+:data_(book_info.data_){
+	if(data_!=NULL){
+		data_->AddRef();
+	}
+}
+
+BookInfo& BookInfo::operator =(const BookInfo& book_info){
+	if(book_info.data_!=NULL){
+		book_info.data_->AddRef();
+	}
+
+	if(data_!=NULL){
+		data_->Release();
+	}
+	data_ = book_info.data_;
+	return (*this);
+}
+
+
+base_logic::DictionaryValue* BookInfo::Release(){
+	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
+	if(data_->id_!=-1)
+		dict->SetBigInteger(L"id",data_->id_);
+	if(data_->type_ != -1)
+		dict->SetInteger(L"type",data_->type_);
+	if(data_->chapter_!=-1)
+		dict->SetBigInteger(L"chapter",data_->chapter_);
+	if(data_->star_!=0.0)
+		dict->SetReal(L"star",data_->star_);
+	if(!data_->free_url_.empty())
+		dict->SetString(L"free_url",data_->free_url_);
+	if(!data_->name_.empty())
+		dict->SetString(L"name",data_->name_);
+	if(!data_->pic_.empty())
+		dict->SetString(L"pic",data_->pic_);
+	if(!data_->summary_.empty())
+		dict->SetString(L"summary",data_->summary_);
+	if(!data_->author_.empty())
+		dict->SetString(L"author",data_->author_);
+
+	return dict.release();
+
+}
 
 LBSInfos::LBSInfos(){
 	data_ = new Data();

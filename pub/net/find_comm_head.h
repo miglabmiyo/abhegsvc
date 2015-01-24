@@ -79,6 +79,66 @@ public:
 	}
 };
 
+
+class FindBookStore:public HeadPacket{
+public:
+	FindBookStore(){
+		base_.reset(new netcomm_send::NetBase());
+		advert_.reset(new base_logic::ListValue());
+		boys_.reset(new base_logic::ListValue());
+		girls_.reset(new base_logic::ListValue());
+		hot_.reset(new base_logic::ListValue());
+		topics_.reset(new base_logic::ListValue());
+	}
+
+	inline void set_advert(base_logic::DictionaryValue* app){
+		advert_->Append(app);
+	}
+
+	inline void set_boys(base_logic::DictionaryValue* app){
+		boys_->Append(app);
+	}
+
+	inline void set_girls(base_logic::DictionaryValue* app){
+		girls_->Append(app);
+
+	}
+
+	inline void set_hot(base_logic::DictionaryValue* app){
+		hot_->Append(app);
+
+	}
+
+	inline void set_topics(base_logic::DictionaryValue* app){
+		topics_->Append(app);
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!advert_->empty())
+			this->base_->Set(L"advert",advert_.release());
+		if(!boys_->empty())
+			this->base_->Set(L"boys",boys_.release());
+		if(!girls_->empty())
+			this->base_->Set(L"girls",girls_.release());
+		if(!hot_->empty())
+			this->base_->Set(L"hot",hot_.release());
+		if(!topics_->empty())
+			this->base_->Set(L"topices",topics_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             advert_;
+	scoped_ptr<base_logic::ListValue>             boys_;
+	scoped_ptr<base_logic::ListValue>             girls_;
+	scoped_ptr<base_logic::ListValue>             hot_;
+	scoped_ptr<base_logic::ListValue>             topics_;
+};
+
 class FindAppStore:public HeadPacket{
 
 public:
@@ -90,6 +150,9 @@ public:
 		hot_.reset(new base_logic::ListValue());
 		topics_.reset(new base_logic::ListValue());
 	}
+
+
+
 
 	netcomm_send::NetBase* release(){
 		if(!advert_->empty())

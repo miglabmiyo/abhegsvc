@@ -72,7 +72,59 @@ bool FindCacheManager::SendFindAppInfos(netcomm_send::FindAppStore* appfind){
 	}
 	return true;
 }
-//APP广告
+
+//书城广告
+bool FindCacheManager::SendAdverBookInfos(netcomm_send::FindBookStore* bookfind){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->book_adver_list_.size()<=0)
+		return false;
+	std::list<base_logic::AdvertInfos>::iterator adverinfo_iterator;
+	for(adverinfo_iterator=find_cache_->book_adver_list_.begin();
+			adverinfo_iterator!=find_cache_->book_adver_list_.end();
+			adverinfo_iterator++){
+		base_logic::AdvertInfos advert = (*adverinfo_iterator);
+		bookfind->set_advert(advert.Release());
+	}
+	return true;
+}
+
+//书城专题
+bool FindCacheManager::SendTopicsBookInfos(netcomm_send::FindBookStore* bookfind){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->book_topics_list_.size()<=0)
+		return false;
+	std::list<base_logic::Topics>::iterator topicsinfo_iterator;
+	for(topicsinfo_iterator=find_cache_->book_topics_list_.begin();
+			topicsinfo_iterator!=find_cache_->book_topics_list_.end();
+			topicsinfo_iterator++){
+		base_logic::Topics topics = (*topicsinfo_iterator);
+		bookfind->set_topics(topics.Release());
+	}
+	return true;
+}
+
+
+//推荐书
+bool FindCacheManager::SendFindBookInfos(netcomm_send::FindBookStore* bookfind){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->book_store_list_.size()<=0)
+		return false;
+	std::list<base_logic::BookInfo>::iterator bookinfo_iterator;
+	for(bookinfo_iterator=find_cache_->book_store_list_.begin();
+			bookinfo_iterator!=find_cache_->book_store_list_.end();
+			bookinfo_iterator++){
+		base_logic::BookInfo bookinfo = (*bookinfo_iterator);
+		if(bookinfo.attr()==0)
+			bookfind->set_hot(bookinfo.Release());
+		else if(bookinfo.attr()==1)
+			bookfind->set_boys(bookinfo.Release());
+		else if(bookinfo.attr()==2)
+			bookfind->set_girls(bookinfo.Release());
+	}
+	return true;
+}
+
+
 
 CacheManagerOp::CacheManagerOp(){
 
@@ -88,6 +140,14 @@ void CacheManagerOp::FetchDBFindAppStore(){
 	findsvc_logic::DBComm::GetFindStoreApp(find_cache->app_store_list_);
 	findsvc_logic::DBComm::GetAdverAppStore(find_cache->app_adver_list_);
 	findsvc_logic::DBComm::GetTopicsAppStore(find_cache->app_topics_list_);
+}
+
+void CacheManagerOp::FetchDBFindBookStore(){
+	FindCache* find_cache = find_cache_manager_->GetFindCache();
+	findsvc_logic::DBComm::GetFindStoreBook(find_cache->book_store_list_);
+	findsvc_logic::DBComm::GetAdverBookStore(find_cache->book_adver_list_);
+	findsvc_logic::DBComm::GetTopicsBookStore(find_cache->book_topics_list_);
+
 }
 
 
