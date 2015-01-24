@@ -1,4 +1,8 @@
 #include "find_logic.h"
+#include "find_cache_mgr.h"
+#include "db_comm.h"
+#include "logic/logic_unit.h"
+#include "logic/logic_comm.h"
 #include "common.h"
 
 namespace findsvc_logic{
@@ -12,17 +16,17 @@ Findlogic::Findlogic(){
 }
 
 Findlogic::~Findlogic(){
-	DeinitThreadrw(lock_);
 }
 
 bool Findlogic::Init(){
 
-
-	//获取
-	InitThreadrw(&lock_);
-	bool r = findsvc_logic::DBComm::GetFindStoreApp(this->app_store_list_);
+	findsvc_logic::CacheManagerOp::GetCacheManagerOp();
+	findsvc_logic::CacheManagerOp::GetFindCacheManager();
+	//读取APP商城信息
+	findsvc_logic::CacheManagerOp::FetchDBFindAppStore();
     return true;
 }
+
 
 Findlogic*
 Findlogic::GetInstance(){
@@ -131,7 +135,7 @@ bool Findlogic::OnFindAppStore(struct server *srv,const int socket,netcomm_recv:
 
 	// 推荐广告 推荐APP 推荐专题
 	{
-		logic::RLockGd lk(lock_);
+		base_logic::RLockGd lk(lock_);
 		std::list<base_logic::AppInfos>::iterator appinfo_iterator;
 		for(appinfo_iterator=this->app_store_list_.begin();
 				appinfo_iterator!=this->app_store_list_.end();

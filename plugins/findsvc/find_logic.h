@@ -1,5 +1,9 @@
 #ifndef __ABHEG__FINDSVC__FIND_LOGIC___
 #define __ABHEG__FINDSVC__FIND_LOGIC___
+#include "net/find_comm_head.h"
+#include "net/operator_code.h"
+#include "net/error_comm.h"
+#include "logic/logic_infos.h"
 #include "common.h"
 
 
@@ -43,10 +47,6 @@ private:
 
     bool Init();
 
-private:
-    std::list<base_logic::AppInfos>      app_store_list_;
-    //添加读写锁
-    struct threadrw_t*                   lock_;
 };
 
 

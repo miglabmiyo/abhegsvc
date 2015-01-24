@@ -7,6 +7,8 @@
  */
 #ifndef _ABHEG_LOGIC_INFOS_H__
 #define _ABHEG_LOGIC_INFOS_H__
+#include "logic/base_values.h"
+#include "basic/scoped_ptr.h"
 #include "basic/basictypes.h"
 #include <string>
 

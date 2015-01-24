@@ -21,6 +21,8 @@ public:
 	static void Dest();
 public:
 	static bool GetFindStoreApp(std::list<base_logic::AppInfos>& list);
+	static bool GetAdverAppStore(std::list<base_logic::AdvertInfos>& list);
+	static bool GetTopicsAppStore(std::list<base_logic::Topics>& list);
 };
 
 }
