@@ -8,7 +8,8 @@ enum operatorcode{
 
 	//推荐
 	FIND_STORE_APP = 2100,// 应用商城推荐
-	FIND_STORE_BOOK = 2101 //书城推荐
+	FIND_STORE_BOOK = 2101, //书城推荐
+	FIND_STORE_GAME = 2102//游戏商城推荐
 };
 
 

@@ -17,12 +17,16 @@
 namespace findsvc_logic{
 class FindCache{
 public:
+	std::list<base_logic::AdvertInfos>   find_adver_list_;
+	std::list<base_logic::AppInfos>      find_app_list_;
+	std::list<base_logic::AppInfos>      find_game_list_;
+	std::list<base_logic::BookInfo>      find_book_list_;
+
 	std::list<base_logic::AppInfos>      app_store_list_; //应用商场推荐，热门，人气APP
 	std::list<base_logic::AdvertInfos>   app_adver_list_;//应用商场广告
 	std::list<base_logic::Topics>        app_topics_list_;//应用商场专题
 
 	std::list<base_logic::AppInfos>      game_store_list_; //游戏商场推荐，热门，人气APP
-	base_logic::AppInfos                 game_store_top_;//首推游戏
 
 	std::list<base_logic::BookInfo>      book_store_list_; //书城推荐
 	std::list<base_logic::AdvertInfos>   book_adver_list_;//书城广告
@@ -51,6 +55,11 @@ public:
 	bool SendAdverBookInfos(netcomm_send::FindBookStore* bookfind);
 
 	bool SendTopicsBookInfos(netcomm_send::FindBookStore* bookfind);
+
+	//游戏发送
+
+	bool SendFindGameInfos(netcomm_send::FindGameStore* bookfind);
+	//首页发送
 
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}
@@ -86,6 +95,8 @@ public:
 	static void FetchDBFindAppStore();
 	//获取书城的推荐
 	static void FetchDBFindBookStore();
+	//获取游戏商城的推荐
+	static void FetchDBFindGameStore();
 };
 }
 

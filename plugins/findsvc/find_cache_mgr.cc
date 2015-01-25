@@ -125,6 +125,25 @@ bool FindCacheManager::SendFindBookInfos(netcomm_send::FindBookStore* bookfind){
 }
 
 
+bool FindCacheManager::SendFindGameInfos(netcomm_send::FindGameStore* gamefind){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->game_store_list_.size()<=0)
+		return false;
+	std::list<base_logic::AppInfos>::iterator appinfo_iterator;
+	for(appinfo_iterator=find_cache_->game_store_list_.begin();
+			appinfo_iterator!=find_cache_->game_store_list_.end();
+			appinfo_iterator++){
+		base_logic::AppInfos appinfo = (*appinfo_iterator);
+		if(appinfo.attr()==0)
+			gamefind->set_emblem(appinfo.Release());
+		else if(appinfo.attr()==1) //精品推荐
+			gamefind->set_important(appinfo.Release());
+		else if(appinfo.attr()==2) //人气推荐
+			gamefind->set_popularity(appinfo.Release());
+	}
+	return true;
+}
+
 
 CacheManagerOp::CacheManagerOp(){
 
@@ -148,6 +167,11 @@ void CacheManagerOp::FetchDBFindBookStore(){
 	findsvc_logic::DBComm::GetAdverBookStore(find_cache->book_adver_list_);
 	findsvc_logic::DBComm::GetTopicsBookStore(find_cache->book_topics_list_);
 
+}
+
+void CacheManagerOp::FetchDBFindGameStore(){
+	FindCache* find_cache = find_cache_manager_->GetFindCache();
+	findsvc_logic::DBComm::GetFindStoreGame(find_cache->game_store_list_);
 }
 
 

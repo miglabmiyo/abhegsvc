@@ -27,6 +27,8 @@ public:
 	static bool GetFindStoreBook(std::list<base_logic::BookInfo>& list);
 	static bool GetAdverBookStore(std::list<base_logic::AdvertInfos>& list);
 	static bool GetTopicsBookStore(std::list<base_logic::Topics>& list);
+
+	static bool GetFindStoreGame(std::list<base_logic::AppInfos>& list);
 };
 
 }

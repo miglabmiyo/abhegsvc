@@ -80,6 +80,50 @@ public:
 };
 
 
+
+class FindGameStore:public HeadPacket{
+public:
+	FindGameStore(){
+		base_.reset(new netcomm_send::NetBase());
+		emblem_.reset(new base_logic::DictionaryValue());
+		important_.reset(new base_logic::ListValue());
+		popularity_.reset(new base_logic::ListValue());
+	}
+
+	inline void set_important(base_logic::DictionaryValue* app){
+		important_->Append(app);
+	}
+
+	inline void set_popularity(base_logic::DictionaryValue* app){
+		popularity_->Append(app);
+
+	}
+
+	inline void set_emblem(base_logic::DictionaryValue* app){
+		emblem_.reset(app);
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!important_->empty())
+			this->base_->Set(L"important",important_.release());
+		if(!popularity_->empty())
+			this->base_->Set(L"popularity",popularity_.release());
+		if(!emblem_->empty())
+			this->base_->Set(L"emblem",emblem_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::DictionaryValue>       emblem_;
+	scoped_ptr<base_logic::ListValue>             important_;
+	scoped_ptr<base_logic::ListValue>             popularity_;
+};
+
+
 class FindBookStore:public HeadPacket{
 public:
 	FindBookStore(){
