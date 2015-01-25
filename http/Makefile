@@ -52,7 +52,7 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc
+proc: otherproc userproc findproc storeproc
 
 	
 ######################otherproc###############################################
@@ -67,6 +67,19 @@ checkapi.fcgi: checkapi.o $(POBJ)
 
 checkapi.o:
 	$(COMPILE) .$(OTHERPROC_PATH)$(OTJERPROC_VERSION)/checkapi/checkapi.cc
+	
+######################storeproc###############################################
+STOREPROC_PATH = /store
+OTJERPROC_VERSION = /1
+storeproc:summary.fcgi
+
+summary.fcgi: summary.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/summary.fcgi
+	
+### 编译
+
+summary.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/summary/summary.cc
 
 	
 ######################userproc###############################################

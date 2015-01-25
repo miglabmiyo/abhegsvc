@@ -17,13 +17,13 @@ static void *OnStoreStart(){
     signal(SIGPIPE,SIG_IGN);
     struct storeplugin* store=(struct storeplugin*)calloc(1,sizeof(struct storeplugin));
 
-    store->id="";
+    store->id="store";
 
-    store->name="";
+    store->name="store";
 
-    store->version="";
+    store->version="1.0.0";
 
-    store->provider="";
+    store->provider="kerry";
 
     if(!storesvc_logic::Storelogic::GetInstance())
         assert(0);

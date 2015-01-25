@@ -39,6 +39,8 @@ buddha_strerror(int error_code){
 		  return BD_USER_LACK_STR;
 	  case PKG_NAME_LACK :
 		  return PKG_NAME_LACK_STR;
+	  case APPID_LACK:
+		  return APPID_LACK_STR;
 	}
 }
 

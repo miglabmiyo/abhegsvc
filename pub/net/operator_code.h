@@ -10,7 +10,10 @@ enum operatorcode{
 	FIND_STORE_APP = 2100,// 应用商城推荐
 	FIND_STORE_BOOK = 2101, //书城推荐
 	FIND_STORE_GAME = 2102,//游戏商城推荐
-	FIND_STORE_MAIN = 2103//首页推荐
+	FIND_STORE_MAIN = 2103,//首页推荐
+
+	//商城
+	SUMMARY_INFOS = 3100 // 应用详情
 };
 
 

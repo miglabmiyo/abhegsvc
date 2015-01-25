@@ -1,6 +1,12 @@
 #ifndef __ABHEG__STORESVC__STORE_LOGIC___
 #define __ABHEG__STORESVC__STORE_LOGIC___
+#include "net/store_comm_head.h"
+#include "net/operator_code.h"
+#include "net/error_comm.h"
+#include "logic/logic_infos.h"
 #include "common.h"
+
+#define DEFAULT_CONFIG_PATH     "./plugins/storesvc/storesvc_config.xml"
 
 
 namespace storesvc_logic{
@@ -35,7 +41,9 @@ public:
 
     bool OnTimeout (struct server *srv, char* id, int opcode, int time);
 
-
+private:
+    bool OnAppSummary(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+                   		const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();

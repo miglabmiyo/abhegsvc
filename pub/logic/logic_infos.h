@@ -144,7 +144,7 @@ public:
 	void set_logo(const std::string& logo){data_->logo_ = logo;}
 	void set_name(const std::string& name){data_->name_ = name;}
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
-	void set_content(const std::string& content){data_->content_;}
+	void set_content(const std::string& content){data_->content_ = content;}
 
 private:
 	class Data{

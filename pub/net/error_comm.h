@@ -30,7 +30,10 @@ enum errorcode{
 	PKG_NAME_LACK = -1202,
 	TAG_LACK = -1203,
 	APPID_LACK = -1204,
-	REQUEST_LACK = -1205
+	REQUEST_LACK = -1205,
+
+
+	//商场
 };
 
 
