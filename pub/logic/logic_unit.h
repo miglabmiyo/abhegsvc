@@ -23,6 +23,8 @@ public:
 	static void SendMessage(const int socket,netcomm_send::HeadPacket* packet);
 
 	static void SendErrorMsg(const int32 error_code,const int socket);
+
+	static double CalculationStar(const int64 down,const int64 like);
 };
 }
 

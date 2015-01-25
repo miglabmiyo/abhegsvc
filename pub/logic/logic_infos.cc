@@ -5,6 +5,7 @@
  *      Author: kerry
  */
 #include "logic/logic_infos.h"
+#include "logic/logic_unit.h"
 
 namespace base_logic{
 
@@ -41,7 +42,6 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 		dict->SetInteger(L"type",data_->type_);
 	if(data_->subtype_!=-1)
 		dict->SetInteger(L"subtype",data_->subtype_);
-
 	if(!data_->pic_.empty())
 		dict->SetString(L"pic",data_->pic_);
 	return dict.release();
@@ -141,6 +141,8 @@ base_logic::DictionaryValue* AppInfos::Release(){
 		dict->SetString(L"summary",data_->summary_);
 	if(!data_->content_.empty())
 		dict->SetString(L"summary",data_->content_);
+	if(data_->like_!=-1&&data_->down_!=-1)
+		dict->SetReal(L"star",base_logic::LogicUnit::CalculationStar(data_->down_,data_->like_));
 	return dict.release();
 }
 
@@ -176,8 +178,8 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetInteger(L"type",data_->type_);
 	if(data_->chapter_!=-1)
 		dict->SetBigInteger(L"chapter",data_->chapter_);
-	if(data_->star_!=0.0)
-		dict->SetReal(L"star",data_->star_);
+	//if(data_->star_!=0.0)
+		dict->SetReal(L"star",4.5);
 	if(!data_->free_url_.empty())
 		dict->SetString(L"free_url",data_->free_url_);
 	if(!data_->name_.empty())

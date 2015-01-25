@@ -198,7 +198,7 @@ public:
 	const int32 parent() const {return data_->parent_;}
 	const int64 chapter() const {return data_->chapter_;}
 	const int32 attr() const {return data_->attr_;}
-	const double star() const {return data_->star_;}
+	//const double star() const {return data_->star_;}
 	const std::string& free_url() const {return data_->free_url_;}
 	const std::string& name() const {return data_->name_;}
 	const std::string& author() const {return data_->author_;}
@@ -210,7 +210,7 @@ public:
 	void set_parent(const int32 parent){data_->parent_ = parent;}
 	void set_chapter(const int64 chapter){data_->chapter_ = chapter;}
 	void set_attr(const int32 attr){data_->attr_ = attr;}
-	void set_star(const double star){data_->star_ = star;}
+	//void set_star(const double star){data_->star_ = star;}
 	void set_free_url(const std::string& free_url){data_->free_url_ = free_url;}
 	void set_name(const std::string& name){data_->name_ = name;}
 	void set_pic(const std::string& pic){data_->pic_ = pic;}
@@ -225,8 +225,7 @@ public:
 		,type_(-1)
 		,parent_(-1)
 		,chapter_(-1)
-		,attr_(0)
-		,star_(0.0){}
+		,attr_(0){}
 	public:
 		void AddRef(){refcount_ ++;}
 		void Release(){if (!--refcount_)delete this;}
@@ -236,7 +235,6 @@ public:
 		int32        parent_;
 		int64        chapter_;
 		int32        attr_;
-		double       star_;
 		std::string  author_;
 		std::string  free_url_;
 		std::string  name_;

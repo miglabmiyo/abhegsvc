@@ -127,5 +127,12 @@ void LogicUnit::SendErrorMsg(const int32 error_code,const int socket){
 	SendMessage(socket,packet.get());
 }
 
+double LogicUnit::CalculationStar(const int64 down,const int64 like){
+	//随机数
+	 /*srand((int)time(NULL));
+	 return random(100)/5 + 0.5;*/
+	return 3.5;
+}
+
 
 }
