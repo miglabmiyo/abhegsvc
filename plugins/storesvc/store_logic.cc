@@ -78,6 +78,12 @@ bool Storelogic::OnStoreMessage(struct server *srv, const int socket, const void
 		   case SUMMARY_INFOS:
 			   OnAppSummary(srv,socket,value);
 			   break;
+		   case APP_WANT_URL:
+			   OnWantURL(srv,socket,value);
+			   break;
+		   case APP_WANT_LIKE:
+			   OnLikePraise(srv,socket,value);
+			   break;
 		}
 
 		return true;
@@ -151,6 +157,49 @@ bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::
 	//是否点赞
 
 	send_message(socket,(netcomm_send::HeadPacket*)appsummary.get());
+	return true;
+}
+
+bool Storelogic::OnWantURL(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+                      		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::WantAppUrl> want(new netcomm_recv::WantAppUrl(netbase));
+	bool r = false;
+	int error_code = want->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	//构造发送数据
+	scoped_ptr<netcomm_send::WantAppUrl> want_url(new netcomm_send::WantAppUrl());
+
+	std::string url;
+	r = storesvc_logic::DBComm::GetWantUrl(want->appid(),want->tclass(),want->machine(),url);
+	want_url->set_url(url);
+	send_message(socket,(netcomm_send::HeadPacket*)want_url.get());
+
+	return true;
+}
+
+bool Storelogic::OnLikePraise(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+                      		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::LikePraise> like(new netcomm_recv::LikePraise(netbase));
+	bool r = false;
+	int error_code = like->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	//点赞
+	r = storesvc_logic::DBComm::WantAppLike(like->uid(),like->appid(),like->tclass());
+
+	scoped_ptr<netcomm_send::HeadPacket> head(new netcomm_send::HeadPacket());
+	head->set_status(1);
+	send_message(socket,(netcomm_send::HeadPacket*)head.get());
+
 	return true;
 }
 

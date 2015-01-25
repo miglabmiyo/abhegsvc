@@ -23,6 +23,11 @@ public:
 	static bool GetAppSummary(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo);
 
 	static bool SearchTypeApp(const int32 type,const int32 tclass,std::list<base_logic::AppInfos>& list);
+
+	static bool GetWantUrl(const int64 appid,const int32 tclass,const int32 machine,
+			std::string& url);
+
+	static bool WantAppLike(const int64 uid,const int64 appid,const int32 tclass);
 };
 
 }

@@ -13,7 +13,9 @@ enum operatorcode{
 	FIND_STORE_MAIN = 2103,//首页推荐
 
 	//商城
-	SUMMARY_INFOS = 3100 // 应用详情
+	SUMMARY_INFOS = 3100, // 应用详情
+	APP_WANT_URL = 3101, //获取下载地址
+	APP_WANT_LIKE = 3102 //点赞
 };
 
 

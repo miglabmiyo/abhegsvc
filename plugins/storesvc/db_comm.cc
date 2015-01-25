@@ -134,5 +134,70 @@ bool DBComm::SearchTypeApp(const int32 type,const int32 tclass,std::list<base_lo
 	return false;
 }
 
+bool DBComm::GetWantUrl(const int64 appid,const int32 tclass,const int32 machine,
+			std::string& url){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_WantAppURL(27,2,1)
+	os<<"call proc_WantAppURL("<<appid<<","<<tclass<<","<<machine<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			if(rows[0]!=NULL)
+				url = rows[0];
+		}
+		return true;
+	}
+	return false;
+}
+
+bool DBComm::WantAppLike(const int64 uid,const int64 appid,const int32 tclass){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_AppLikePraise(10008,13,1)
+	os<<"call proc_AppLikePraise("<<uid<<","<<appid<<","<<tclass<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+	return true;
+}
+
 
 }

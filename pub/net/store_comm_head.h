@@ -20,10 +20,10 @@
 namespace netcomm_recv{
 
 //用于商场 游戏 书城 详情
-class AppSummary:public HeadPacket{
+class AppSummary:public LoginHeadPacket{
 public:
 	AppSummary(NetBase* m)
-	:HeadPacket(m){
+	:LoginHeadPacket(m){
 		Init();
 	}
 
@@ -41,6 +41,37 @@ public:
 private:
 	int64       appid_;
 	int32       class_;
+};
+
+typedef AppSummary  LikePraise;
+
+//获取地址
+class WantAppUrl:public LoginHeadPacket{
+public:
+	WantAppUrl(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"appid",appid_);
+		if(!r) error_code_ = APPID_LACK;
+		GETBIGINTTOINT(L"class",class_);
+		if(!r)class_ = 0;
+		GETBIGINTTOINT(L"machine",machine_);
+		if(!r)class_ = 0;
+	}
+
+	const int64 appid() const {return this->appid_;}
+
+	const int32 tclass() const {return this->class_;}
+
+	const int32 machine() const {return this->machine_;}
+private:
+	int64       appid_;
+	int32       class_;
+	int32       machine_;
 };
 }
 
@@ -85,6 +116,32 @@ private:
 	scoped_ptr<base_logic::FundamentalValue>      islike_;
 	scoped_ptr<base_logic::ListValue>             like_;
 };
+
+//下载地址
+class WantAppUrl:public HeadPacket{
+public:
+	WantAppUrl(){
+		base_.reset(new netcomm_send::NetBase());
+		basic_.reset(new base_logic::DictionaryValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!basic_->empty())
+			this->base_->Set(L"basic",basic_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_url(const std::string& url){
+		basic_->SetString(L"url",url);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::DictionaryValue>       basic_;
+};
+
 }
 
 

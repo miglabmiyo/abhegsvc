@@ -44,6 +44,12 @@ public:
 private:
     bool OnAppSummary(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
                    		const void* msg = NULL,const int len = 0);
+
+    bool OnWantURL(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+                      		const void* msg = NULL,const int len = 0);
+
+    bool OnLikePraise(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+      					const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();

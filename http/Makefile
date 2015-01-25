@@ -71,15 +71,27 @@ checkapi.o:
 ######################storeproc###############################################
 STOREPROC_PATH = /store
 OTJERPROC_VERSION = /1
-storeproc:summary.fcgi
+storeproc:summary.fcgi wanted.fcgi like.fcgi
 
+wanted.fcgi: wanted.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/wanted.fcgi
+	
 summary.fcgi: summary.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/summary.fcgi
+	
+like.fcgi: like.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/like.fcgi
 	
 ### 编译
 
 summary.o:
 	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/summary/summary.cc
+	
+wanted.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/wanted/wanted.cc
+	
+like.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/like/like.cc
 
 	
 ######################userproc###############################################
