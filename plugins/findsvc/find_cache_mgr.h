@@ -60,6 +60,7 @@ public:
 
 	bool SendFindGameInfos(netcomm_send::FindGameStore* bookfind);
 	//首页发送
+	bool SendFindMain(netcomm_send::FindMain* main);
 
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}
@@ -97,6 +98,8 @@ public:
 	static void FetchDBFindBookStore();
 	//获取游戏商城的推荐
 	static void FetchDBFindGameStore();
+	//首页推荐
+	static void FetchDBFindMain();
 };
 }
 

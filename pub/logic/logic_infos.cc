@@ -39,6 +39,9 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 		dict->SetString(L"name",data_->name_);
 	if(data_->type_!=-1)
 		dict->SetInteger(L"type",data_->type_);
+	if(data_->subtype_!=-1)
+		dict->SetInteger(L"subtype",data_->subtype_);
+
 	if(!data_->pic_.empty())
 		dict->SetString(L"pic",data_->pic_);
 	return dict.release();

@@ -366,4 +366,210 @@ bool DBComm::GetTopicsBookStore(std::list<base_logic::Topics>& list){
 	return false;
 }
 
+
+bool DBComm::GetFindApp(std::list<base_logic::AppInfos>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetFindApp()
+	os<<"call proc_GetFindApp();";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::AppInfos appinfo;
+			if(rows[0]!=NULL)
+				appinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				appinfo.set_type(atol(rows[1]));
+			if(rows[2]!=NULL)
+				appinfo.set_down(atoll(rows[2]));
+			if(rows[3]!=NULL)
+				appinfo.set_like(atoll(rows[3]));
+			if(rows[4]!=NULL)
+				appinfo.set_name(rows[4]);
+			if(rows[5]!=NULL)
+				appinfo.set_logo(rows[5]);
+			if(rows[6]!=NULL)
+				appinfo.set_summary(rows[6]);
+
+			list.push_back(appinfo);
+		}
+		return true;
+	}
+	return false;
+}
+
+
+bool DBComm:: GetFindBook(std::list<base_logic::BookInfo>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetFindBook()
+	os<<"call proc_GetFindBook()";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::BookInfo bookinfo;
+			if(rows[0]!=NULL)
+				bookinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				bookinfo.set_type(atol(rows[1]));
+			if(rows[2]!=NULL)
+				bookinfo.set_parent(atol(rows[2]));
+			if(rows[3]!=NULL)
+				bookinfo.set_name(rows[3]);
+			if(rows[4]!=NULL)
+				bookinfo.set_author(rows[4]);
+			if(rows[5]!=NULL)
+				bookinfo.set_pic(rows[5]);
+			if(rows[6]!=NULL)
+				bookinfo.set_summary(rows[6]);
+			list.push_back(bookinfo);
+		}
+		return true;
+	}
+	return false;
+}
+
+
+bool DBComm::GetFindGame(std::list<base_logic::AppInfos>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetFindGame
+	os<<"call proc_GetFindGame();";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::AppInfos appinfo;
+			if(rows[0]!=NULL)
+				appinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				appinfo.set_type(atol(rows[1]));
+			if(rows[2]!=NULL)
+				appinfo.set_down(atoll(rows[2]));
+			if(rows[3]!=NULL)
+				appinfo.set_like(atoll(rows[3]));
+			if(rows[4]!=NULL)
+				appinfo.set_name(rows[4]);
+			if(rows[5]!=NULL)
+				appinfo.set_logo(rows[5]);
+			if(rows[6]!=NULL)
+				appinfo.set_summary(rows[6]);
+
+			list.push_back(appinfo);
+		}
+		return true;
+	}
+	return false;
+}
+
+
+
+
+bool DBComm::GetAdver(std::list<base_logic::AdvertInfos>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetAdverMain()
+	os<<"call proc_GetAdverMain();";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::AdvertInfos advertinfo;
+			if(rows[0]!=NULL)
+				advertinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				advertinfo.set_type(atol(rows[1]));
+			if(rows[2]!=NULL)
+				advertinfo.set_subtype(atoll(rows[2]));
+			if(rows[3]!=NULL)
+				advertinfo.set_pic(rows[3]);
+			list.push_back(advertinfo);
+		}
+		return true;
+	}
+	return false;
+}
+
 }

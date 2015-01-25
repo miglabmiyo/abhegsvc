@@ -25,6 +25,7 @@ public:
 
 	const int64 id() const {return data_->id_;}
 	const int32 type() const {return data_->type_;}
+	const int32 subtype() const {return data_->subtype_;}
 	const int64 follower() const {return data_->follower_;}
 	const std::string& name() const {return data_->name_;}
 	const std::string& pic() const {return data_->pic_;}
@@ -32,6 +33,7 @@ public:
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
+	void set_subtype(const int32 subtype){data_->subtype_ = subtype;}
 	void set_follower(const int64 follower){data_->follower_ = follower;}
 	void set_name(const std::string& name) {data_->name_ = name;}
 	void set_pic(const std::string& pic){data_->pic_ = pic;}
@@ -42,6 +44,7 @@ private:
 		Data():refcount_(1)
 		,id_(0)
 		,type_(-1)
+		,subtype_(-1)
 		,follower_(-1){}
 	public:
 		void AddRef(){refcount_ ++;}
@@ -49,6 +52,7 @@ private:
 	public:
 		int64        id_;
 		int32        type_;
+		int32        subtype_;
 		int64        follower_;
 		std::string  name_;
 		std::string  pic_;

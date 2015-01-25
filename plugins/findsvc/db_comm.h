@@ -20,6 +20,12 @@ public:
 	static void Init(std::list<base::ConnAddr>& addrlist);
 	static void Dest();
 public:
+
+	static bool GetFindApp(std::list<base_logic::AppInfos>& list);
+	static bool GetFindBook(std::list<base_logic::BookInfo>& list);
+	static bool GetFindGame(std::list<base_logic::AppInfos>& list);
+	static bool GetAdver(std::list<base_logic::AdvertInfos>& list);
+
 	static bool GetFindStoreApp(std::list<base_logic::AppInfos>& list);
 	static bool GetAdverAppStore(std::list<base_logic::AdvertInfos>& list);
 	static bool GetTopicsAppStore(std::list<base_logic::Topics>& list);

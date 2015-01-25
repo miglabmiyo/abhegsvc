@@ -247,5 +247,78 @@ private:
 	scoped_ptr<base_logic::ListValue>             topics_;
 };
 
+
+class FindMain:public HeadPacket{
+
+public:
+	FindMain(){
+		base_.reset(new netcomm_send::NetBase());
+		advert_.reset(new base_logic::ListValue());
+		app_list_.reset(new base_logic::ListValue());
+		game_list_.reset(new base_logic::ListValue());
+		book_list_.reset(new base_logic::ListValue());
+		music_list_.reset(new base_logic::ListValue());
+		movie_list_.reset(new base_logic::ListValue());
+	}
+
+
+
+
+	netcomm_send::NetBase* release(){
+		if(!advert_->empty())
+			this->base_->Set(L"advert",advert_.release());
+		if(!app_list_->empty())
+			this->base_->Set(L"app",app_list_.release());
+		if(!game_list_->empty())
+			this->base_->Set(L"game",game_list_.release());
+		if(!book_list_->empty())
+			this->base_->Set(L"book",book_list_.release());
+		if(!music_list_->empty())
+			this->base_->Set(L"music",music_list_.release());
+		if(!movie_list_->empty())
+			this->base_->Set(L"movie",movie_list_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_advert(base_logic::DictionaryValue* app){
+		advert_->Append(app);
+	}
+
+	inline void set_app(base_logic::DictionaryValue* app){
+		app_list_->Append(app);
+	}
+
+	inline void set_game(base_logic::DictionaryValue* app){
+		game_list_->Append(app);
+
+	}
+
+	inline void set_book(base_logic::DictionaryValue* app){
+		book_list_->Append(app);
+
+	}
+
+	inline void set_music(base_logic::DictionaryValue* app){
+		music_list_->Append(app);
+	}
+
+	inline void set_movie(base_logic::DictionaryValue* app){
+		movie_list_->Append(app);
+	}
+
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             advert_;
+	scoped_ptr<base_logic::ListValue>             app_list_;
+	scoped_ptr<base_logic::ListValue>             game_list_;
+	scoped_ptr<base_logic::ListValue>             book_list_;
+	scoped_ptr<base_logic::ListValue>             music_list_;
+	scoped_ptr<base_logic::ListValue>             movie_list_;
+};
+
 }
 #endif /* _NET_USER_COMM_HEAD_H_ */

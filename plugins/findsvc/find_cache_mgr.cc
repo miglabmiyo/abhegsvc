@@ -144,6 +144,51 @@ bool FindCacheManager::SendFindGameInfos(netcomm_send::FindGameStore* gamefind){
 	return true;
 }
 
+bool FindCacheManager::SendFindMain(netcomm_send::FindMain* main){
+	base_logic::RLockGd lk(lock_);
+	//广告
+	if(find_cache_->find_adver_list_.size()>0){
+		std::list<base_logic::AdvertInfos>::iterator adverinfo_iterator;
+		for(adverinfo_iterator=find_cache_->find_adver_list_.begin();
+				adverinfo_iterator!=find_cache_->find_adver_list_.end();
+				adverinfo_iterator++){
+			base_logic::AdvertInfos advert = (*adverinfo_iterator);
+			main->set_advert(advert.Release());
+		}
+	}
+
+	//APP
+	if(find_cache_->find_app_list_.size()>0){
+		std::list<base_logic::AppInfos>::iterator appinfo_iterator;
+		for(appinfo_iterator=find_cache_->find_app_list_.begin();
+				appinfo_iterator!=find_cache_->find_app_list_.end();
+				appinfo_iterator++){
+			base_logic::AppInfos appinfo = (*appinfo_iterator);
+			main->set_app(appinfo.Release());
+		}
+	}
+	//游戏
+	if(find_cache_->find_game_list_.size()>0){
+		std::list<base_logic::AppInfos>::iterator appinfo_iterator;
+		for(appinfo_iterator=find_cache_->find_game_list_.begin();
+				appinfo_iterator!=find_cache_->find_game_list_.end();
+				appinfo_iterator++){
+			base_logic::AppInfos appinfo = (*appinfo_iterator);
+			main->set_game(appinfo.Release());
+		}
+	}
+	//书
+	if(find_cache_->find_book_list_.size()>0){
+		std::list<base_logic::BookInfo>::iterator bookinfo_iterator;
+		for(bookinfo_iterator=find_cache_->find_book_list_.begin();
+				bookinfo_iterator!=find_cache_->find_book_list_.end();
+				bookinfo_iterator++){
+			base_logic::BookInfo bookinfo = (*bookinfo_iterator);
+			main->set_book(bookinfo.Release());
+		}
+	}
+	return true;
+}
 
 CacheManagerOp::CacheManagerOp(){
 
@@ -174,6 +219,13 @@ void CacheManagerOp::FetchDBFindGameStore(){
 	findsvc_logic::DBComm::GetFindStoreGame(find_cache->game_store_list_);
 }
 
+void CacheManagerOp::FetchDBFindMain(){
+	FindCache* find_cache = find_cache_manager_->GetFindCache();
+	findsvc_logic::DBComm::GetFindApp(find_cache->find_app_list_);
+	findsvc_logic::DBComm::GetFindBook(find_cache->find_book_list_);
+	findsvc_logic::DBComm::GetFindGame(find_cache->find_game_list_);
+	findsvc_logic::DBComm::GetAdver(find_cache->find_adver_list_);
+}
 
 }
 
