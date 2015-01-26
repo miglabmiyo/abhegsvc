@@ -6,6 +6,7 @@
  */
 #ifndef __ABHEG__BOOK__DB_COMM___
 #define __ABHEG__BOOK__DB_COMM___
+#include "book_basic_info.h"
 #include "logic/logic_infos.h"
 #include "config/config.h"
 #include <list>
@@ -28,6 +29,10 @@ public:
 
 	//获取书单
 	static bool OnGetBookList(const int64 uid,std::list<base_logic::BookInfo>& list);
+
+	static bool OnGetBookChapters(const int64 uid,const int64 bid,const std::string& token,
+			const int64 from,const int64 count,
+			std::list<booksvc_logic::ChapterInfo>& list);
 
 };
 

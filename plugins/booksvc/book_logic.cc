@@ -86,7 +86,9 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case BOOK_LIST:
 			   OnUserBookList(srv,socket,value);
 			   break;
-
+		   case CHAPTER_LIST:
+			   OnGetBookChapters(srv,socket,value);
+			   break;
 
 		}
     return true;
@@ -222,6 +224,33 @@ bool Booklogic::OnUserBookList(struct server *srv,const int socket,netcomm_recv:
 		base_logic::BookInfo bookinfo = list.front();
 		list.pop_front();
 		bookl->SetBookList(bookinfo.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
+	return true;
+}
+
+bool Booklogic::OnGetBookChapters(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+       		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::ChapterList> chapterlist(new netcomm_recv::ChapterList(netbase));
+	bool r = false;
+	int error_code = chapterlist->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	std::list<booksvc_logic::ChapterInfo> list;
+	//查询书单
+	r = booksvc_logic::DBComm::OnGetBookChapters(chapterlist->uid(),
+			chapterlist->bookid(),chapterlist->booktoken(),
+			chapterlist->from(),chapterlist->count(),list);
+
+	scoped_ptr<netcomm_send::ChapterList> bookl(new netcomm_send::ChapterList());
+	while(list.size()>0){
+		booksvc_logic::ChapterInfo chapterinfo = list.front();
+		list.pop_front();
+		bookl->SetBookList(chapterinfo.Release());
 	}
 	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
 	return true;

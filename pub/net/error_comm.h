@@ -35,7 +35,8 @@ enum errorcode{
 
 	//商场
 	BOOK_BTYPE_LACK = -1300,
-	BOOK_ID_LACK = -1301
+	BOOK_ID_LACK = -1301,
+	BOOK_TOKEN_LACK = -1302
 };
 
 
@@ -63,6 +64,7 @@ enum errorcode{
 
 #define BOOK_BTYPE_LACK_STR               "缺少书类别"
 #define BOOK_ID_LACK_STR                  "缺少书ID"
+#define BOOK_TOKEN_LACK_STR               "此书并未购买"
 
 
 

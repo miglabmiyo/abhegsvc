@@ -206,5 +206,51 @@ bool DBComm::OnGetBookList(const int64 uid,std::list<base_logic::BookInfo>& list
 	return false;
 }
 
+bool DBComm::OnGetBookChapters(const int64 uid,const int64 bid,const std::string& token,
+		const int64 from,const int64 count,
+		std::list<booksvc_logic::ChapterInfo>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call abheg.proc_GetBookChapter(49,10009,'b9a8eb0d5cc1fc26e6f87b8ed31bca65',0,4)
+	os<<"call proc_GetBookChapter("<<bid<<","<<uid<<",\'"<<token<<"\',"<<from
+			<<","<<count<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			booksvc_logic::ChapterInfo chapter;
+			if(rows[0]!=NULL)
+				chapter.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				chapter.set_bid(atol(rows[1]));
+			if(rows[2]!=NULL)
+				chapter.set_url(rows[2]);
+			if(rows[3]!=NULL)
+				chapter.set_name(rows[3]);
+			list.push_back(chapter);
+		}
+		return true;
+	}
+	return false;
+}
+
 
 }

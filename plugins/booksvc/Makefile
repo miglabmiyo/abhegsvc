@@ -86,8 +86,8 @@ book_logic.o : ./book_logic.cc ./book_logic.h
 db_comm.o : ./db_comm.cc ./db_comm.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./db_comm.cc $(INCLUDE_PATHS)
 	
-user_basic_info.o : ./user_basic_info.cc ./user_basic_info.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./user_basic_info.cc $(INCLUDE_PATHS)
+book_basic_info.o : ./book_basic_info.cc ./book_basic_info.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./book_basic_info.cc $(INCLUDE_PATHS)
 
 comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/user_comm_head.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/net/comm_impl.cc $(INCLUDE_PATHS)
@@ -122,7 +122,7 @@ md5sum.o:$(THIRD_PATH)/basic/md5sum.cc
 radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/radom_in.cc $(INCLUDE_PATHS)
 
-$(PLUGIN) : book_init.o book_logic.o  db_comm.o \
+$(PLUGIN) : book_init.o book_logic.o  db_comm.o book_basic_info.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \

@@ -18,6 +18,34 @@
 
 namespace netcomm_recv{
 
+//获取详细章节
+class ChapterList:public LoginHeadPacket{
+public:
+	ChapterList(NetBase* m)
+	:LoginHeadPacket(m){
+		bool r = false;
+		from_ = 0;
+		count_ = 0;
+		GETBIGINTTOINT(L"bookid",bookid_);
+		if(!r) error_code_ = BOOK_ID_LACK;
+		r = m_->GetString(L"booktoken",&booktoken_);
+		if(!r) error_code_ = BOOK_TOKEN_LACK;
+		if(!m_->GetBigInteger(L"from",&from_)) from_ = 0;
+		if(!m_->GetBigInteger(L"count",&count_)) count_ = 0;
+	}
+
+	const int64 bookid() const {return this->bookid_;}
+	const int64 from() const {return this->from_;}
+	const int64 count() const {return this->count_==0?10:this->count_;}
+	const std::string& booktoken() const {return this->booktoken_;}
+
+private:
+	int64       bookid_;
+	int64       from_;
+	int64       count_;
+	std::string booktoken_;
+};
+
 ////提交已购买书籍
 class WantBook:public LoginHeadPacket{
 public:
@@ -50,7 +78,7 @@ public:
 		GETBIGINTTOINT(L"from",from_);
 		if(!r) from_ = 0;
 		GETBIGINTTOINT(L"count",count_);
-		if(!r) count_ = 0;
+		if(!r) count_ = 10;
 	}
 
 	const int64 btype() const {return this->btype_;}
@@ -270,6 +298,30 @@ public:
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             book_list_;
+};
+
+
+//获取章节详情
+class ChapterList:public HeadPacket{
+public:
+	ChapterList(){
+		base_.reset(new netcomm_send::NetBase());
+		chapter_list_.reset(new base_logic::ListValue());
+	}
+	inline void SetBookList(base_logic::DictionaryValue* build){
+		chapter_list_->Append(build);
+	}
+	netcomm_send::NetBase* release(){
+		if(!chapter_list_->empty())
+			this->base_->Set(L"list",chapter_list_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             chapter_list_;
 };
 
 }
