@@ -19,7 +19,8 @@ enum operatorcode{
 
 	//书城
 	BOOK_TOPICS = 4100,//专题活动
-	BOOK_SEARCH = 4101
+	BOOK_SEARCH = 4101,//类别搜索
+	BOOK_WANT = 4102//获取此书
 };
 
 

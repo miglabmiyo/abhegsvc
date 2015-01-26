@@ -80,6 +80,10 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case BOOK_SEARCH:
 			   OnBookSearchType(srv,socket,value);
 			   break;
+		   case BOOK_WANT:
+			   OnWantGetBook(srv,socket,value);
+			   break;
+
 
 		}
     return true;
@@ -170,6 +174,27 @@ bool Booklogic::OnBookSearchType(struct server *srv,const int socket,netcomm_rec
 			searchtype->SetNewBookInfo(bookinfo.Release());
 	}
 	send_message(socket,(netcomm_send::HeadPacket*)searchtype.get());
+	return true;
+}
+
+bool Booklogic::OnWantGetBook(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::WantBook> book(new netcomm_recv::WantBook(netbase));
+	int error_code = book->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+	bool r = false;
+	int32 status = 0;
+	std::string booktoken;
+	base_logic::LogicUnit::CreateToken(book->uid(),booktoken);
+	//
+	r = booksvc_logic::DBComm::OnWantGetBook(book->uid(),book->bookid(),booktoken);
+	scoped_ptr<netcomm_send::WantBook> send_book(new netcomm_send::WantBook());
+	send_book->SetBookToken(booktoken);
+	send_message(socket,(netcomm_send::HeadPacket*)send_book.get());
 	return true;
 }
 

@@ -24,6 +24,8 @@ public:
 
 	static bool GetBookSearch(const int32 type,std::list<base_logic::BookInfo>& list);
 
+	static bool OnWantGetBook(const int64 uid,const int64 bid,const std::string& token);
+
 };
 
 }

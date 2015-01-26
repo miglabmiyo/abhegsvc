@@ -18,6 +18,22 @@
 
 namespace netcomm_recv{
 
+////提交已购买书籍
+class WantBook:public LoginHeadPacket{
+public:
+	WantBook(NetBase* m)
+	:LoginHeadPacket(m){
+		bool r = false;
+		GETBIGINTTOINT(L"bookid",bookid_);
+		if(!r) error_code_ = BOOK_ID_LACK;
+	}
+	const int64 bookid() {return this->bookid_;}
+private:
+	int64 bookid_;
+};
+
+
+//类别搜索
 class SearchType:public LoginHeadPacket{
 public:
 	SearchType(NetBase* m)
@@ -198,6 +214,28 @@ private:
 	scoped_ptr<base_logic::DictionaryValue>       summary_;
 	scoped_ptr<base_logic::DictionaryValue>       user_;
 	scoped_ptr<base_logic::ListValue>             label_;
+};
+
+
+
+//提交
+class WantBook:public HeadPacket{
+public:
+	WantBook(){
+		base_.reset(new netcomm_send::NetBase());
+	}
+	~WantBook(){}
+
+	inline void SetBookToken(const std::string& token){
+		this->base_->SetString(L"book_token",token);
+	}
+	netcomm_send::NetBase* release(){
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
 };
 
 }

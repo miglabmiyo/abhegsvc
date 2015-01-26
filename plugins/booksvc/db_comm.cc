@@ -133,5 +133,32 @@ bool DBComm::GetBookSearch(const int32 type,std::list<base_logic::BookInfo>& lis
 	return false;
 }
 
+bool DBComm::OnWantGetBook(const int64 uid,const int64 bid,const std::string& token){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_SetUserBookList(10039,9)
+	os<<"call proc_SetUserBookList("<<uid<<","<<bid<<",\'"<<token<<"\');";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+	return true;
+}
+
 
 }
