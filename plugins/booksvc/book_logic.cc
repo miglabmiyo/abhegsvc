@@ -77,6 +77,10 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case BOOK_TOPICS:
 			   OnBookTopics(srv,socket,value);
 			   break;
+		   case BOOK_SEARCH:
+			   OnBookSearchType(srv,socket,value);
+			   break;
+
 		}
     return true;
 }
@@ -142,6 +146,33 @@ bool Booklogic::OnBookTopics(struct server *srv,const int socket,netcomm_recv::N
 	send_message(socket,(netcomm_send::HeadPacket*)booktopics.get());
 	return true;
 }
+
+bool Booklogic::OnBookSearchType(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+       		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::SearchType> search(new netcomm_recv::SearchType(netbase));
+	bool r = false;
+	int error_code = search->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	std::list<base_logic::BookInfo> list;
+	scoped_ptr<netcomm_send::SearchType> searchtype(new netcomm_send::SearchType());
+	booksvc_logic::DBComm::GetBookSearch(search->btype(),list);
+	while(list.size()>0){
+		base_logic::BookInfo bookinfo = list.front();
+		list.pop_front();
+		if(bookinfo.attr()==1)
+			searchtype->SetHotBookInfo(bookinfo.Release());
+		else if(bookinfo.attr()==2)
+			searchtype->SetNewBookInfo(bookinfo.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)searchtype.get());
+	return true;
+}
+
 
 }
 

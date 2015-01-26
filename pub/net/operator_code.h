@@ -18,7 +18,8 @@ enum operatorcode{
 	APP_WANT_LIKE = 3102, //点赞
 
 	//书城
-	BOOK_TOPICS = 4100//专题活动
+	BOOK_TOPICS = 4100,//专题活动
+	BOOK_SEARCH = 4101
 };
 
 

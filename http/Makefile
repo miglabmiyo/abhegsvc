@@ -71,15 +71,21 @@ checkapi.o:
 ######################bookproc###############################################
 BOOKPROC_PATH = /book
 OTJERPROC_VERSION = /1
-bookproc:topics.fcgi
+bookproc:topics.fcgi searchtype.fcgi
 
 topics.fcgi: topics.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
+	
+searchtype.fcgi: searchtype.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchtype.fcgi
 	
 ### 编译
 
 topics.o:
 	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics/topics.cc
+	
+searchtype.o:
+	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchtype/searchtype.cc
 	
 ######################storeproc###############################################
 STOREPROC_PATH = /store

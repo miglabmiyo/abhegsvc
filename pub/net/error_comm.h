@@ -34,6 +34,8 @@ enum errorcode{
 
 
 	//商场
+	BOOK_BTYPE_LACK = -1300,
+	BOOK_ID_LACK = -1301
 };
 
 
@@ -58,6 +60,9 @@ enum errorcode{
 #define TAG_LACK_STR                      "缺少标签"
 #define APPID_LACK_STR                    "缺少APPID"
 #define REQUEST_LACK_STR                  "缺少请求ID"
+
+#define BOOK_BTYPE_LACK_STR               "缺少书类别"
+#define BOOK_ID_LACK_STR                  "缺少书ID"
 
 
 

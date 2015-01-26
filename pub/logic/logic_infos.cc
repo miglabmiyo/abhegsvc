@@ -190,6 +190,8 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetString(L"summary",data_->summary_);
 	if(!data_->author_.empty())
 		dict->SetString(L"author",data_->author_);
+	if(!data_->down_!=-1)
+		dict->SetBigInteger(L"down",data_->down_);
 
 	return dict.release();
 

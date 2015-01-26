@@ -17,6 +17,36 @@
 #include <sstream>
 
 namespace netcomm_recv{
+
+class SearchType:public LoginHeadPacket{
+public:
+	SearchType(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"btype",btype_);
+		if(!r) error_code_ = BOOK_BTYPE_LACK;
+		GETBIGINTTOINT(L"class",class_);
+		if(!r) class_ = 0;
+		GETBIGINTTOINT(L"from",from_);
+		if(!r) from_ = 0;
+		GETBIGINTTOINT(L"count",count_);
+		if(!r) count_ = 0;
+	}
+
+	const int64 btype() const {return this->btype_;}
+
+private:
+	int32     btype_;
+	int32     class_;
+	int32     from_;
+	int32     count_;
+
+};
+
 class BookTopics:public LoginHeadPacket{
 public:
 	BookTopics(NetBase* m)
@@ -53,6 +83,42 @@ private:
 }
 
 namespace netcomm_send{
+
+//类别搜索
+class SearchType:public HeadPacket{
+public:
+	SearchType(){
+		base_.reset(new netcomm_send::NetBase());
+		hot_book_.reset(new base_logic::ListValue());
+		new_book_.reset(new base_logic::ListValue());
+	}
+
+	inline void SetHotBookInfo(base_logic::DictionaryValue* build){
+		hot_book_->Append(build);
+	}
+
+	inline void SetNewBookInfo(base_logic::DictionaryValue* build){
+		new_book_->Append(build);
+	}
+
+
+	netcomm_send::NetBase* release(){
+		if(!hot_book_->empty())
+			this->base_->Set(L"hot",hot_book_.release());
+		if(!new_book_->empty())
+			this->base_->Set(L"new",new_book_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             hot_book_;
+	scoped_ptr<base_logic::ListValue>             new_book_;
+};
+
+
 class BookTopics:public HeadPacket{
 public:
 	BookTopics(){
@@ -91,7 +157,7 @@ class BookSummary:public HeadPacket{
 public:
 	BookSummary(){
 		base_.reset(new netcomm_send::NetBase());
-		book_summary_.reset(new base_logic::DictionaryValue());
+		summary_.reset(new base_logic::DictionaryValue());
 		user_.reset(new base_logic::DictionaryValue());
 		label_.reset(new base_logic::ListValue());
 	}

@@ -41,6 +41,8 @@ buddha_strerror(int error_code){
 		  return PKG_NAME_LACK_STR;
 	  case APPID_LACK:
 		  return APPID_LACK_STR;
+	  case BOOK_BTYPE_LACK:
+		  return BOOK_BTYPE_LACK_STR;
 	}
 }
 

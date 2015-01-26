@@ -22,6 +22,8 @@ public:
 public:
 	static bool GetBookTopics(const int64 tid,std::list<base_logic::BookInfo>& list);
 
+	static bool GetBookSearch(const int32 type,std::list<base_logic::BookInfo>& list);
+
 };
 
 }
