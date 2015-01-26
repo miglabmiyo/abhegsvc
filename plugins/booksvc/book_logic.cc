@@ -83,6 +83,9 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case BOOK_WANT:
 			   OnWantGetBook(srv,socket,value);
 			   break;
+		   case BOOK_LIST:
+			   OnUserBookList(srv,socket,value);
+			   break;
 
 
 		}
@@ -195,6 +198,32 @@ bool Booklogic::OnWantGetBook(struct server *srv,const int socket,netcomm_recv::
 	scoped_ptr<netcomm_send::WantBook> send_book(new netcomm_send::WantBook());
 	send_book->SetBookToken(booktoken);
 	send_message(socket,(netcomm_send::HeadPacket*)send_book.get());
+	return true;
+}
+
+bool Booklogic::OnUserBookList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+      		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::BookList> booklist(new netcomm_recv::BookList(netbase));
+	bool r = false;
+	int32 issave;
+	std::string token;
+	std::list<base_logic::BookInfo> list;
+	int error_code = booklist->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	//查询书单
+	r = booksvc_logic::DBComm::OnGetBookList(booklist->uid(),list);
+	scoped_ptr<netcomm_send::BookList> bookl(new netcomm_send::BookList());
+	while(list.size()>0){
+		base_logic::BookInfo bookinfo = list.front();
+		list.pop_front();
+		bookl->SetBookList(bookinfo.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
 	return true;
 }
 

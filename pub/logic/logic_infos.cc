@@ -180,6 +180,10 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetBigInteger(L"chapter",data_->chapter_);
 	//if(data_->star_!=0.0)
 		dict->SetReal(L"star",4.5);
+
+	if(data_->down_!=-1)
+		dict->SetBigInteger(L"down",data_->down_);
+
 	if(!data_->free_url_.empty())
 		dict->SetString(L"free_url",data_->free_url_);
 	if(!data_->name_.empty())
@@ -190,8 +194,8 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetString(L"summary",data_->summary_);
 	if(!data_->author_.empty())
 		dict->SetString(L"author",data_->author_);
-	if(!data_->down_!=-1)
-		dict->SetBigInteger(L"down",data_->down_);
+	if(!data_->token_.empty())
+		dict->SetString(L"token",data_->token_);
 
 	return dict.release();
 

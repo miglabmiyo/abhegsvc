@@ -205,6 +205,7 @@ public:
 	const std::string& author() const {return data_->author_;}
 	const std::string& pic() const {return data_->pic_;}
 	const std::string& summary() const {return data_->summary_;}
+	const std::string& token() const {return data_->token_;}
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
@@ -218,6 +219,7 @@ public:
 	void set_pic(const std::string& pic){data_->pic_ = pic;}
 	void set_author(const std::string& author) {data_->author_ = author;}
 	void set_summary(const std::string& summary) {data_->summary_ = summary;}
+	void set_token(const std::string& token){data_->token_ = token;}
 
 	class Data{
 	public:
@@ -239,6 +241,7 @@ public:
 		int64        chapter_;
 		int64        down_;
 		int32        attr_;
+		std::string  token_;
 		std::string  author_;
 		std::string  free_url_;
 		std::string  name_;

@@ -63,6 +63,14 @@ private:
 
 };
 
+//获取用户书单
+class BookList:public LoginHeadPacket{
+public:
+	BookList(NetBase* m)
+	:LoginHeadPacket(m){
+	}
+};
+
 class BookTopics:public LoginHeadPacket{
 public:
 	BookTopics(NetBase* m)
@@ -236,6 +244,32 @@ public:
 	}
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
+};
+
+
+
+//书单
+class BookList:public HeadPacket{
+public:
+	BookList(){
+		base_.reset(new netcomm_send::NetBase());
+		book_list_.reset(new base_logic::ListValue());
+	}
+	inline void SetBookList(base_logic::DictionaryValue* build){
+		book_list_->Append(build);
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!book_list_->empty())
+			this->base_->Set(L"list",book_list_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             book_list_;
 };
 
 }
