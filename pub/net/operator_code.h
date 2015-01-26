@@ -15,7 +15,10 @@ enum operatorcode{
 	//商城
 	SUMMARY_INFOS = 3100, // 应用详情
 	APP_WANT_URL = 3101, //获取下载地址
-	APP_WANT_LIKE = 3102 //点赞
+	APP_WANT_LIKE = 3102, //点赞
+
+	//书城
+	BOOK_TOPICS = 4100//专题活动
 };
 
 

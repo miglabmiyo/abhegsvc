@@ -16,6 +16,9 @@ Findlogic::Findlogic(){
 }
 
 Findlogic::~Findlogic(){
+	findsvc_logic::DBComm::Dest();
+	findsvc_logic::CacheManagerOp::FreeCacheManagerOp();
+	findsvc_logic::CacheManagerOp::FreeFindCacheManager();
 }
 
 bool Findlogic::Init(){

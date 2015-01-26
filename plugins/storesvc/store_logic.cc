@@ -17,6 +17,7 @@ Storelogic::Storelogic(){
 }
 
 Storelogic::~Storelogic(){
+	storesvc_logic::DBComm::Dest();
 }
 
 bool Storelogic::Init(){

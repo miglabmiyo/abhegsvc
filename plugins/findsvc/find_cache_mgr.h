@@ -79,6 +79,13 @@ private:
 	CacheManagerOp();
 	virtual ~CacheManagerOp();
 public:
+	static void FreeFindCacheManager(){
+		delete find_cache_manager_;
+	}
+
+	static void FreeCacheManagerOp(){
+		delete cache_manager_op_;
+	}
 	static FindCacheManager* GetFindCacheManager(){
 		if(find_cache_manager_==NULL)
 			find_cache_manager_ = new FindCacheManager();

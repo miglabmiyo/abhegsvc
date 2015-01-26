@@ -17,13 +17,13 @@ static void *OnBookStart(){
     signal(SIGPIPE,SIG_IGN);
     struct bookplugin* book=(struct bookplugin*)calloc(1,sizeof(struct bookplugin));
 
-    book->id="";
+    book->id="book";
 
-    book->name="";
+    book->name="book";
 
-    book->version="";
+    book->version="1.0.0";
 
-    book->provider="";
+    book->provider="kerry";
 
     if(!booksvc_logic::Booklogic::GetInstance())
         assert(0);
