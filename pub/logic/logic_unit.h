@@ -24,7 +24,12 @@ public:
 
 	static void SendErrorMsg(const int32 error_code,const int socket);
 
-	static double CalculationStar(const int64 down,const int64 like);
+	static double CalculationAppStar(const int64 down,const int64 down_total,
+			const int64 like,const int64 like_total);
+
+	static double CalculationAppStar(const int64 down,const int64 like);
+
+	static double CalculationBookStar(const int64 down,const int64 down_total);
 };
 }
 

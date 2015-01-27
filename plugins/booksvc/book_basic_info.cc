@@ -36,7 +36,7 @@ base_logic::DictionaryValue* ChapterInfo::Release(){
 	if(data_->id_!=0)
 		dict->SetBigInteger(L"id",data_->id_);
 	if(!data_->name_.empty())
-		dict->SetString(L"name",data_->name_);
+		dict->SetString(L"chaptername",data_->name_);
 	if(data_->bid_!=0)
 		dict->SetInteger(L"bid",data_->bid_);
 	if(!data_->url_.empty())

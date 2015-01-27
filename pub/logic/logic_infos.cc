@@ -142,7 +142,8 @@ base_logic::DictionaryValue* AppInfos::Release(){
 	if(!data_->content_.empty())
 		dict->SetString(L"summary",data_->content_);
 	if(data_->like_!=-1&&data_->down_!=-1)
-		dict->SetReal(L"star",base_logic::LogicUnit::CalculationStar(data_->down_,data_->like_));
+		dict->SetReal(L"star",base_logic::LogicUnit::CalculationAppStar(data_->down_,data_->like_));
+		//dict->SetReal(L"star",base_logic::LogicUnit::CalculationStar(data_->down_,data_->like_));
 	return dict.release();
 }
 
