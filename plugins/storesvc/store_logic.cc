@@ -147,6 +147,16 @@ bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::
 	r = storesvc_logic::DBComm::GetAppSummary(summary->appid(),summary->tclass(),appinfo);
 	if(r)
 		appsummary->set_intro(appinfo.Release());
+	//图片
+	std::string pic1 = "http://pic.desgin.miglab.com/abheg/store/app/products/13/summary/s1.jpg";
+	std::string pic2 = "http://pic.desgin.miglab.com/abheg/store/app/products/13/summary/s2.jpg";
+	std::string pic3 = "http://pic.desgin.miglab.com/abheg/store/app/products/13/summary/s3.jpg";
+	std::string pic4 = "http://pic.desgin.miglab.com/abheg/store/app/products/13/summary/s4.jpg";
+
+	appsummary->set_pic(pic1);
+	appsummary->set_pic(pic2);
+	appsummary->set_pic(pic3);
+	appsummary->set_pic(pic4);
 	//读取相似
 	std::list<base_logic::AppInfos> list;
 	storesvc_logic::DBComm::SearchTypeApp(appinfo.type(),summary->tclass(),list);

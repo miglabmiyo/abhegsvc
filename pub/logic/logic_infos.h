@@ -199,6 +199,7 @@ public:
 	const int64 chapter() const {return data_->chapter_;}
 	const int32 attr() const {return data_->attr_;}
 	const int64 down() const {return data_->down_;}
+	const int64 freecount() const {return data_->free_count_;}
 	//const double star() const {return data_->star_;}
 	const std::string& free_url() const {return data_->free_url_;}
 	const std::string& name() const {return data_->name_;}
@@ -213,6 +214,7 @@ public:
 	void set_chapter(const int64 chapter){data_->chapter_ = chapter;}
 	void set_attr(const int32 attr){data_->attr_ = attr;}
 	void set_down(const int64 down){data_->down_ = down;}
+	void set_freecount(const int64 freecount){data_->free_count_ = freecount;}
 	//void set_star(const double star){data_->star_ = star;}
 	void set_free_url(const std::string& free_url){data_->free_url_ = free_url;}
 	void set_name(const std::string& name){data_->name_ = name;}
@@ -230,6 +232,7 @@ public:
 		,parent_(-1)
 		,chapter_(-1)
 		,down_(-1)
+		,free_count_(-1)
 		,attr_(0){}
 	public:
 		void AddRef(){refcount_ ++;}
@@ -240,6 +243,7 @@ public:
 		int32        parent_;
 		int64        chapter_;
 		int64        down_;
+		int64        free_count_;
 		int32        attr_;
 		std::string  token_;
 		std::string  author_;

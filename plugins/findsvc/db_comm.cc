@@ -237,7 +237,7 @@ bool DBComm:: GetFindStoreBook(std::list<base_logic::BookInfo>& list){
 	}
 
     //call proc_GetFindBookStore()
-	os<<"call proc_GetFindBookStore()";
+	os<<"call proc_V2GetFindBookStore()";
 	std::string sql = os.str();
 	LOG_MSG2("[%s]", sql.c_str());
 	r = engine->SQLExec(sql.c_str());
@@ -266,8 +266,15 @@ bool DBComm:: GetFindStoreBook(std::list<base_logic::BookInfo>& list){
 				bookinfo.set_pic(rows[5]);
 			if(rows[6]!=NULL)
 				bookinfo.set_summary(rows[6]);
+			//下载次数
 			if(rows[7]!=NULL)
-				bookinfo.set_attr(atol(rows[7]));
+				bookinfo.set_down(atoll(rows[7]));
+			//免费试看次数
+			if(rows[8]!=NULL)
+				bookinfo.set_freecount(atoll(rows[8]));
+
+			if(rows[9]!=NULL)
+				bookinfo.set_attr(atol(rows[9]));
 			list.push_back(bookinfo);
 		}
 		return true;

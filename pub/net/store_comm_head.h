@@ -81,12 +81,15 @@ class AppSummary:public HeadPacket{
 public:
 	AppSummary(){
 		base_.reset(new netcomm_send::NetBase());
+		pic_.reset(new base_logic::ListValue());
 		like_.reset(new base_logic::ListValue());
 		intro_.reset(new base_logic::DictionaryValue());
 		islike_.reset(new base_logic::FundamentalValue(0));
 	}
 
 	netcomm_send::NetBase* release(){
+		if(!pic_->empty())
+			this->intro_->Set(L"pic",pic_.release());
 		if(!like_->empty())
 			this->base_->Set(L"like",like_.release());
 		if(!intro_->empty())
@@ -110,11 +113,16 @@ public:
 		islike_.reset(new base_logic::FundamentalValue(islike));
 	}
 
+	inline void set_pic(const std::string& pic){
+		pic_->Append(base_logic::Value::CreateStringValue(pic));
+	}
+
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::DictionaryValue>       intro_;
 	scoped_ptr<base_logic::FundamentalValue>      islike_;
 	scoped_ptr<base_logic::ListValue>             like_;
+	scoped_ptr<base_logic::ListValue>             pic_;
 };
 
 //下载地址

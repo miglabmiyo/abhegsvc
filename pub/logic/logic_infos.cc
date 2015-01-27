@@ -179,8 +179,10 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetInteger(L"type",data_->type_);
 	if(data_->chapter_!=-1)
 		dict->SetBigInteger(L"chapter",data_->chapter_);
+	if(data_->free_count_!=-1&&data_->down_!=-1)
+		dict->SetReal(L"star",base_logic::LogicUnit::CalculationBookStar(data_->free_count_,data_->down_));
 	//if(data_->star_!=0.0)
-		dict->SetReal(L"star",4.5);
+		//dict->SetReal(L"star",4.5);
 
 	if(data_->down_!=-1)
 		dict->SetBigInteger(L"down",data_->down_);

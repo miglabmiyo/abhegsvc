@@ -29,7 +29,9 @@ public:
 
 	static double CalculationAppStar(const int64 down,const int64 like);
 
-	static double CalculationBookStar(const int64 down,const int64 down_total);
+	static double CalculationBookStar(const int64 free,const int64 down);
+
+	//static double CalculationBookStar(const int64 down,const int64 down_total);
 };
 }
 

@@ -136,10 +136,10 @@ double LogicUnit::CalculationAppStar(const int64 down,const int64 down_total,
      return (down_weight+like_weight) *10;
 }
 
-double LogicUnit::CalculationBookStar(const int64 down,const int64 down_total){
+/*double LogicUnit::CalculationBookStar(const int64 down,const int64 down_total){
 	 double down_weight = ((down*100/down_total) * 1)/100;
 	 return 3.5;
-}
+}*/
 
 
 /*
@@ -157,6 +157,27 @@ double LogicUnit::CalculationAppStar(const int64 down,const int64 like){
 	double oneper  = (down * 0.2) /(down+like);
 
 	double star  =  (fiveper * 100 *5) + (fourper * 100 *4) + (threeper * 100 *3) + (twoper * 100 *2)+(oneper * 100 *1);
-	return star/100;
+	return star/100>5?5:(star/100);
 }
+
+/*
+ * down 为 5-4星  其中60%为5星  40%为星
+ *
+ * free 为 3-1星 其中 50%为3星 30%为2星 20%为1星.
+ *
+ * 50.6%×5+35.7%×4+12.1%×3+1.2%×2+0.3%×1=4.348星
+ * */
+
+double LogicUnit::CalculationBookStar(const int64 free,const int64 down){
+	double fiveper  = (down * 0.6) /(free+down);
+	double fourper  = (down * 0.4) /(down+free);
+	double threeper  = (free * 0.5) /(down+free);
+	double twoper  = (free * 0.3) /(down+free);
+	double oneper  = (free * 0.2) /(down+free);
+
+	double star  =  (fiveper * 100 *5) + (fourper * 100 *4) + (threeper * 100 *3) + (twoper * 100 *2)+(oneper * 100 *1);
+	return star/100>5?5:(star/100);
+}
+
+
 }
