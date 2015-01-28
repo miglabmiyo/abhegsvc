@@ -141,6 +141,19 @@ bool FindCacheManager::SendFindGameInfos(netcomm_send::FindGameStore* gamefind){
 		else if(appinfo.attr()==2) //人气推荐
 			gamefind->set_popularity(appinfo.Release());
 	}
+
+	//图片
+	std::string pic1 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/1.png";
+	std::string pic2 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/2.png";
+	std::string pic3 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/3.png";
+	std::string pic4 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/4.png";
+	std::string pic5 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/5.png";
+
+	gamefind->set_pic(pic1);
+	gamefind->set_pic(pic2);
+	gamefind->set_pic(pic3);
+	gamefind->set_pic(pic4);
+	gamefind->set_pic(pic5);
 	return true;
 }
 

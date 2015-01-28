@@ -162,7 +162,7 @@ bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::
 
 	//读取相似
 	std::list<base_logic::AppInfos> list;
-	storesvc_logic::DBComm::SearchTypeApp(appinfo.type(),summary->tclass(),list);
+	storesvc_logic::DBComm::SearchTypeApp(appinfo.type(),tclass,list);
 	while(list.size()>0){
 		base_logic::AppInfos app = list.front();
 		list.pop_front();

@@ -199,6 +199,8 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetString(L"author",data_->author_);
 	if(!data_->token_.empty())
 		dict->SetString(L"token",data_->token_);
+	if(!data_->pubtime_.empty())
+		dict->SetString(L"pubtime",data_->pubtime_);
 
 	return dict.release();
 

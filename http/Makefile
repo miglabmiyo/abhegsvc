@@ -71,7 +71,7 @@ checkapi.o:
 ######################bookproc###############################################
 BOOKPROC_PATH = /book
 OTJERPROC_VERSION = /1
-bookproc:topics.fcgi searchtype.fcgi wanted.fcgi booklist.fcgi chapterlist.fcgi
+bookproc:topics.fcgi searchtype.fcgi wanted.fcgi booklist.fcgi chapterlist.fcgi booksummary.fcgi
 
 topics.fcgi: topics.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
@@ -87,6 +87,9 @@ booklist.fcgi: booklist.o $(POBJ)
 	
 chapterlist.fcgi: chapterlist.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/chapterlist.fcgi
+	
+booksummary.fcgi: booksummary.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/booksummary.fcgi
 ### 编译
 
 topics.o:
@@ -103,6 +106,9 @@ booklist.o:
 	
 chapterlist.o:
 	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/chapterlist/chapterlist.cc
+	
+booksummary.o:
+	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/summary/summary.cc
 	
 ######################storeproc###############################################
 STOREPROC_PATH = /store

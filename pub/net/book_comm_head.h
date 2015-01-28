@@ -308,8 +308,8 @@ public:
 		base_.reset(new netcomm_send::NetBase());
 		chapter_list_.reset(new base_logic::ListValue());
 	}
-	inline void SetBookList(base_logic::DictionaryValue* build){
-		chapter_list_->Append(build);
+	inline void SetBookList(base_logic::DictionaryValue* chapter){
+		chapter_list_->Append(chapter);
 	}
 	netcomm_send::NetBase* release(){
 		if(!chapter_list_->empty())
@@ -323,6 +323,8 @@ private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             chapter_list_;
 };
+
+
 
 }
 

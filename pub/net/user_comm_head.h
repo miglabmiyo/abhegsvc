@@ -80,7 +80,7 @@ public:
 		//URLCODE 解码
 		base::BasicUtil::UrlDecode(nickname,nickname_);
 		GETBIGINTTOINT(L"sex",sex_);
-		if(!r) error_code_ = SEX_LACK;
+		//if(!r) error_code_ = SEX_LACK;
 
 		if(source_==PLAT_WB){
 			GETBIGINTTOINT(L"session",wb_session_);

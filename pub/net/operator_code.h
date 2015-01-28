@@ -22,7 +22,9 @@ enum operatorcode{
 	BOOK_SEARCH = 4101,//类别搜索
 	BOOK_WANT = 4102,//获取此书
 	BOOK_LIST = 4103,//书单列表
-	CHAPTER_LIST = 4104//章节列表
+	CHAPTER_LIST = 4104,//章节列表
+	BOOK_SUMMARY = 4105//书籍详情
+
 };
 
 

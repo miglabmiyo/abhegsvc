@@ -30,6 +30,11 @@ public:
 	//获取书单
 	static bool OnGetBookList(const int64 uid,std::list<base_logic::BookInfo>& list);
 
+	//详情
+	static bool OnGetBookSummary(const int64 uid,const int64 bookid,int32& issave,
+			base_logic::BookInfo& bookinfo);
+
+
 	static bool OnGetBookChapters(const int64 uid,const int64 bid,const std::string& token,
 			const int64 from,const int64 count,
 			std::list<booksvc_logic::ChapterInfo>& list);

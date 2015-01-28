@@ -89,6 +89,10 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case CHAPTER_LIST:
 			   OnGetBookChapters(srv,socket,value);
 			   break;
+		   case BOOK_SUMMARY:
+			   OnGetBookSummary(srv,socket,value);
+			   break;
+
 
 		}
     return true;
@@ -252,6 +256,34 @@ bool Booklogic::OnGetBookChapters(struct server *srv,const int socket,netcomm_re
 		list.pop_front();
 		bookl->SetBookList(chapterinfo.Release());
 	}
+	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
+	return true;
+}
+
+bool Booklogic::OnGetBookSummary(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+   		const void* msg,const int len ){
+	scoped_ptr<netcomm_recv::BookSummary> summary(new netcomm_recv::BookSummary(netbase));
+	bool r = false;
+	int error_code = summary->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+
+	//查询书单
+	base_logic::BookInfo bookinfo;
+	int32 issave = 0;
+	r = booksvc_logic::DBComm::OnGetBookSummary(summary->uid(),
+			summary->bookid(),issave,bookinfo);
+
+	scoped_ptr<netcomm_send::BookSummary> bookl(new netcomm_send::BookSummary());
+	bookl->set_summary(bookinfo.Release());
+	//
+	bookl->set_user(issave);
+	bookl->set_label("临时数据1");
+	bookl->set_label("临时数据2");
 	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
 	return true;
 }

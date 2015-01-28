@@ -88,6 +88,7 @@ public:
 		emblem_.reset(new base_logic::DictionaryValue());
 		important_.reset(new base_logic::ListValue());
 		popularity_.reset(new base_logic::ListValue());
+		pic_.reset(new base_logic::ListValue());
 	}
 
 	inline void set_important(base_logic::DictionaryValue* app){
@@ -103,7 +104,13 @@ public:
 		emblem_.reset(app);
 	}
 
+	inline void set_pic(const std::string& pic){
+		pic_->Append(base_logic::Value::CreateStringValue(pic));
+	}
+
 	netcomm_send::NetBase* release(){
+		if(!pic_->empty())
+			this->emblem_->Set(L"pic",pic_.release());
 		if(!important_->empty())
 			this->base_->Set(L"important",important_.release());
 		if(!popularity_->empty())
@@ -121,6 +128,7 @@ private:
 	scoped_ptr<base_logic::DictionaryValue>       emblem_;
 	scoped_ptr<base_logic::ListValue>             important_;
 	scoped_ptr<base_logic::ListValue>             popularity_;
+	scoped_ptr<base_logic::ListValue>             pic_;
 };
 
 
