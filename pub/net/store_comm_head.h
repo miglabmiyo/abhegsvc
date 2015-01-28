@@ -31,16 +31,11 @@ public:
 		bool r =  false;
 		GETBIGINTTOINT(L"appid",appid_);
 		if(!r) error_code_ = APPID_LACK;
-		GETBIGINTTOINT(L"class",class_);
-		if(!r)class_ = 0;
 	}
 
 	const int64 appid() const {return this->appid_;}
-
-	const int32 tclass() const {return this->class_;}
 private:
 	int64       appid_;
-	int32       class_;
 };
 
 typedef AppSummary  LikePraise;
@@ -57,20 +52,15 @@ public:
 		bool r =  false;
 		GETBIGINTTOINT(L"appid",appid_);
 		if(!r) error_code_ = APPID_LACK;
-		GETBIGINTTOINT(L"class",class_);
-		if(!r)class_ = 0;
 		GETBIGINTTOINT(L"machine",machine_);
-		if(!r)class_ = 0;
+		if(!r)machine_ = 0;
 	}
 
 	const int64 appid() const {return this->appid_;}
 
-	const int32 tclass() const {return this->class_;}
-
 	const int32 machine() const {return this->machine_;}
 private:
 	int64       appid_;
-	int32       class_;
 	int32       machine_;
 };
 }

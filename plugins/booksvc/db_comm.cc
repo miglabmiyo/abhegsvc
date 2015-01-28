@@ -38,7 +38,7 @@ bool DBComm::GetBookTopics(const int64 tid,std::list<base_logic::BookInfo>& list
 	}
 
     //call proc_GetBookTopics(5)
-	os<<"call proc_GetBookTopics("<<tid<<")";
+	os<<"call proc_V2GetBookTopics("<<tid<<")";
 	std::string sql = os.str();
 	LOG_MSG2("[%s]", sql.c_str());
 	r = engine->SQLExec(sql.c_str());
@@ -70,7 +70,9 @@ bool DBComm::GetBookTopics(const int64 tid,std::list<base_logic::BookInfo>& list
 			if(rows[7]!=NULL)
 				bookinfo.set_pic(rows[7]);
 			if(rows[8]!=NULL)
-				bookinfo.set_summary(rows[8]);
+				bookinfo.set_freecount(atol(rows[8]));
+			if(rows[9]!=NULL)
+				bookinfo.set_summary(rows[9]);
 			list.push_back(bookinfo);
 		}
 		return true;
@@ -93,7 +95,7 @@ bool DBComm::GetBookSearch(const int32 type,std::list<base_logic::BookInfo>& lis
 	}
 
     //call proc_GetBooksByType(1001)
-	os<<"call proc_GetBooksByType("<<type<<")";
+	os<<"call proc_V2GetBooksByType("<<type<<")";
 	std::string sql = os.str();
 	LOG_MSG2("[%s]", sql.c_str());
 	r = engine->SQLExec(sql.c_str());
@@ -125,7 +127,9 @@ bool DBComm::GetBookSearch(const int32 type,std::list<base_logic::BookInfo>& lis
 			if(rows[7]!=NULL)
 				bookinfo.set_pic(rows[7]);
 			if(rows[8]!=NULL)
-				bookinfo.set_summary(rows[8]);
+				bookinfo.set_freecount(atoll(rows[8]));
+			if(rows[9]!=NULL)
+				bookinfo.set_summary(rows[9]);
 			list.push_back(bookinfo);
 		}
 		return true;

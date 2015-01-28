@@ -138,13 +138,14 @@ bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::
 		return false;
 	}
 
+	int32 tclass = summary->appid()/TYPE_BASIC;
 
 	//构造发送数据
 	scoped_ptr<netcomm_send::AppSummary> appsummary(new netcomm_send::AppSummary());
 
 	//读取APP
 	base_logic::AppInfos  appinfo;
-	r = storesvc_logic::DBComm::GetAppSummary(summary->appid(),summary->tclass(),appinfo);
+	r = storesvc_logic::DBComm::GetAppSummary(summary->appid(),tclass,appinfo);
 	if(r)
 		appsummary->set_intro(appinfo.Release());
 	//图片
@@ -157,6 +158,8 @@ bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::
 	appsummary->set_pic(pic2);
 	appsummary->set_pic(pic3);
 	appsummary->set_pic(pic4);
+
+
 	//读取相似
 	std::list<base_logic::AppInfos> list;
 	storesvc_logic::DBComm::SearchTypeApp(appinfo.type(),summary->tclass(),list);
@@ -182,11 +185,12 @@ bool Storelogic::OnWantURL(struct server *srv,const int socket,netcomm_recv::Net
 		return false;
 	}
 
+	int32 tclass = want->appid()/TYPE_BASIC;
 	//构造发送数据
 	scoped_ptr<netcomm_send::WantAppUrl> want_url(new netcomm_send::WantAppUrl());
 
 	std::string url;
-	r = storesvc_logic::DBComm::GetWantUrl(want->appid(),want->tclass(),want->machine(),url);
+	r = storesvc_logic::DBComm::GetWantUrl(want->appid(),tclass,want->machine(),url);
 	want_url->set_url(url);
 	send_message(socket,(netcomm_send::HeadPacket*)want_url.get());
 
@@ -204,8 +208,10 @@ bool Storelogic::OnLikePraise(struct server *srv,const int socket,netcomm_recv::
 		return false;
 	}
 
+	int32 tclass = like->appid()/TYPE_BASIC;
+
 	//点赞
-	r = storesvc_logic::DBComm::WantAppLike(like->uid(),like->appid(),like->tclass());
+	r = storesvc_logic::DBComm::WantAppLike(like->uid(),like->appid(),tclass);
 
 	scoped_ptr<netcomm_send::HeadPacket> head(new netcomm_send::HeadPacket());
 	head->set_status(1);
