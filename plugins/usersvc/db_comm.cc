@@ -69,7 +69,9 @@ bool DBComm::OnThirdLogin(usersvc_logic::UserInfo& userinfo,
 			if(rows[5]!=NULL)
 				userinfo.set_machine(atol(rows[5]));
 			if(rows[6]!=NULL)
-				userinfo.set_head(rows[6]);
+				userinfo.set_machine(atol(rows[6]));
+			if(rows[7]!=NULL)
+				userinfo.set_head(rows[7]);
 			return true;
 		}
 		return true;

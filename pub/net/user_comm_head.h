@@ -74,12 +74,23 @@ public:
 		if(!r) error_code_ = MACHINE_LACK;
 		GETBIGINTTOINT(L"source",source_);
 		if(!r) error_code_ = SOUCE_LACK;
+
+		//昵称为数字
+		int64 inickname = 0;
 		std::string nickname;
-		r = m_->GetString(L"nickname",&nickname);
-		if(!r) error_code_ = NICKNAME_LACK;
-		//URLCODE 解码
-		base::BasicUtil::UrlDecode(nickname,nickname_);
-		GETBIGINTTOINT(L"sex",sex_);
+		r = m_->GetBigInteger(L"nickname",&inickname);
+		if(r){ //昵称为纯数字
+			nickname_ = base::BasicUtil::StringUtil::Int64ToString(inickname);
+		}else{//昵称不为纯数字
+			r = m_->GetString(L"nickname",&nickname);
+			if(!r) error_code_ = NICKNAME_LACK;
+			//URLCODE 解码
+			base::BasicUtil::UrlDecode(nickname,nickname_);
+			GETBIGINTTOINT(L"sex",sex_);
+		}
+
+
+
 		//if(!r) error_code_ = SEX_LACK;
 
 		if(source_==PLAT_WB){
