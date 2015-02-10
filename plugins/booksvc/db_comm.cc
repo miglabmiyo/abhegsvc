@@ -64,15 +64,13 @@ bool DBComm::GetBookTopics(const int64 tid,std::list<base_logic::BookInfo>& list
 			if(rows[4]!=NULL)
 				bookinfo.set_name(rows[4]);
 			if(rows[5]!=NULL)
-				bookinfo.set_name(rows[5]);
+				bookinfo.set_author(rows[5]);
 			if(rows[6]!=NULL)
-				bookinfo.set_author(rows[6]);
+				bookinfo.set_pic(rows[6]);
 			if(rows[7]!=NULL)
-				bookinfo.set_pic(rows[7]);
+				bookinfo.set_freecount(atoll(rows[7]));
 			if(rows[8]!=NULL)
-				bookinfo.set_freecount(atol(rows[8]));
-			if(rows[9]!=NULL)
-				bookinfo.set_summary(rows[9]);
+				bookinfo.set_summary(rows[8]);
 			list.push_back(bookinfo);
 		}
 		return true;

@@ -63,6 +63,28 @@ private:
 	int64       appid_;
 	int32       machine_;
 };
+
+//专题获取
+class AppTopics:public LoginHeadPacket{
+public:
+	AppTopics(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"tid",topics_);
+		if(!r) error_code_ = APPID_LACK;
+	}
+
+	const int64 topics() const {return this->topics_;}
+
+private:
+	int64       topics_;
+};
+
+
 }
 
 namespace netcomm_send{
@@ -113,6 +135,38 @@ private:
 	scoped_ptr<base_logic::FundamentalValue>      islike_;
 	scoped_ptr<base_logic::ListValue>             like_;
 	scoped_ptr<base_logic::ListValue>             pic_;
+};
+
+//专题获取
+class AppTopics:public HeadPacket{
+public:
+	AppTopics(){
+		base_.reset(new netcomm_send::NetBase());
+		topics_.reset(new base_logic::ListValue());
+		like_num_.reset(new base_logic::FundamentalValue(0));
+	}
+	netcomm_send::NetBase* release(){
+		if(!topics_->empty())
+			this->base_->Set(L"topics",topics_.release());
+
+		this->base_->Set(L"likenum",like_num_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_topics(base_logic::DictionaryValue* app){
+		topics_->Append(app);
+	}
+
+	inline void set_like(const int64 like){
+		like_num_.reset(new base_logic::FundamentalValue(like));
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             topics_;
+	scoped_ptr<base_logic::FundamentalValue>      like_num_;
 };
 
 //下载地址

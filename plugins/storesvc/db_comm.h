@@ -28,6 +28,8 @@ public:
 			std::string& url);
 
 	static bool WantAppLike(const int64 uid,const int64 appid,const int32 tclass);
+
+	static bool GetTopics(const int64 tid,std::list<base_logic::AppInfos>& list);
 };
 
 }

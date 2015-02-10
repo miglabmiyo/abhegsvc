@@ -52,7 +52,33 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc storeproc bookproc
+proc: otherproc userproc findproc storeproc bookproc musicproc
+
+
+######################musicproc###############################################
+MUSICPROC_PATH = /music
+OTJERPROC_VERSION = /v1
+musicproc:getcltsongs.fcgi getdimension.fcgi
+
+getcltsongs.fcgi: getcltsongs.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getcltsongs.fcgi
+
+getdimension.fcgi: getdimension.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getdimension.fcgi
+
+### 编译
+
+getcltsongs.o:
+	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getcltsongs/getcltsongs.cc
+
+getdimension.o:
+	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getdimension/getdimension.cc
+
+
+clean:
+	-rm -f *.o
+	-rm -f $(OUTPUT_FILE)./*.fcgi
+
 
 	
 ######################otherproc###############################################
@@ -113,7 +139,7 @@ booksummary.o:
 ######################storeproc###############################################
 STOREPROC_PATH = /store
 OTJERPROC_VERSION = /1
-storeproc:summary.fcgi wanted.fcgi like.fcgi
+storeproc:summary.fcgi wanted.fcgi like.fcgi topics.fcgi
 
 wanted.fcgi: wanted.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/wanted.fcgi
@@ -123,6 +149,9 @@ summary.fcgi: summary.o $(POBJ)
 	
 like.fcgi: like.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/like.fcgi
+	
+topics.fcgi: topics.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
 	
 ### 编译
 
@@ -134,6 +163,9 @@ wanted.o:
 	
 like.o:
 	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/like/like.cc
+	
+topics.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/topics/topics.cc
 
 	
 ######################userproc###############################################

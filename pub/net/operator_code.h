@@ -16,6 +16,10 @@ enum operatorcode{
 	SUMMARY_INFOS = 3100, // 应用详情
 	APP_WANT_URL = 3101, //获取下载地址
 	APP_WANT_LIKE = 3102, //点赞
+	APP_TOPICS = 3103,//APP商场专题
+
+	MUSIC_GAIN_COLLECT_LIST = 4001,//获取红心歌单
+	MUSIC_GAIN_DIMENSION_LIST = 4002,//获取单维度歌曲
 
 	//书城
 	BOOK_TOPICS = 4100,//专题活动

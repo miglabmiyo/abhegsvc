@@ -181,7 +181,7 @@ public:
 
 	netcomm_send::NetBase* release(){
 		if(!topics_->empty())
-			this->base_->Set(L"topics",topics_.release());
+			this->base_->Set(L"topices",topics_.release());
 
 		this->base_->Set(L"follow",follow_.release());
 		head_->Set("result",base_.release());
