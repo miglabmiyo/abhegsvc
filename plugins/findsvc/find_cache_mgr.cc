@@ -157,6 +157,24 @@ bool FindCacheManager::SendFindGameInfos(netcomm_send::FindGameStore* gamefind){
 	return true;
 }
 
+bool FindCacheManager::SendGameRank(netcomm_send::FindGameRank* rank){
+	base_logic::RLockGd lk(lock_);
+
+	int32 i = 0;
+	if(find_cache_->game_rank_list_.size()>0){
+		std::list<base_logic::AppInfos>::iterator appinfo_iterator;
+		i = 0;
+		for(appinfo_iterator=find_cache_->game_rank_list_.begin();
+				i<10&&
+				appinfo_iterator!=find_cache_->game_rank_list_.end();
+				appinfo_iterator++,i++){
+			base_logic::AppInfos appinfo = (*appinfo_iterator);
+			rank->set_game(appinfo.Release());
+		}
+	}
+	return true;
+}
+
 bool FindCacheManager::SendFindMain(netcomm_send::FindMain* main){
 	base_logic::RLockGd lk(lock_);
 	//广告
@@ -230,6 +248,7 @@ void CacheManagerOp::FetchDBFindBookStore(){
 void CacheManagerOp::FetchDBFindGameStore(){
 	FindCache* find_cache = find_cache_manager_->GetFindCache();
 	findsvc_logic::DBComm::GetFindStoreGame(find_cache->game_store_list_);
+	findsvc_logic::DBComm::GetFindGameRank(find_cache->game_rank_list_);
 }
 
 void CacheManagerOp::FetchDBFindMain(){

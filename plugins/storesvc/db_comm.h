@@ -22,7 +22,12 @@ public:
 public:
 	static bool GetAppSummary(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo);
 
-	static bool SearchTypeApp(const int32 type,const int32 tclass,std::list<base_logic::AppInfos>& list);
+
+	static bool SearchKeyApp(const std::string& key,std::list<base_logic::AppInfos>& list,
+			const int64 from = 0,const int64 count = 6);
+
+	static bool SearchTypeApp(const int32 type,const int32 tclass,std::list<base_logic::AppInfos>& list,
+			const int64 from = 0,const int64 count = 6);
 
 	static bool GetWantUrl(const int64 appid,const int32 tclass,const int32 machine,
 			std::string& url);

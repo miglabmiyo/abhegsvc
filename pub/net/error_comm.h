@@ -33,10 +33,14 @@ enum errorcode{
 	REQUEST_LACK = -1205,
 
 
-	//商场
+	//书城
 	BOOK_BTYPE_LACK = -1300,
 	BOOK_ID_LACK = -1301,
-	BOOK_TOKEN_LACK = -1302
+	BOOK_TOKEN_LACK = -1302,
+
+	//商城
+	STORE_SEACH_BTYPE_LACK = -1400,
+	STORE_SEARCH_KEY_LACK = -1401
 };
 
 
@@ -65,6 +69,10 @@ enum errorcode{
 #define BOOK_BTYPE_LACK_STR               "缺少书类别"
 #define BOOK_ID_LACK_STR                  "缺少书ID"
 #define BOOK_TOKEN_LACK_STR               "此书并未购买"
+
+
+#define STORE_SEACH_BTYPE_LACK_STR        "缺少类别"
+#define STORE_SEARCH_KEY_LACK_STR         "缺少关键字"
 
 
 

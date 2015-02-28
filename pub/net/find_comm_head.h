@@ -328,5 +328,30 @@ private:
 	scoped_ptr<base_logic::ListValue>             movie_list_;
 };
 
+
+class FindGameRank:public HeadPacket{
+public:
+	FindGameRank(){
+		base_.reset(new netcomm_send::NetBase());
+		game_list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!game_list_->empty())
+			this->base_->Set(L"list",game_list_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_game(base_logic::DictionaryValue* app){
+		game_list_->Append(app);
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             game_list_;
+};
+
 }
 #endif /* _NET_USER_COMM_HEAD_H_ */

@@ -88,6 +88,12 @@ bool Storelogic::OnStoreMessage(struct server *srv, const int socket, const void
 		   case APP_TOPICS:
 			   OnAppTopics(srv,socket,value);
 			   break;
+		   case APP_SEARCH_KEY:
+			   OnSearchByKey(srv,socket,value);
+			   break;
+		   case APP_SEARCH_TYPE:
+			   OnSearchByType(srv,socket,value);
+			   break;
 		}
 
 		return true;
@@ -128,6 +134,56 @@ bool Storelogic::OnIniTimer(struct server *srv){
 bool Storelogic::OnTimeout(struct server *srv, char *id, int opcode, int time){
 
     return true;
+}
+
+bool Storelogic::OnSearchByType(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+				const void* msg,const int len){
+	scoped_ptr<netcomm_recv::AppSearchType> search_type(new netcomm_recv::AppSearchType(netbase));
+	bool r = false;
+	int error_code = search_type->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	int64 tid = search_type->tid();
+	int32 tclass = tid/TYPE_BASIC_PARENT;
+	std::list<base_logic::AppInfos> list;
+	storesvc_logic::DBComm::SearchTypeApp(tid,tclass,list,search_type->from(),search_type->count());
+
+	scoped_ptr<netcomm_send::AppSearchResult> result(new netcomm_send::AppSearchResult());
+	while(list.size()>0){
+		base_logic::AppInfos appinfo = list.front();
+		list.pop_front();
+		result->set_list(appinfo.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)result.get());
+	return true;
+}
+
+
+
+bool Storelogic::OnSearchByKey(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+			const void* msg,const int len){
+	scoped_ptr<netcomm_recv::AppSearchKey> search_key(new netcomm_recv::AppSearchKey(netbase));
+	bool r = false;
+	int error_code = search_key->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+	std::string key = search_key->key();
+	std::list<base_logic::AppInfos> list;
+	storesvc_logic::DBComm::SearchKeyApp(key,list,search_key->from(),search_key->count());
+	scoped_ptr<netcomm_send::AppSearchResult> result(new netcomm_send::AppSearchResult());
+	while(list.size()>0){
+		base_logic::AppInfos appinfo = list.front();
+		list.pop_front();
+		result->set_list(appinfo.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)result.get());
 }
 
 bool Storelogic::OnAppSummary(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,

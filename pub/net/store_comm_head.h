@@ -19,6 +19,72 @@
 
 namespace netcomm_recv{
 
+//关键字搜索
+class AppSearchKey:public LoginHeadPacket{
+public:
+	AppSearchKey(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		//URLCODE 解码
+		std::string key;
+		r = m_->GetString(L"key",&key);
+		if(r){
+			base::BasicUtil::UrlDecode(key,key_);
+		}
+		if(!r) error_code_ = STORE_SEARCH_KEY_LACK;
+
+		GETBIGINTTOINT(L"from",from_);
+		if(!r) from_ = 0;
+
+		GETBIGINTTOINT(L"count",count_);
+		if(!r) count_ = 10;
+	}
+
+	//const int64 tid() const {return this->tid_;}
+	const std::string& key() const {return  this->key_;}
+	const int64 from() const {return this->from_;}
+	const int64 count() const {return this->count_;}
+private:
+	std::string                  key_;
+	int64                        from_;
+	int64                        count_;
+};
+
+//类别搜索
+class AppSearchType:public LoginHeadPacket{
+public:
+	AppSearchType(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"tid",tid_);
+		if(!r) error_code_ = STORE_SEACH_BTYPE_LACK;
+
+		GETBIGINTTOINT(L"from",from_);
+		if(!r) from_ = 0;
+
+		GETBIGINTTOINT(L"count",count_);
+		if(!r) count_ = 10;
+	}
+
+	const int64 tid() const {return this->tid_;}
+	const int64 from() const {return this->from_;}
+	const int64 count() const {return this->count_;}
+
+private:
+	int64       tid_;
+	int64       from_;
+	int64       count_;
+};
+
+
 //用于商场 游戏 书城 详情
 class AppSummary:public LoginHeadPacket{
 public:
@@ -192,6 +258,32 @@ public:
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::DictionaryValue>       basic_;
+};
+
+//搜索结果返回
+class AppSearchResult:public HeadPacket{
+public:
+	AppSearchResult(){
+		base_.reset(new netcomm_send::NetBase());
+		list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!list_->empty())
+			this->base_->Set(L"list",list_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_list(base_logic::DictionaryValue* app){
+		list_->Append(app);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             list_;
+
 };
 
 }

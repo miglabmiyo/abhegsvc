@@ -40,6 +40,7 @@ public:
 
 //通过ID区间判定类别 10000000 为应用  200000000 为游戏
 #define TYPE_BASIC              10000000
+#define TYPE_BASIC_PARENT       1000
 #define TYPE_APP_BASIC          1
 #define TYPE_GAME_BASIC         2
 

@@ -134,7 +134,8 @@ bool DBComm::GetTopics(const int64 tid,std::list<base_logic::AppInfos>& list){
 	return false;
 }
 
-bool DBComm::SearchTypeApp(const int32 type,const int32 tclass,std::list<base_logic::AppInfos>& list){
+bool DBComm::SearchKeyApp(const std::string& key,std::list<base_logic::AppInfos>& list,
+		const int64 from,const int64 count){
 	bool r = false;
 #if defined (_DB_POOL_)
 	base_db::AutoMysqlCommEngine auto_engine;
@@ -148,8 +149,62 @@ bool DBComm::SearchTypeApp(const int32 type,const int32 tclass,std::list<base_lo
 		return false;
 	}
 
-    //call proc_SearchAppType(3)
-	os<<"call proc_SearchAppType("<<type<<","<<tclass<<");";
+    //call abheg.proc_SearchAppByKey('二',0,1)
+	os<<"call proc_SearchAppByKey(\'"<<key<<"\',"<<from<<","<<count<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::AppInfos appinfo;
+			if(rows[0]!=NULL)
+				appinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				appinfo.set_name(rows[1]);
+			if(rows[2]!=NULL)
+				appinfo.set_type(atoll(rows[2]));
+			if(rows[3]!=NULL)
+				appinfo.set_logo(rows[3]);
+			if(rows[4]!=NULL)
+				appinfo.set_like(atoll(rows[4]));
+			if(rows[5]!=NULL)
+				appinfo.set_down(atoll(rows[5]));
+			if(rows[6]!=NULL)
+				appinfo.set_summary(rows[6]);
+
+			list.push_back(appinfo);
+		}
+		return true;
+	}
+	return false;
+}
+
+
+bool DBComm::SearchTypeApp(const int32 type,const int32 tclass,std::list<base_logic::AppInfos>& list,
+		const int64 from,const int64 count){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call abheg.proc_SearchAppType(2001,2,0,10)
+	os<<"call proc_SearchAppType("<<type<<","<<tclass<<","<<from<<","<<count<<");";
 	std::string sql = os.str();
 	LOG_MSG2("[%s]", sql.c_str());
 	r = engine->SQLExec(sql.c_str());

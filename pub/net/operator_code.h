@@ -11,12 +11,15 @@ enum operatorcode{
 	FIND_STORE_BOOK = 2101, //书城推荐
 	FIND_STORE_GAME = 2102,//游戏商城推荐
 	FIND_STORE_MAIN = 2103,//首页推荐
+	FIND_GAME_RANK = 2104,//游戏排行榜
 
 	//商城
 	SUMMARY_INFOS = 3100, // 应用详情
 	APP_WANT_URL = 3101, //获取下载地址
 	APP_WANT_LIKE = 3102, //点赞
 	APP_TOPICS = 3103,//APP商场专题
+	APP_SEARCH_KEY = 3104,//关键字搜索
+	APP_SEARCH_TYPE = 3105,//类别搜索
 
 	MUSIC_GAIN_COLLECT_LIST = 4001,//获取红心歌单
 	MUSIC_GAIN_DIMENSION_LIST = 4002,//获取单维度歌曲
@@ -27,7 +30,13 @@ enum operatorcode{
 	BOOK_WANT = 4102,//获取此书
 	BOOK_LIST = 4103,//书单列表
 	CHAPTER_LIST = 4104,//章节列表
-	BOOK_SUMMARY = 4105//书籍详情
+	BOOK_SUMMARY = 4105,//书籍详情
+
+	//机器人
+	ROBOT_BOOK_COLLECTION = 6100,//添加书籍
+	ROBOT_CHAPTER_COLLECTION = 6101,//添加书籍章节
+	ROBOT_GET_SPIDER_PHONENUMBER = 6102//获取爬虫号码
+
 
 };
 

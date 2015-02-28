@@ -109,6 +109,7 @@ AppInfos& AppInfos::operator =(const AppInfos& appinfo){
 	return (*this);
 }
 
+
 base_logic::DictionaryValue* AppInfos::Release(){
 	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
 	if(data_->id_!=-1)
@@ -145,6 +146,12 @@ base_logic::DictionaryValue* AppInfos::Release(){
 		dict->SetReal(L"star",base_logic::LogicUnit::CalculationAppStar(data_->down_,data_->like_));
 		//dict->SetReal(L"star",base_logic::LogicUnit::CalculationStar(data_->down_,data_->like_));
 	return dict.release();
+}
+
+bool AppInfos::cmp(AppInfos& t_info,AppInfos& r_info){ //按照星级排序
+	double t_star = base_logic::LogicUnit::CalculationAppStar(t_info.down(),t_info.like());
+	double r_star = base_logic::LogicUnit::CalculationAppStar(r_info.down(),r_info.like());
+	return t_star < r_star;
 }
 
 BookInfo::BookInfo(){

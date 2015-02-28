@@ -146,6 +146,7 @@ public:
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
 	void set_content(const std::string& content){data_->content_ = content;}
 
+	static bool cmp(AppInfos& t_info,AppInfos& r_info);
 private:
 	class Data{
 	public:

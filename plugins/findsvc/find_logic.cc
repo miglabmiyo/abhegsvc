@@ -98,6 +98,9 @@ bool Findlogic::OnFindMessage(struct server *srv, const int socket, const void *
 	   case FIND_STORE_MAIN:
 		   OnFindMain(srv,socket,value);
 		   break;
+	   case FIND_GAME_RANK:
+		   OnFindGameRank(srv,socket,value);
+		   break;
 	}
 
 	return true;
@@ -223,6 +226,23 @@ bool Findlogic::OnFindMain(struct server *srv,const int socket,netcomm_recv::Net
 
 	send_message(socket,(netcomm_send::HeadPacket*)mainstore.get());
 	return true;
+}
+
+bool Findlogic::OnFindGameRank(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::FindType> rank(new netcomm_recv::FindType(netbase));
+	bool r = false;
+	int error_code = rank->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+	//构造发送数据
+		scoped_ptr<netcomm_send::FindGameRank> game_rank(new netcomm_send::FindGameRank());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendGameRank(game_rank.get());
+
+	send_message(socket,(netcomm_send::HeadPacket*)game_rank.get());
 }
 
 }

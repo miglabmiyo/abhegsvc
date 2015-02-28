@@ -45,6 +45,10 @@ buddha_strerror(int error_code){
 		  return BOOK_BTYPE_LACK_STR;
 	  case BOOK_TOKEN_LACK:
 		  return BOOK_TOKEN_LACK_STR;
+	  case STORE_SEACH_BTYPE_LACK:
+		  return STORE_SEACH_BTYPE_LACK_STR;
+	  case STORE_SEARCH_KEY_LACK:
+		  return STORE_SEARCH_KEY_LACK_STR;
 	}
 }
 
