@@ -94,6 +94,12 @@ bool Storelogic::OnStoreMessage(struct server *srv, const int socket, const void
 		   case APP_SEARCH_TYPE:
 			   OnSearchByType(srv,socket,value);
 			   break;
+		   case GAME_STRATEGY_CATALOG:
+			   OnGameStrategyCatalog(srv,socket,value);
+			   break;
+		   case GAME_STRATEGY_DETAILS:
+			   OnGameStrategyDetails(srv,socket,value);
+			   break;
 		}
 
 		return true;
@@ -305,6 +311,54 @@ bool Storelogic::OnLikePraise(struct server *srv,const int socket,netcomm_recv::
 	return true;
 }
 
+bool Storelogic::OnGameStrategyCatalog(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+			const void* msg,const int len){
+	scoped_ptr<netcomm_recv::GameStrategyCatalog> catalog(new netcomm_recv::GameStrategyCatalog(netbase));
+	bool r = false;
+	int error_code = catalog->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	std::list<storesvc_logic::GameStrategy> list;
+
+	//读取攻略目录
+	r = storesvc_logic::DBComm::GetGameStrategyCatalog(catalog->game_id(),catalog->from(),catalog->count(),list);
+
+	scoped_ptr<netcomm_send::GameStrategyCatalog> scatalog(new netcomm_send::GameStrategyCatalog());
+	while(list.size()>0){
+		storesvc_logic::GameStrategy catalog = list.front();
+		list.pop_front();
+		scatalog->set_list(catalog.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)scatalog.get());
+	return true;
+}
+
+bool Storelogic::OnGameStrategyDetails(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+			const void* msg,const int len){
+	scoped_ptr<netcomm_recv::GameStrategyDetails> detail(new netcomm_recv::GameStrategyDetails(netbase));
+	bool r = false;
+	int error_code = detail->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	storesvc_logic::GameStrategy strategy;
+
+	//读取攻略目录
+	//r = storesvc_logic::DBComm::GetGameStrategyCatalog(catalog->game_id(),catalog->from(),catalog->count(),list);
+	r = storesvc_logic::DBComm::GetGameStrategyDetail(detail->strategy_id(),strategy);
+	scoped_ptr<netcomm_send::GameStrategyDetail> scatalog(new netcomm_send::GameStrategyDetail());
+
+	scatalog->set_detail(strategy.details());
+	send_message(socket,(netcomm_send::HeadPacket*)scatalog.get());
+	return true;
+}
 
 }
 

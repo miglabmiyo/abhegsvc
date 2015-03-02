@@ -124,6 +124,57 @@ bool FindCacheManager::SendFindBookInfos(netcomm_send::FindBookStore* bookfind){
 	return true;
 }
 
+//APP广告
+bool FindCacheManager::SendAdverGameInfos(netcomm_send::FindGameStoreV2* store){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->game_adver_list_.size()<=0)
+		return false;
+	std::list<base_logic::AdvertInfos>::iterator adverinfo_iterator;
+	for(adverinfo_iterator=find_cache_->game_adver_list_.begin();
+			adverinfo_iterator!=find_cache_->game_adver_list_.end();
+			adverinfo_iterator++){
+		base_logic::AdvertInfos advert = (*adverinfo_iterator);
+		//appfind->set_advert(advert.Release());
+		store->set_advert(advert.Release());
+	}
+	return true;
+
+}
+
+bool FindCacheManager::SendFindGameInfosV2(netcomm_send::FindGameStoreV2* store){
+	base_logic::RLockGd lk(lock_);
+	if(find_cache_->game_store_list_.size()<=0)
+		return false;
+
+	//新增广告
+
+	std::list<base_logic::AppInfos>::iterator appinfo_iterator;
+	for(appinfo_iterator=find_cache_->game_store_list_.begin();
+			appinfo_iterator!=find_cache_->game_store_list_.end();
+			appinfo_iterator++){
+		base_logic::AppInfos appinfo = (*appinfo_iterator);
+		if(appinfo.attr()==0)
+			store->set_emblem(appinfo.Release());
+		else if(appinfo.attr()==1) //精品推荐
+			store->set_important(appinfo.Release());
+		else if(appinfo.attr()==2) //人气推荐
+			store->set_popularity(appinfo.Release());
+	}
+
+	//图片
+	std::string pic1 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/1.png";
+	std::string pic2 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/2.png";
+	std::string pic3 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/3.png";
+	std::string pic4 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/4.png";
+	std::string pic5 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/5.png";
+
+	store->set_pic(pic1);
+	store->set_pic(pic2);
+	store->set_pic(pic3);
+	store->set_pic(pic4);
+	store->set_pic(pic5);
+	return true;
+}
 
 bool FindCacheManager::SendFindGameInfos(netcomm_send::FindGameStore* gamefind){
 	base_logic::RLockGd lk(lock_);
@@ -249,6 +300,7 @@ void CacheManagerOp::FetchDBFindGameStore(){
 	FindCache* find_cache = find_cache_manager_->GetFindCache();
 	findsvc_logic::DBComm::GetFindStoreGame(find_cache->game_store_list_);
 	findsvc_logic::DBComm::GetFindGameRank(find_cache->game_rank_list_);
+	findsvc_logic::DBComm::GetAdverGameStore(find_cache->game_adver_list_);
 }
 
 void CacheManagerOp::FetchDBFindMain(){

@@ -6,6 +6,7 @@
  */
 #ifndef __ABHEG__STORE__DB_COMM___
 #define __ABHEG__STORE__DB_COMM___
+#include "store_basic_info.h"
 #include "logic/logic_infos.h"
 #include "config/config.h"
 #include <list>
@@ -35,6 +36,11 @@ public:
 	static bool WantAppLike(const int64 uid,const int64 appid,const int32 tclass);
 
 	static bool GetTopics(const int64 tid,std::list<base_logic::AppInfos>& list);
+
+	static bool GetGameStrategyCatalog(const int64 gameid,const int64 from,const int64 count,
+			std::list<storesvc_logic::GameStrategy>& list);
+
+	static bool GetGameStrategyDetail(const int64 strategy_id,storesvc_logic::GameStrategy& strategy);
 };
 
 }

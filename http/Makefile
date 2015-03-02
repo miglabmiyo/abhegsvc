@@ -157,7 +157,8 @@ STOREPROC_PATH = /store
 STORE_OBJECT_PATH = ./obj$(STOREPROC_PATH)
 OTJERPROC_VERSION = /1
 storeproc:$(STOREPROC_PATH)/summary.fcgi $(STOREPROC_PATH)/wanted.fcgi $(STOREPROC_PATH)/like.fcgi \
-	$(STOREPROC_PATH)/topics.fcgi $(STOREPROC_PATH)/searchkey.fcgi $(STOREPROC_PATH)/searchtype.fcgi
+	$(STOREPROC_PATH)/topics.fcgi $(STOREPROC_PATH)/searchkey.fcgi $(STOREPROC_PATH)/searchtype.fcgi\
+	$(STOREPROC_PATH)/strcatalog.fcgi $(STOREPROC_PATH)/strdetail.fcgi
 
 $(STOREPROC_PATH)/wanted.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)wanted.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/wanted.fcgi
@@ -176,6 +177,12 @@ $(STOREPROC_PATH)/searchkey.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)searchkey.o $
 
 $(STOREPROC_PATH)/searchtype.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)searchtype.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/searchtype.fcgi
+
+$(STOREPROC_PATH)/strcatalog.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)strcatalog.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strcatalog.fcgi
+	
+$(STOREPROC_PATH)/strdetail.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)strdetail.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strdetail.fcgi
 
 
 	
@@ -198,6 +205,12 @@ $(STORE_OBJECT_PATH)/$(STORENAME)searchkey.o:
 	
 $(STORE_OBJECT_PATH)/$(STORENAME)searchtype.o:
 	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/appsearchtype/appsearchtype.cc
+
+$(STORE_OBJECT_PATH)/$(STORENAME)strcatalog.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strcatalog/strcatalog.cc
+	
+$(STORE_OBJECT_PATH)/$(STORENAME)strdetail.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strdetail/strdetail.cc
 	
 
 	

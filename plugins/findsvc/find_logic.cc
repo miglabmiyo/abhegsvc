@@ -93,7 +93,7 @@ bool Findlogic::OnFindMessage(struct server *srv, const int socket, const void *
 		   OnFindBookStore(srv,socket,value);
 		   break;
 	   case FIND_STORE_GAME:
-		   OnFindGameStore(srv,socket,value);
+		   OnFindGameStoreV2(srv,socket,value);
 		   break;
 	   case FIND_STORE_MAIN:
 		   OnFindMain(srv,socket,value);
@@ -207,6 +207,30 @@ bool Findlogic::OnFindGameStore(struct server *srv,const int socket,netcomm_recv
 	send_message(socket,(netcomm_send::HeadPacket*)gamestore.get());
 	return true;
 }
+
+//use game app
+bool Findlogic::OnFindGameStoreV2(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::FindType> findbook(new netcomm_recv::FindType(netbase));
+	bool r = false;
+	int error_code = findbook->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	//构造发送数据
+	scoped_ptr<netcomm_send::FindGameStoreV2> gamestore(new netcomm_send::FindGameStoreV2());
+
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendFindGameInfosV2(gamestore.get());
+
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendAdverGameInfos(gamestore.get());
+
+	send_message(socket,(netcomm_send::HeadPacket*)gamestore.get());
+	return true;
+}
+
 
 bool Findlogic::OnFindMain(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
             		const void* msg,const int len){

@@ -27,8 +27,8 @@ public:
 	std::list<base_logic::Topics>        app_topics_list_;//应用商场专题
 
 	std::list<base_logic::AppInfos>      game_store_list_; //游戏商场推荐，热门，人气APP
-
 	std::list<base_logic::AppInfos>      game_rank_list_;//排行榜
+	std::list<base_logic::AdvertInfos>   game_adver_list_;//游戏商城广告
 
 	std::list<base_logic::BookInfo>      book_store_list_; //书城推荐
 	std::list<base_logic::AdvertInfos>   book_adver_list_;//书城广告
@@ -59,13 +59,17 @@ public:
 	bool SendTopicsBookInfos(netcomm_send::FindBookStore* bookfind);
 
 	//游戏发送
-
 	bool SendFindGameInfos(netcomm_send::FindGameStore* bookfind);
+
+	bool SendFindGameInfosV2(netcomm_send::FindGameStoreV2* store);
 	//首页发送
 	bool SendFindMain(netcomm_send::FindMain* main);
 
 	//游戏排行榜发送
 	bool SendGameRank(netcomm_send::FindGameRank* rank);
+
+	//游戏广告
+	bool SendAdverGameInfos(netcomm_send::FindGameStoreV2* store);
 
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}

@@ -151,6 +151,58 @@ private:
 };
 
 
+
+class GameStrategyCatalog:public LoginHeadPacket{
+public:
+	GameStrategyCatalog(NetBase* m)
+	 :LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"gameid",game_id_);
+		if(!r) error_code_ = APPID_LACK;
+
+		GETBIGINTTOINT(L"from",from_);
+		if(!r) from_ = 0;
+
+		GETBIGINTTOINT(L"count",count_);
+		if(!r) count_ = 10;
+	}
+
+	const int64 game_id() const {return this->game_id_;}
+
+	const int64 from() const {return this->from_;}
+
+	const int64 count() const {return this->count_;}
+
+private:
+	int64   game_id_;
+	int64   from_;
+	int64   count_;
+};
+
+class GameStrategyDetails:public LoginHeadPacket{
+public:
+	GameStrategyDetails(NetBase* m)
+	 :LoginHeadPacket(m){
+		Init();
+	}
+
+	void  Init(){
+		bool r =  false;
+		GETBIGINTTOINT(L"strategyid",strategy_id_);
+		if(!r) error_code_ = APPID_LACK;
+
+	}
+
+	const int64 strategy_id() const {return this->strategy_id_;}
+
+private:
+	int64   strategy_id_;
+};
+
 }
 
 namespace netcomm_send{
@@ -284,6 +336,53 @@ private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             list_;
 
+};
+
+class GameStrategyCatalog:public HeadPacket{
+public:
+	GameStrategyCatalog(){
+		base_.reset(new netcomm_send::NetBase());
+		list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!list_->empty())
+			this->base_->Set(L"list",list_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_list(base_logic::DictionaryValue* catalog){
+		list_->Append(catalog);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             list_;
+};
+
+
+class GameStrategyDetail:public HeadPacket{
+public:
+	GameStrategyDetail(){
+		base_.reset(new netcomm_send::NetBase());
+	}
+
+	netcomm_send::NetBase* release(){
+		this->base_->Set(L"detail",detail_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_detail(const std::string& detail){
+		detail_.reset(new  base_logic::StringValue(detail));
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>               base_;
+	scoped_ptr<base_logic::StringValue>             detail_;
 };
 
 }

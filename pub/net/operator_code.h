@@ -20,7 +20,10 @@ enum operatorcode{
 	APP_TOPICS = 3103,//APP商场专题
 	APP_SEARCH_KEY = 3104,//关键字搜索
 	APP_SEARCH_TYPE = 3105,//类别搜索
+	GAME_STRATEGY_CATALOG = 3106,//获取攻略目录
+	GAME_STRATEGY_DETAILS = 3107,//获取攻略详情
 
+	//音乐
 	MUSIC_GAIN_COLLECT_LIST = 4001,//获取红心歌单
 	MUSIC_GAIN_DIMENSION_LIST = 4002,//获取单维度歌曲
 

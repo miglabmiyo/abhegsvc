@@ -66,6 +66,50 @@ bool DBComm::GetTopicsAppStore(std::list<base_logic::Topics>& list){
 	return false;
 }
 
+bool DBComm::GetAdverGameStore(std::list<base_logic::AdvertInfos>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetAdverStoreApp()
+	os<<"call abheg.proc_GetAdverStoreGame();";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::AdvertInfos advertinfo;
+			if(rows[0]!=NULL)
+				advertinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				advertinfo.set_name(rows[1]);
+			if(rows[2]!=NULL)
+				advertinfo.set_type(atoll(rows[2]));
+			if(rows[4]!=NULL)
+				advertinfo.set_pic(rows[4]);
+			list.push_back(advertinfo);
+		}
+		return true;
+	}
+	return false;
+}
 
 bool DBComm::GetAdverAppStore(std::list<base_logic::AdvertInfos>& list){
 	bool r = false;

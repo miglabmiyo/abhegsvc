@@ -306,5 +306,87 @@ bool DBComm::WantAppLike(const int64 uid,const int64 appid,const int32 tclass){
 	return true;
 }
 
+bool DBComm::GetGameStrategyCatalog(const int64 gameid,const int64 from,const int64 count,
+		std::list<storesvc_logic::GameStrategy>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call abheg.proc_GetGameStrategyCatalog(20000024,10,10)
+	os<<"call proc_GetGameStrategyCatalog("<<gameid<<","<<from<<","<<count<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			storesvc_logic::GameStrategy strategy;
+			if(rows[0]!=NULL)
+				strategy.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				strategy.set_name(rows[1]);
+			if(rows[2]!=NULL)
+				strategy.set_address(rows[2]);
+			list.push_back(strategy);
+		}
+		return true;
+	}
+	return false;
+}
+
+bool DBComm::GetGameStrategyDetail(const int64 strategy_id,storesvc_logic::GameStrategy& strategy){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call abheg.proc_GetGameStrategyDetails(12)
+	os<<"call proc_GetGameStrategyDetails("<<strategy_id<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			if(rows[0]!=NULL)
+				strategy.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				strategy.set_gameid(atoll(rows[1]));
+			if(rows[2]!=NULL)
+				strategy.set_details(rows[2]);
+		}
+		return true;
+	}
+	return false;
+}
 
 }

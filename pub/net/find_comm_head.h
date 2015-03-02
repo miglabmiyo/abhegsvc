@@ -80,7 +80,6 @@ public:
 };
 
 
-
 class FindGameStore:public HeadPacket{
 public:
 	FindGameStore(){
@@ -352,6 +351,66 @@ private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             game_list_;
 };
+
+
+class FindGameStoreV2:public HeadPacket{
+public:
+	FindGameStoreV2(){
+		base_.reset(new netcomm_send::NetBase());
+		advert_.reset(new base_logic::ListValue());
+		emblem_.reset(new base_logic::DictionaryValue());
+		important_.reset(new base_logic::ListValue());
+		popularity_.reset(new base_logic::ListValue());
+		pic_.reset(new base_logic::ListValue());
+	}
+
+	inline void set_advert(base_logic::DictionaryValue* app){
+		advert_->Append(app);
+	}
+
+	inline void set_important(base_logic::DictionaryValue* app){
+		important_->Append(app);
+	}
+
+	inline void set_popularity(base_logic::DictionaryValue* app){
+		popularity_->Append(app);
+
+	}
+
+	inline void set_emblem(base_logic::DictionaryValue* app){
+		emblem_.reset(app);
+	}
+
+	inline void set_pic(const std::string& pic){
+		pic_->Append(base_logic::Value::CreateStringValue(pic));
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!advert_->empty())
+			this->base_->Set(L"advert",advert_.release());
+		if(!pic_->empty())
+			this->emblem_->Set(L"pic",pic_.release());
+		if(!important_->empty())
+			this->base_->Set(L"important",important_.release());
+		if(!popularity_->empty())
+			this->base_->Set(L"popularity",popularity_.release());
+		if(!emblem_->empty())
+			this->base_->Set(L"emblem",emblem_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             advert_; //广告推荐位
+	scoped_ptr<base_logic::DictionaryValue>       emblem_;//首推位
+	scoped_ptr<base_logic::ListValue>             important_;//精品推荐
+	scoped_ptr<base_logic::ListValue>             popularity_;//人气推荐
+	scoped_ptr<base_logic::ListValue>             pic_;//首推位图片
+};
+
 
 }
 #endif /* _NET_USER_COMM_HEAD_H_ */
