@@ -23,6 +23,44 @@ void DBComm::Dest(){
 #endif
 }
 
+bool DBComm::GetAppPicList(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+	int64 tempid = 10000013;
+
+    //call proc_GetAppPicList(20000024,0,1)
+	os<<"call proc_GetAppPicList("<<tempid<<",0"<<","<<tclass<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			if(rows[0]!=NULL)
+				appinfo.set_summary_pic(rows[0]);
+		}
+		return true;
+	}
+	return false;
+}
 bool DBComm::GetAppSummary(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo){
 	bool r = false;
 #if defined (_DB_POOL_)

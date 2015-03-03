@@ -153,8 +153,12 @@ bool FindCacheManager::SendFindGameInfosV2(netcomm_send::FindGameStoreV2* store)
 			appinfo_iterator!=find_cache_->game_store_list_.end();
 			appinfo_iterator++){
 		base_logic::AppInfos appinfo = (*appinfo_iterator);
-		if(appinfo.attr()==0)
-			store->set_emblem(appinfo.Release());
+		if(appinfo.attr()==0){ //首推游戏
+			//未读取图片则读取图片
+			if(appinfo.emblem_pic_size()<=0)
+				findsvc_logic::DBComm::GetFindEmblemStore(appinfo);
+			store->set_emblem(appinfo.Release(false));
+		}
 		else if(appinfo.attr()==1) //精品推荐
 			store->set_important(appinfo.Release());
 		else if(appinfo.attr()==2) //人气推荐
@@ -162,6 +166,7 @@ bool FindCacheManager::SendFindGameInfosV2(netcomm_send::FindGameStoreV2* store)
 	}
 
 	//图片
+	/*
 	std::string pic1 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/1.png";
 	std::string pic2 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/2.png";
 	std::string pic3 = "http://pic.desgin.miglab.com/abheg/store/game/products/20000024/summary/3.png";
@@ -172,7 +177,7 @@ bool FindCacheManager::SendFindGameInfosV2(netcomm_send::FindGameStoreV2* store)
 	store->set_pic(pic2);
 	store->set_pic(pic3);
 	store->set_pic(pic4);
-	store->set_pic(pic5);
+	store->set_pic(pic5);*/
 	return true;
 }
 
@@ -301,6 +306,7 @@ void CacheManagerOp::FetchDBFindGameStore(){
 	findsvc_logic::DBComm::GetFindStoreGame(find_cache->game_store_list_);
 	findsvc_logic::DBComm::GetFindGameRank(find_cache->game_rank_list_);
 	findsvc_logic::DBComm::GetAdverGameStore(find_cache->game_adver_list_);
+
 }
 
 void CacheManagerOp::FetchDBFindMain(){

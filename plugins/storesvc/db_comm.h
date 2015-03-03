@@ -41,6 +41,8 @@ public:
 			std::list<storesvc_logic::GameStrategy>& list);
 
 	static bool GetGameStrategyDetail(const int64 strategy_id,storesvc_logic::GameStrategy& strategy);
+
+	static bool GetAppPicList(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo);
 };
 
 }

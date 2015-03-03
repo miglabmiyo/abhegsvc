@@ -85,6 +85,18 @@ base_logic::DictionaryValue* Topics::Release(){
 	return dict.release();
 }
 
+bool set_pic_release(scoped_ptr<base_logic::ListValue>& pic_list,
+		std::list<std::string>& list){
+	if(list.size()<=0)
+		return false;
+	std::list<std::string>::iterator it = list.begin();
+	for(;it!=list.end();++it){
+		std::string pic = (*it);
+		pic_list->Append(base_logic::Value::CreateStringValue(pic));
+	}
+	return true;
+}
+
 AppInfos::AppInfos(){
 	data_ = new Data();
 }
@@ -110,7 +122,7 @@ AppInfos& AppInfos::operator =(const AppInfos& appinfo){
 }
 
 
-base_logic::DictionaryValue* AppInfos::Release(){
+base_logic::DictionaryValue* AppInfos::Release(bool summary){
 	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
 	if(data_->id_!=-1)
 		dict->SetBigInteger(L"id",data_->id_);
@@ -144,7 +156,18 @@ base_logic::DictionaryValue* AppInfos::Release(){
 		dict->SetString(L"summary",data_->content_);
 	if(data_->like_!=-1&&data_->down_!=-1)
 		dict->SetReal(L"star",base_logic::LogicUnit::CalculationAppStar(data_->down_,data_->like_));
-		//dict->SetReal(L"star",base_logic::LogicUnit::CalculationStar(data_->down_,data_->like_));
+
+	bool r = false;
+	scoped_ptr<base_logic::ListValue> pic;
+	pic.reset(new base_logic::ListValue());
+
+	if(summary)
+		r = set_pic_release(pic,data_->summary_pic_list_);
+	else
+		r = set_pic_release(pic,data_->emblem_pic_list_);
+
+	if(r)
+		dict->SetWithoutPathExpansion(L"pic",pic.release());
 	return dict.release();
 }
 

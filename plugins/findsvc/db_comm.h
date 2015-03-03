@@ -37,6 +37,7 @@ public:
 	static bool GetTopicsBookStore(std::list<base_logic::Topics>& list);
 
 	static bool GetFindStoreGame(std::list<base_logic::AppInfos>& list);
+	static bool GetFindEmblemStore(base_logic::AppInfos& app);
 	static bool GetAdverGameStore(std::list<base_logic::AdvertInfos>& list);
 };
 

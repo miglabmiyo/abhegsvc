@@ -11,6 +11,7 @@
 #include "basic/scoped_ptr.h"
 #include "basic/basictypes.h"
 #include <string>
+#include <list>
 
 namespace base_logic{
 
@@ -109,7 +110,7 @@ public:
 	AppInfos(const AppInfos& appinfo);
 	AppInfos& operator = (const AppInfos& appinfo);
 
-	base_logic::DictionaryValue* Release();
+	base_logic::DictionaryValue* Release(bool summary = true);
 
 	const int64 id() const {return data_->id_;}
 	const int32 type() const {return data_->type_;}
@@ -128,6 +129,8 @@ public:
 	const std::string& summary() const {return data_->summary_;}
 	const std::string& content() const {return data_->content_;}
 
+	const int32 emblem_pic_size() const {data_->emblem_pic_list_.size();}
+	const int32 summary_pic_size() const {data_->summary_pic_list_.size();}
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
@@ -146,6 +149,14 @@ public:
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
 	void set_content(const std::string& content){data_->content_ = content;}
 
+	void set_emblem_pic(const std::string& pic){
+		data_->emblem_pic_list_.push_back(pic);
+	}
+
+	void set_summary_pic(const std::string& pic){
+		data_->summary_pic_list_.push_back(pic);
+	}
+
 	static bool cmp(AppInfos& t_info,AppInfos& r_info);
 private:
 	class Data{
@@ -162,22 +173,24 @@ private:
 		void AddRef(){refcount_ ++;}
 		void Release(){if (!--refcount_)delete this;}
 	public:
-		int64        id_;
-		int32        type_;
-		int64        down_;
-		int64		 like_;
-		int32        lang_;
-		int32        attr_;
-		double       size_;
-		std::string  ios_url_;
-		std::string  android_url_;
-		std::string  provider_;
-		std::string  version_;
-		std::string  ontime_;
-		std::string  logo_;
-		std::string  name_;
-		std::string  summary_;
-		std::string  content_;
+		int64                  id_;
+		int32                  type_;
+		int64                  down_;
+		int64		           like_;
+		int32                  lang_;
+		int32                  attr_;
+		double                 size_;
+		std::string            ios_url_;
+		std::string            android_url_;
+		std::string            provider_;
+		std::string            version_;
+		std::string            ontime_;
+		std::string            logo_;
+		std::string            name_;
+		std::string            summary_;
+		std::string            content_;
+		std::list<std::string> emblem_pic_list_;
+		std::list<std::string> summary_pic_list_;
 	private:
 		int refcount_;
 	};
