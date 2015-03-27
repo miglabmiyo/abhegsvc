@@ -353,6 +353,8 @@ private:
 };
 
 
+typedef FindGameRank FindAppRank;
+
 class FindGameStoreV2:public HeadPacket{
 public:
 	FindGameStoreV2(){
@@ -409,6 +411,67 @@ private:
 	scoped_ptr<base_logic::ListValue>             important_;//精品推荐
 	scoped_ptr<base_logic::ListValue>             popularity_;//人气推荐
 	scoped_ptr<base_logic::ListValue>             pic_;//首推位图片
+};
+
+class FindMovies:public HeadPacket{
+public:
+	FindMovies(){
+		base_.reset(new netcomm_send::NetBase());
+		advert_.reset(new base_logic::ListValue());
+		emblem_.reset(new base_logic::ListValue());
+		popularity_.reset(new base_logic::ListValue());
+		like_.reset(new base_logic::ListValue());
+		person_.reset(new base_logic::ListValue());
+	}
+
+
+	netcomm_send::NetBase* release(){
+		if(!advert_->empty())
+			this->base_->Set(L"advert",advert_.release());
+		if(!popularity_->empty())
+			this->base_->Set(L"popularity",popularity_.release());
+		if(!like_->empty())
+			this->base_->Set(L"like",like_.release());
+		if(!emblem_->empty())
+			this->base_->Set(L"emblem",emblem_.release());
+		if(!person_->empty())
+			this->base_->Set(L"person",person_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+
+	void set_advert(base_logic::DictionaryValue* movies){
+		advert_->Append(movies);
+	}
+
+	void set_emblem(base_logic::DictionaryValue* movies){
+		emblem_->Append(movies);
+	}
+
+	void set_popularity(base_logic::DictionaryValue* movies){
+		popularity_->Append(movies);
+	}
+
+	void set_like(base_logic::DictionaryValue* movies){
+		like_->Append(movies);
+	}
+
+	void set_person(base_logic::DictionaryValue* movies){
+		person_->Append(movies);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             advert_; //广告位视频
+	scoped_ptr<base_logic::ListValue>             emblem_;//推荐视频
+	scoped_ptr<base_logic::ListValue>             popularity_;//人气视频
+	scoped_ptr<base_logic::ListValue>             like_;//好评最高
+	scoped_ptr<base_logic::ListValue>             person_;//个人推荐
+
+
 };
 
 

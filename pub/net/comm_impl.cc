@@ -9,6 +9,19 @@
 
 namespace netcomm_recv{
 
+bool GetNumberAndString(base_logic::Value* value,std::string& result){
+	bool r = false;
+	if(value->GetType()==base_logic::Value::TYPE_BIG_INTEGER){
+		int64 bigint_value;
+		r = value->GetAsBigInteger(&bigint_value);
+		std::stringstream os;
+		os<<bigint_value;
+		result = os.str();
+		}else{
+		r = value->GetAsString(&result);
+	}
+	return result.empty()?false:true;
+}
 void QucikLogin::Init(){
 	bool r = false;
 	//imei 有些是数字 有些是字符串

@@ -35,6 +35,9 @@ enum platcode{
 /*******接收相关************/
 namespace netcomm_recv{
 
+//处理即是纯数字又有可能是字符串和数字结合的问题
+bool GetNumberAndString(base_logic::Value* value,std::string& result);
+
 class NetBase:public base_logic::DictionaryValue{
 public:
 	//virtual bool Deserialize(const std::string& rest_str);
@@ -121,6 +124,25 @@ public:
 	std::string token_;
 };
 
+//用于需要保护数据
+class LoginSignHeadPacket:public LoginHeadPacket{
+public:
+	LoginSignHeadPacket(NetBase* m)
+	 :LoginHeadPacket(m){
+		Init();
+	}
+
+	void Init(){
+		bool r = false;
+		LoginHeadPacket::Init();
+		r = m_->GetString(L"sign",&sign_);
+		if(!r) error_code_ = SIGN_LACK;
+	}
+
+	const std::string& sign() const {return this->sign_;}
+private:
+	std::string  sign_;
+};
 
 }
 /*******发送相关************/

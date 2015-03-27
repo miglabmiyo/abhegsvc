@@ -7,6 +7,7 @@
 #include "logic/logic_unit.h"
 #include "net/comm_head.h"
 #include "net/error_comm.h"
+#include "socket/protocol.h"
 #include "lbs/lbs_connector.h"
 #include "logic/logic_comm.h"
 #include "basic/scoped_ptr.h"
@@ -111,6 +112,15 @@ void LogicUnit::CreateToken(const int64 uid,std::string& token){
 	token = md5.GetHash();
 }
 
+void LogicUnit::CreateSerialNumber(const int32 platform,const int64 uid,
+		const int32 type,const int32 money,std::string& serial_number){
+	std::stringstream os;
+	int32 random_num = base::SysRadom::GetInstance()->GetRandomID();
+	random_num = abs(random_num);
+	os<<money<<random_num<<platform<<uid<<type;
+	serial_number = os.str();
+}
+
 void LogicUnit::SendMessage(const int socket,netcomm_send::HeadPacket* packet){
 	std::string json;
 	packet->GetJsonSerialize(&json);
@@ -125,6 +135,50 @@ void LogicUnit::SendErrorMsg(const int32 error_code,const int socket){
 	packet->set_msg(error_msg);
 	packet->set_status(0);
 	SendMessage(socket,packet.get());
+}
+
+bool LogicUnit::SendErrorMsg(const int socket,const int32 operator_code,
+			const int32 error_code){
+	struct ErrorPacket error;
+	MAKE_HEAD(error, operator_code,ERROR_TYPE,0,0);
+	error.error_code = error_code;
+	SendMessage(socket,&error);
+	return true;
+}
+
+bool LogicUnit::SendMessage(const int32 socket,struct PacketHead* packet){
+
+	bool r = false;
+	void *packet_stream = NULL;
+	int32 packet_stream_length = 0;
+	int32 ret = 0;
+	if (socket <= 0 || packet == NULL)
+		return false;
+
+	if (ProtocolPack::PackStream (packet, &packet_stream, &packet_stream_length) == false) {
+		LOG_ERROR2 ("Call PackStream failed in %s:%d", file, line);
+		r = false;
+		goto MEMFREE;
+	}
+	//LOG_DEBUG2("opcode[%d]\n",packet->operate_code);
+	ProtocolPack::DumpPacket(packet);
+	ret = base_logic::LogicComm::SendFull(socket, (char *) packet_stream, packet_stream_length);
+	//ProtocolPack::HexEncode(packet_stream,packet_stream_length);
+	if (ret != packet_stream_length) {
+		LOG_ERROR2 ("Sent msg failed in %s:%d", file, line);
+		r = false;
+		goto MEMFREE;
+	} else {
+		r = true;
+		goto MEMFREE;
+	}
+MEMFREE:
+	char* stream = (char*)packet_stream;
+	if (stream){
+		delete[] stream;
+		stream = NULL;
+	}
+	return r;
 }
 
 //（单个下载次数%所有下载总次数）*30% + （单个点赞次数%所有点赞总次数）*70%

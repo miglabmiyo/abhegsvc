@@ -49,6 +49,18 @@ buddha_strerror(int error_code){
 		  return STORE_SEACH_BTYPE_LACK_STR;
 	  case STORE_SEARCH_KEY_LACK:
 		  return STORE_SEARCH_KEY_LACK_STR;
+	  case PAY_USER_LACK:
+		  return PAY_USER_LACK_STR;
+	  case SERIAL_NUMBER_LACK:
+		  return SERIAL_NUMBER_LACK_STR;
+	  case STATE_LACK:
+		  return STATE_LACK_STR;
+	  case MONEY_LACK:
+		  return MONEY_LACK_STR;
+	  case SIGN_LACK:
+		  return SIGN_LACK_STR;
+	  default:
+		  return "未知错误";
 	}
 }
 

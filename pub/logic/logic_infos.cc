@@ -236,6 +236,52 @@ base_logic::DictionaryValue* BookInfo::Release(){
 
 }
 
+Movies::Movies(){
+	data_ = new Data();
+}
+
+Movies::Movies(const Movies& movies)
+:data_(movies.data_){
+	if(data_!=NULL){
+		data_->AddRef();
+	}
+}
+
+Movies& Movies::operator =(const Movies& movies){
+	if(movies.data_!=NULL){
+		movies.data_->AddRef();
+	}
+	if(data_!=NULL){
+		data_->Release();
+	}
+
+	data_ = movies.data_;
+	return (*this);
+}
+
+base_logic::DictionaryValue* Movies::Release(){
+	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
+	if(data_->id_!=0)
+		dict->SetBigInteger(L"id",data_->id_);
+	if(data_->type_!=0)
+		dict->SetInteger(L"type",data_->type_);
+	if(data_->like_!=0)
+		dict->SetBigInteger(L"like",data_->like_);
+	if(data_->play_count_!=0)
+		dict->SetBigInteger(L"play",data_->play_count_);
+	if(data_->size_!=0)
+		dict->SetReal(L"size",data_->size_);
+	if(!data_->name_.empty())
+		dict->SetString(L"name",data_->name_);
+	if(!data_->url_.empty())
+		dict->SetString(L"url",data_->url_);
+	if(!data_->logo_.empty())
+		dict->SetString(L"logo",data_->logo_);
+	if(!data_->summary_.empty())
+		dict->SetString(L"summary",data_->summary_);
+	return dict.release();
+}
+
 LBSInfos::LBSInfos(){
 	data_ = new Data();
 }

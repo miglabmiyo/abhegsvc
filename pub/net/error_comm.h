@@ -8,7 +8,7 @@
 #ifndef ERROR_COMM_H_
 #define ERROR_COMM_H_
 
-enum errorcode{
+enum neterrorcode{
 	STRUCT_ERROR = -100,
 	NULL_DATA = -200,
 	////用户管理相关错误
@@ -23,6 +23,7 @@ enum errorcode{
 	PLATFORM_LACK = -1107,
 	UID_LACK = -1108,
 	TOKEN_LACK = -1109,
+	PHONE_LACK = -1110,
 
 	//推送绑定
 	BD_CHANNEL_LACK = -1200,
@@ -40,7 +41,15 @@ enum errorcode{
 
 	//商城
 	STORE_SEACH_BTYPE_LACK = -1400,
-	STORE_SEARCH_KEY_LACK = -1401
+	STORE_SEARCH_KEY_LACK = -1401,
+
+	//支付相关
+	SIM_LACK = -1111,
+	SIGN_LACK = -1113,
+	MONEY_LACK = -1114,
+	STATE_LACK = -1115,
+	SERIAL_NUMBER_LACK = -1116,
+	PAY_USER_LACK = -1117
 };
 
 
@@ -58,6 +67,8 @@ enum errorcode{
 #define PLATFORM_LACK_STR                 "缺少第三方平台信息"
 #define UID_LACK_STR                      "缺少用户ID"
 #define TOKEN_LACK_STR                    "TOKEN不存在或错误"
+#define SIGN_LACK_STR                     "sign不存在或错误"
+#define PHONE_LACK_STR                    "缺少电话号码"
 
 #define BD_CHANNEL_LACK_STR               "缺少百度绑定信息"
 #define BD_USER_LACK_STR                  "缺少百度ID"
@@ -74,6 +85,10 @@ enum errorcode{
 #define STORE_SEACH_BTYPE_LACK_STR        "缺少类别"
 #define STORE_SEARCH_KEY_LACK_STR         "缺少关键字"
 
+#define MONEY_LACK_STR                    "缺少金额"
+#define STATE_LACK_STR                    "缺少状态"
+#define SERIAL_NUMBER_LACK_STR            "缺少流水号"
+#define PAY_USER_LACK_STR                 "用户未注册"
 
 
 const char*

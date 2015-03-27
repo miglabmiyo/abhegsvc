@@ -52,9 +52,42 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc bookproc musicproc robotproc storeproc
+proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc
 
 
+######################payproc###############################################
+PAYNAME = pay_
+PAYPROC_PATH = /pay
+PAY_OBJECT_PATH = ./obj$(PAYPROC_PATH)
+OTJERPROC_VERSION = /v1
+payproc:$(PAYPROC_PATH)/register.fcgi $(PAYPROC_PATH)/login.fcgi $(PAYPROC_PATH)/update.fcgi $(PAYPROC_PATH)/getchr.fcgi
+
+$(PAYPROC_PATH)/register.fcgi: $(PAY_OBJECT_PATH)/$(PAYNAME)register.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(PAYPROC_PATH)$(OTJERPROC_VERSION)/register.fcgi
+	
+$(PAYPROC_PATH)/login.fcgi: $(PAY_OBJECT_PATH)/$(PAYNAME)login.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(PAYPROC_PATH)$(OTJERPROC_VERSION)/login.fcgi
+	
+$(PAYPROC_PATH)/update.fcgi: $(PAY_OBJECT_PATH)/$(PAYNAME)update.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(PAYPROC_PATH)$(OTJERPROC_VERSION)/update.fcgi
+	
+$(PAYPROC_PATH)/getchr.fcgi: $(PAY_OBJECT_PATH)/$(PAYNAME)getchr.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(PAYPROC_PATH)$(OTJERPROC_VERSION)/getchr.fcgi
+
+### 编译
+
+$(PAY_OBJECT_PATH)/$(PAYNAME)register.o:
+	$(COMPILE) .$(PAYPROC_PATH)$(OTJERPROC_VERSION)/register/register.cc
+
+$(PAY_OBJECT_PATH)/$(PAYNAME)login.o:
+	$(COMPILE) .$(PAYPROC_PATH)$(OTJERPROC_VERSION)/login/login.cc
+	
+$(PAY_OBJECT_PATH)/$(PAYNAME)update.o:
+	$(COMPILE) .$(PAYPROC_PATH)$(OTJERPROC_VERSION)/update/update.cc
+	
+$(PAY_OBJECT_PATH)/$(PAYNAME)getchr.o:
+	$(COMPILE) .$(PAYPROC_PATH)$(OTJERPROC_VERSION)/getchr/getchr.cc
+	
 ######################musicproc###############################################
 MUSICNAME = music_
 MUSICPROC_PATH = /music
@@ -112,7 +145,7 @@ BOOKPROC_PATH = /book
 BOOK_OBJECT_PATH = ./obj$(BOOKPROC_PATH)
 OTJERPROC_VERSION = /1
 bookproc:$(BOOKPROC_PATH)/booklist.fcgi $(BOOKPROC_PATH)/searchtype.fcgi $(BOOKPROC_PATH)/wanted.fcgi $(BOOKPROC_PATH)/chapterlist.fcgi\
-	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi
+	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi $(BOOKPROC_PATH)/complete.fcgi
 
 $(BOOKPROC_PATH)/topics.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
@@ -131,6 +164,9 @@ $(BOOKPROC_PATH)/chapterlist.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)chapterlist.o 
 	
 $(BOOKPROC_PATH)/booksummary.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)booksummary.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/booksummary.fcgi
+	
+$(BOOKPROC_PATH)/complete.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/complete.fcgi
 ### 编译
 
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o:
@@ -150,6 +186,9 @@ $(BOOK_OBJECT_PATH)/$(BOOKNAME)chapterlist.o:
 	
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)booksummary.o:
 	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/summary/summary.cc
+	
+$(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o:
+	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/complete/complete.cc
 	
 ######################storeproc###############################################
 STORENAME = store_
@@ -248,7 +287,7 @@ FINDPROC_PATH = /find
 FIND_OBJECT_PATH = ./obj$(FINDPROC_PATH)
 OTJERPROC_VERSION = /1
 findproc:$(FINDPROC_PATH)/appstore.fcgi $(FINDPROC_PATH)/bookstore.fcgi $(FINDPROC_PATH)/gamestore.fcgi $(FINDPROC_PATH)/main.fcgi\
-	$(FINDPROC_PATH)/gamerank.fcgi
+	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi
 
 $(FINDPROC_PATH)/appstore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
@@ -264,6 +303,12 @@ $(FINDPROC_PATH)/main.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)main.o $(POBJ)
 	
 $(FINDPROC_PATH)/gamerank.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)gamerank.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/gamerank.fcgi
+
+$(FINDPROC_PATH)/apprank.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)apprank.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/apprank.fcgi
+
+$(FINDPROC_PATH)/moviestore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/moviestore.fcgi
 ### 编译
 
 $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o:
@@ -281,6 +326,11 @@ $(FIND_OBJECT_PATH)/$(FINDNAME)main.o:
 $(FIND_OBJECT_PATH)/$(FINDNAME)gamerank.o:
 	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/gamerank/gamerank.cc
 
+$(FIND_OBJECT_PATH)/$(FINDNAME)apprank.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/apprank/apprank.cc
+
+$(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/moviestore/moviestore.cc
 clean:
 	-rm -f *.o
 	-rm -f $(OUTPUT_FILE)./*.fcgi

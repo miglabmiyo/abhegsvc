@@ -1,7 +1,7 @@
 #ifndef _NET_OPERATOR_CODE_H_
 #define _NET_OPERATOR_CODE_H_
 
-enum operatorcode{
+enum netoperatorcode{
 	QUICK_LOGIN = 1000, //快速登录
 	THIRID_LOGIN = 10001, //第三方登陆
 	BD_BIND_PUSH = 1100, //百度推送绑定
@@ -12,6 +12,8 @@ enum operatorcode{
 	FIND_STORE_GAME = 2102,//游戏商城推荐
 	FIND_STORE_MAIN = 2103,//首页推荐
 	FIND_GAME_RANK = 2104,//游戏排行榜
+	FIND_APP_RANK = 2105,//应用排行榜
+	FIND_STORE_MOVIE = 2106,//影视推荐
 
 	//商城
 	SUMMARY_INFOS = 3100, // 应用详情
@@ -34,12 +36,18 @@ enum operatorcode{
 	BOOK_LIST = 4103,//书单列表
 	CHAPTER_LIST = 4104,//章节列表
 	BOOK_SUMMARY = 4105,//书籍详情
+	BOOK_COMP_INFO = 4106,//书籍完整信息
 
 	//机器人
 	ROBOT_BOOK_COLLECTION = 6100,//添加书籍
 	ROBOT_CHAPTER_COLLECTION = 6101,//添加书籍章节
-	ROBOT_GET_SPIDER_PHONENUMBER = 6102//获取爬虫号码
+	ROBOT_GET_SPIDER_PHONENUMBER = 6102,//获取爬虫号码
 
+	//支付
+	PAY_PHONE_REGISTER = 7100,//支付前信息注册
+	PAY_PHONE_LOGIN = 7101,//支付前登录
+	PAY_GET_CHR = 7102,//获取计费点
+	PAY_UPDATE_STATE = 7103//更新流水状态
 
 };
 

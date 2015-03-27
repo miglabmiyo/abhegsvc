@@ -274,6 +274,62 @@ public:
 	Data*    data_;
 };
 
+class Movies{
+public:
+	explicit Movies();
+	Movies(const Movies& movies);
+	Movies& operator = (const Movies& movies);
+
+	base_logic::DictionaryValue* Release();
+
+	const int64 id() const {return data_->id_;}
+	const int32 type() const {return data_->type_;}
+	const int64 like() const {return data_->like_;}
+	const int64 play_count() const {return data_->play_count_;}
+	const double size() const {return data_->size_;}
+	const int32 attr() const {return data_->attr_;}
+	const std::string& name() const {return data_->name_;}
+	const std::string& url() const {return data_->url_;}
+	const std::string& logo() const {return data_->logo_;}
+	const std::string summary() const {return data_->summary_;}
+
+
+	void set_id(const int64 id){data_->id_ = id;}
+	void set_type(const int32 type){data_->type_ = type;}
+	void set_like(const int64 like){data_->like_ = like;}
+	void set_play_count(const int64 play_count){data_->play_count_ = play_count;}
+	void set_attr(const int32 attr){data_->attr_ = attr;}
+	void set_size(const double size){data_->size_ = size;}
+	void set_name(const std::string& name){data_->name_ = name;}
+	void set_url(const std::string& url){data_->url_ = url;}
+	void set_logo(const std::string& logo) {data_->logo_ = logo;}
+	void set_summary(const std::string& summary) {data_->summary_ = summary;}
+
+private:
+	class Data{
+	public:
+		Data():refcount_(1)
+		,id_(0),type_(0),attr_(0)
+		,like_(0),size_(0),play_count_(0){}
+
+		void AddRef(){refcount_ ++;}
+		void Release(){if (!--refcount_)delete this;}
+	public:
+		int64         		   id_;
+		int32                  type_;
+		int64		           like_;
+		int64                  play_count_;
+		int64                  attr_;
+		double                 size_;
+		std::string    		   name_;
+		std::string            url_;
+		std::string            logo_;
+		std::string            summary_;
+	private:
+		int refcount_;
+	};
+	Data*            data_;
+};
 
 class LBSInfos{
 public:

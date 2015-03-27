@@ -60,6 +60,8 @@ private:
 	int64 bookid_;
 };
 
+//获取书籍完整信息
+typedef WantBook BookComInfo;
 
 //类别搜索
 class SearchType:public LoginHeadPacket{
@@ -176,14 +178,20 @@ public:
 	BookTopics(){
 		base_.reset(new netcomm_send::NetBase());
 		topics_.reset(new base_logic::ListValue());
-		follow_.reset(new base_logic::FundamentalValue(0));
+		//follow_.reset(new base_logic::FundamentalValue(0));
+		//name_.reset(new base_logic::StringValue());
+
 	}
 
 	netcomm_send::NetBase* release(){
 		if(!topics_->empty())
 			this->base_->Set(L"topices",topics_.release());
 
-		this->base_->Set(L"follow",follow_.release());
+		if(follow_.get()!=NULL)
+			this->base_->Set(L"follow",follow_.release());
+
+		if(name_.get()!=NULL)
+			this->base_->Set(L"name",name_.release());
 		head_->Set("result",base_.release());
 		this->set_status(1);
 		return head_.release();
@@ -198,11 +206,18 @@ public:
 		follow_.reset(new base_logic::FundamentalValue(follow));
 	}
 
+	inline void set_name(const std::string& name){
+		name_.reset(new base_logic::StringValue(name));
+	}
+
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             topics_;
 	scoped_ptr<base_logic::FundamentalValue>      follow_;
+	scoped_ptr<base_logic::StringValue>           name_;
 };
+
+//书籍完整信息
 
 //书籍详情
 class BookSummary:public HeadPacket{
@@ -252,7 +267,7 @@ private:
 	scoped_ptr<base_logic::ListValue>             label_;
 };
 
-
+typedef BookSummary BookCompInfo;
 
 //提交
 class WantBook:public HeadPacket{
