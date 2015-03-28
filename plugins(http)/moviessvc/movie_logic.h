@@ -1,8 +1,12 @@
 #ifndef __ABHEG__MOVIESSVC__MOVIES_LOGIC___
 #define __ABHEG__MOVIESSVC__MOVIES_LOGIC___
+#include "net/movie_comm_head.h"
+#include "net/operator_code.h"
+#include "net/error_comm.h"
+#include "logic/logic_infos.h"
 #include "common.h"
 
-
+#define DEFAULT_CONFIG_PATH     "./plugins/moviesvc/moviesvc_config.xml"
 namespace moviessvc_logic{
 
 class Movieslogic{
@@ -35,7 +39,15 @@ public:
 
     bool OnTimeout (struct server *srv, char* id, int opcode, int time);
 
+private:
+    bool OnMovieSummary(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
 
+    bool OnMovieLike(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnSearchType(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+      		const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();

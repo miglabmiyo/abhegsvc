@@ -1,10 +1,10 @@
-#include "movies_init.h"
-#include "movies_logic.h"
+#include "movie_init.h"
+#include "movie_logic.h"
 #include "common.h"
 #include "plugins.h"
 
 
-struct moviesplugin{
+struct movieplugin{
     char* id;
     char* name;
     char* version;
@@ -12,14 +12,14 @@ struct moviesplugin{
 };
 
 
-static void *OnMoviesStart(){
+static void *OnMovieStart(){
 
     signal(SIGPIPE,SIG_IGN);
-    struct moviesplugin* movies=(struct moviesplugin*)calloc(1,sizeof(struct moviesplugin));
+    struct movieplugin* movies=(struct movieplugin*)calloc(1,sizeof(struct movieplugin));
 
-    movies->id="movies";
+    movies->id="movie";
 
-    movies->name="movies";
+    movies->name="movie";
 
     movies->version="1.0";
 
@@ -32,28 +32,28 @@ static void *OnMoviesStart(){
 
 }
 
-static handler_t OnMoviesShutdown(struct server* srv,void* pd){
+static handler_t OnMovieShutdown(struct server* srv,void* pd){
 
     moviessvc_logic::Movieslogic::FreeInstance();
 
     return HANDLER_GO_ON;
 }
 
-static handler_t OnMoviesConnect(struct server *srv, int fd, void *data, int len){
+static handler_t OnMovieConnect(struct server *srv, int fd, void *data, int len){
 
     moviessvc_logic::Movieslogic::GetInstance()->OnMoviesConnect(srv,fd);
 
     return HANDLER_GO_ON;
 }
 
-static handler_t OnMoviesMessage(struct server *srv, int fd, void *data, int len){
+static handler_t OnMovieMessage(struct server *srv, int fd, void *data, int len){
 
     moviessvc_logic::Movieslogic::GetInstance()->OnMoviesMessage(srv,fd,data,len);
 
     return HANDLER_GO_ON;
 }
 
-static handler_t OnMoviesClose(struct server *srv, int fd){
+static handler_t OnMovieClose(struct server *srv, int fd){
 
     moviessvc_logic::Movieslogic::GetInstance()->OnMoviesClose(srv,fd);
 
@@ -121,16 +121,16 @@ static handler_t OnTimeOut(struct server* srv,char* id, int opcode, int time){
 
 
 
-int movies_plugin_init(struct plugin *pl){
+int movie_plugin_init(struct plugin *pl){
 
 
-    pl->init=OnMoviesStart;
+    pl->init=OnMovieStart;
 
-    pl->clean_up = OnMoviesShutdown;
+    pl->clean_up = OnMovieShutdown;
 
-    pl->connection = OnMoviesConnect;
+    pl->connection = OnMovieConnect;
 
-    pl->connection_close = OnMoviesClose;
+    pl->connection_close = OnMovieClose;
 
     pl->connection_close_srv = OnBroadcastClose;
 
@@ -138,7 +138,7 @@ int movies_plugin_init(struct plugin *pl){
 
     pl->handler_init_time = OnIniTimer;
 
-    pl->handler_read = OnMoviesMessage;
+    pl->handler_read = OnMovieMessage;
 
     pl->handler_read_srv = OnBroadcastMessage;
 

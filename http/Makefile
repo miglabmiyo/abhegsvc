@@ -52,8 +52,33 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc
+proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc
 
+######################payproc###############################################
+MOVIENAME = movie_
+MOVIEPROC_PATH = /movie
+MOVIE_OBJECT_PATH = ./obj$(MOVIEPROC_PATH)
+OTJERPROC_VERSION = /v1
+movieporc:$(MOVIEPROC_PATH)/summary.fcgi $(MOVIEPROC_PATH)/like.fcgi $(MOVIEPROC_PATH)/searchtype.fcgi
+
+$(MOVIEPROC_PATH)/summary.fcgi: $(MOVIE_OBJECT_PATH)/$(MOVIENAME)summary.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/summary.fcgi
+
+$(MOVIEPROC_PATH)/like.fcgi: $(MOVIE_OBJECT_PATH)/$(MOVIENAME)like.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/like.fcgi
+	
+$(MOVIEPROC_PATH)/searchtype.fcgi: $(MOVIE_OBJECT_PATH)/$(MOVIENAME)searchtype.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/searchtype.fcgi
+### 编译
+
+$(MOVIE_OBJECT_PATH)/$(MOVIENAME)summary.o:
+	$(COMPILE) .$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/summary/summary.cc
+
+$(MOVIE_OBJECT_PATH)/$(MOVIENAME)like.o:
+	$(COMPILE) .$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/like/like.cc
+
+$(MOVIE_OBJECT_PATH)/$(MOVIENAME)searchtype.o:
+	$(COMPILE) .$(MOVIEPROC_PATH)$(OTJERPROC_VERSION)/searchtype/searchtype.cc
 
 ######################payproc###############################################
 PAYNAME = pay_

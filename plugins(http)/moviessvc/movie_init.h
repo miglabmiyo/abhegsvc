@@ -3,7 +3,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-int movies_plugin_init(struct plugin *pl);
+int movie_plugin_init(struct plugin *pl);
 #ifdef __cplusplus
 }
 #endif

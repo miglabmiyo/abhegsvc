@@ -43,6 +43,10 @@ enum neterrorcode{
 	STORE_SEACH_BTYPE_LACK = -1400,
 	STORE_SEARCH_KEY_LACK = -1401,
 
+	//影音
+	MOVIE_ID_LACK = -1500,
+	MOVIE_BTYPE_LACK = -1501,
+
 	//支付相关
 	SIM_LACK = -1111,
 	SIGN_LACK = -1113,
@@ -81,6 +85,7 @@ enum neterrorcode{
 #define BOOK_ID_LACK_STR                  "缺少书ID"
 #define BOOK_TOKEN_LACK_STR               "此书并未购买"
 
+#define MOVIE_ID_LACK_STR                 "影视ID不存在"
 
 #define STORE_SEACH_BTYPE_LACK_STR        "缺少类别"
 #define STORE_SEARCH_KEY_LACK_STR         "缺少关键字"

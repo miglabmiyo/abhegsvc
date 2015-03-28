@@ -59,6 +59,8 @@ buddha_strerror(int error_code){
 		  return MONEY_LACK_STR;
 	  case SIGN_LACK:
 		  return SIGN_LACK_STR;
+	  case MOVIE_ID_LACK:
+		  return MOVIE_ID_LACK_STR;
 	  default:
 		  return "未知错误";
 	}

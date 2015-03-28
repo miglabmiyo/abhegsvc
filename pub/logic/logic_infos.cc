@@ -279,6 +279,10 @@ base_logic::DictionaryValue* Movies::Release(){
 		dict->SetString(L"logo",data_->logo_);
 	if(!data_->summary_.empty())
 		dict->SetString(L"summary",data_->summary_);
+	if(data_->like_!=0&&data_->play_count_!=0)
+		dict->SetBigInteger(L"star",base_logic::LogicUnit::CalculationMovieStar(data_->play_count_,data_->like_));
+	else
+		dict->SetBigInteger(L"star",0.0);
 	return dict.release();
 }
 

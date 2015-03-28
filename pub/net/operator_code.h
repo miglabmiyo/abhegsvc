@@ -38,6 +38,11 @@ enum netoperatorcode{
 	BOOK_SUMMARY = 4105,//书籍详情
 	BOOK_COMP_INFO = 4106,//书籍完整信息
 
+	//影视
+	MOVIE_SUMMARY = 5100,//获取详情
+	MOVIE_LIKE = 5101,//点赞
+	MOVIE_SEARCH_TYPE = 5102,//类别搜索
+
 	//机器人
 	ROBOT_BOOK_COLLECTION = 6100,//添加书籍
 	ROBOT_CHAPTER_COLLECTION = 6101,//添加书籍章节

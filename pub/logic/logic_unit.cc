@@ -233,5 +233,16 @@ double LogicUnit::CalculationBookStar(const int64 free,const int64 down){
 	return star/100>5?5:(star/100);
 }
 
+double LogicUnit::CalculationMovieStar(const int64 play,const int64 like){
+	double fiveper  = (like * 0.6) /(play+like);
+	double fourper  = (like * 0.4) /(play+like);
+	double threeper  = (play * 0.5) /(play+like);
+	double twoper  = (play * 0.3) /(play+like);
+	double oneper  = (play * 0.2) /(play+like);
+
+	double star  =  (fiveper * 100 *5) + (fourper * 100 *4) + (threeper * 100 *3) + (twoper * 100 *2)+(oneper * 100 *1);
+	return star/100>5?5:(star/100);
+}
+
 
 }

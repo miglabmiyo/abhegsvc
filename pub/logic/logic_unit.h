@@ -40,6 +40,8 @@ public:
 
 	static double CalculationBookStar(const int64 free,const int64 down);
 
+	static double CalculationMovieStar(const int64 play,const int64 like);
+
 	//static double CalculationBookStar(const int64 down,const int64 down_total);
 };
 }
