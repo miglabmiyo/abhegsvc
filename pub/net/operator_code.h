@@ -37,6 +37,7 @@ enum netoperatorcode{
 	CHAPTER_LIST = 4104,//章节列表
 	BOOK_SUMMARY = 4105,//书籍详情
 	BOOK_COMP_INFO = 4106,//书籍完整信息
+	BOOK_SEARCH_KEY = 4107,//关键字搜索
 
 	//影视
 	MOVIE_SUMMARY = 5100,//获取详情

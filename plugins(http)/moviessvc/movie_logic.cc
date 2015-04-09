@@ -160,6 +160,7 @@ bool Movieslogic::OnMovieSummary(struct server *srv,const int socket,netcomm_rec
 	smovie->set_advert(advert.Release());
 	smovie->set_content(movie.summary());
 	smovie->set_like(like);
+	smovie->set_name(movie.name());
 	smovie->set_star(base_logic::LogicUnit::CalculationMovieStar(movie.play_count(),movie.like()));
 	smovie->set_url(movie.url());
 	send_message(socket,(netcomm_send::HeadPacket*)smovie.get());
@@ -202,7 +203,11 @@ bool Movieslogic::OnSearchType(struct server *srv,const int socket,netcomm_recv:
 	while(list.size()>0){
 		base_logic::Movies movie = list.front();
 		list.pop_front();
-		smovie->set_movie(movie.Release());
+		if(movie.attr()==1)
+			smovie->set_hot(movie.Release());
+		else if(movie.attr()==2)
+			smovie->set_new(movie.Release());
+
 	}
 	send_message(socket,(netcomm_send::HeadPacket*)smovie.get());
 	return true;

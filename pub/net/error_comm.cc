@@ -47,7 +47,7 @@ buddha_strerror(int error_code){
 		  return BOOK_TOKEN_LACK_STR;
 	  case STORE_SEACH_BTYPE_LACK:
 		  return STORE_SEACH_BTYPE_LACK_STR;
-	  case STORE_SEARCH_KEY_LACK:
+	  case SEARCH_KEY_LACK:
 		  return STORE_SEARCH_KEY_LACK_STR;
 	  case PAY_USER_LACK:
 		  return PAY_USER_LACK_STR;

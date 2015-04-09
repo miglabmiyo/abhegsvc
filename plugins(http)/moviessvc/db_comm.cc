@@ -57,17 +57,19 @@ bool DBComm::OnGetMovieSummary(const int64 uid,const int64 moiveid,const int32 m
 			if(rows[0]!=NULL)
 				movie.set_id(atoll(rows[0]));
 			if(rows[1]!=NULL)
-				movie.set_summary(rows[1]);
+				movie.set_name(rows[1]);
 			if(rows[2]!=NULL)
-				movie.set_type(atol(rows[2]));
+				movie.set_summary(rows[2]);
 			if(rows[3]!=NULL)
-				movie.set_play_count(atoll(rows[3]));
+				movie.set_type(atol(rows[3]));
 			if(rows[4]!=NULL)
-				movie.set_like(atoll(rows[4]));
+				movie.set_play_count(atoll(rows[4]));
 			if(rows[5]!=NULL)
-				movie.set_url(rows[5]);
+				movie.set_like(atoll(rows[5]));
 			if(rows[6]!=NULL)
-				like = atol(rows[6]);
+				movie.set_url(rows[6]);
+			if(rows[7]!=NULL)
+				like = atol(rows[7]);
 		}
 		return true;
 	}

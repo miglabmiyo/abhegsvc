@@ -104,6 +104,9 @@ public:
 	inline void set_url(const std::string& url){
 		this->summary_->SetString(L"url",url);
 	}
+	inline void set_name(const std::string& name){
+		this->summary_->SetString(L"name",name);
+	}
 
 	inline void set_movie(base_logic::DictionaryValue* movie){
 		this->about_movie_->Append(movie);
@@ -125,12 +128,16 @@ class MovieSearch: public HeadPacket{
 public:
 	MovieSearch(){
 		base_.reset(new netcomm_send::NetBase());
-		movie_.reset(new base_logic::ListValue());;
+		new_.reset(new base_logic::ListValue());;
+		hot_.reset(new base_logic::ListValue());;
 	}
 
 	netcomm_send::NetBase* release(){
-		if(!movie_->empty())
-			this->base_->Set(L"movie",movie_.release());;
+		if(!new_->empty())
+			this->base_->Set(L"new",new_.release());
+
+		if(!hot_->empty())
+			this->base_->Set(L"hot",hot_.release());
 
 		head_->Set("result",base_.release());
 		this->set_status(1);
@@ -139,13 +146,18 @@ public:
 
 
 
-	inline void set_movie(base_logic::DictionaryValue* movie){
-		this->movie_->Append(movie);
+	inline void set_new(base_logic::DictionaryValue* movie){
+		this->new_->Append(movie);
+	}
+
+	inline void set_hot(base_logic::DictionaryValue* hot){
+		this->hot_->Append(hot);
 	}
 
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
-	scoped_ptr<base_logic::ListValue>             movie_;
+	scoped_ptr<base_logic::ListValue>             new_;
+	scoped_ptr<base_logic::ListValue>             hot_;
 
 };
 }

@@ -227,8 +227,10 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetString(L"summary",data_->summary_);
 	if(!data_->author_.empty())
 		dict->SetString(L"author",data_->author_);
-	if(!data_->token_.empty())
+	if(!data_->token_.empty()){
 		dict->SetString(L"token",data_->token_);
+		dict->SetString(L"booktoken",data_->token_);
+	}
 	if(!data_->pubtime_.empty())
 		dict->SetString(L"pubtime",data_->pubtime_);
 
@@ -275,8 +277,10 @@ base_logic::DictionaryValue* Movies::Release(){
 		dict->SetString(L"name",data_->name_);
 	if(!data_->url_.empty())
 		dict->SetString(L"url",data_->url_);
-	if(!data_->logo_.empty())
+	if(!data_->logo_.empty()){
+		dict->SetString(L"pic",data_->logo_);
 		dict->SetString(L"logo",data_->logo_);
+	}
 	if(!data_->summary_.empty())
 		dict->SetString(L"summary",data_->summary_);
 	if(data_->like_!=0&&data_->play_count_!=0)

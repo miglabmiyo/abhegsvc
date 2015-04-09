@@ -63,6 +63,41 @@ private:
 //获取书籍完整信息
 typedef WantBook BookComInfo;
 
+//关键字搜索
+class SearchKey:public LoginHeadPacket{
+public:
+	SearchKey(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+	void  Init(){
+		bool r =  false;
+		//URLCODE 解码
+		std::string key;
+		r = m_->GetString(L"key",&key);
+		if(r){
+			base::BasicUtil::UrlDecode(key,key_);
+		}
+		if(!r) error_code_ = SEARCH_KEY_LACK;
+
+		GETBIGINTTOINT(L"from",from_);
+		if(!r) from_ = 0;
+
+		GETBIGINTTOINT(L"count",count_);
+		if(!r) count_ = 10;
+	}
+
+	//const int64 tid() const {return this->tid_;}
+	const std::string& key() const {return  this->key_;}
+	const int64 from() const {return this->from_;}
+	const int64 count() const {return this->count_;}
+private:
+	std::string                  key_;
+	int64                        from_;
+	int64                        count_;
+};
+
+
 //类别搜索
 class SearchType:public LoginHeadPacket{
 public:

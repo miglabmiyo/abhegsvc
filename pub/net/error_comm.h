@@ -41,7 +41,8 @@ enum neterrorcode{
 
 	//商城
 	STORE_SEACH_BTYPE_LACK = -1400,
-	STORE_SEARCH_KEY_LACK = -1401,
+
+	SEARCH_KEY_LACK = -1401,
 
 	//影音
 	MOVIE_ID_LACK = -1500,

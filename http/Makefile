@@ -54,7 +54,7 @@ all: clean proc delete-temp-file
 
 proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc
 
-######################payproc###############################################
+######################movieproc###############################################
 MOVIENAME = movie_
 MOVIEPROC_PATH = /movie
 MOVIE_OBJECT_PATH = ./obj$(MOVIEPROC_PATH)
@@ -170,7 +170,7 @@ BOOKPROC_PATH = /book
 BOOK_OBJECT_PATH = ./obj$(BOOKPROC_PATH)
 OTJERPROC_VERSION = /1
 bookproc:$(BOOKPROC_PATH)/booklist.fcgi $(BOOKPROC_PATH)/searchtype.fcgi $(BOOKPROC_PATH)/wanted.fcgi $(BOOKPROC_PATH)/chapterlist.fcgi\
-	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi $(BOOKPROC_PATH)/complete.fcgi
+	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi $(BOOKPROC_PATH)/complete.fcgi $(BOOKPROC_PATH)/searchkey.fcgi
 
 $(BOOKPROC_PATH)/topics.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
@@ -192,6 +192,9 @@ $(BOOKPROC_PATH)/booksummary.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)booksummary.o 
 	
 $(BOOKPROC_PATH)/complete.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/complete.fcgi
+	
+$(BOOKPROC_PATH)/searchkey.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)searchkey.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchkey.fcgi
 ### 编译
 
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o:
@@ -214,6 +217,9 @@ $(BOOK_OBJECT_PATH)/$(BOOKNAME)booksummary.o:
 	
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o:
 	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/complete/complete.cc
+
+$(BOOK_OBJECT_PATH)/$(BOOKNAME)searchkey.o:
+	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchkey/searchkey.cc
 	
 ######################storeproc###############################################
 STORENAME = store_

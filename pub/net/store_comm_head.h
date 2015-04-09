@@ -35,7 +35,7 @@ public:
 		if(r){
 			base::BasicUtil::UrlDecode(key,key_);
 		}
-		if(!r) error_code_ = STORE_SEARCH_KEY_LACK;
+		if(!r) error_code_ = SEARCH_KEY_LACK;
 
 		GETBIGINTTOINT(L"from",from_);
 		if(!r) from_ = 0;
