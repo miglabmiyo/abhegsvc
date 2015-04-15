@@ -312,6 +312,5 @@ bool Findlogic::OnFindMovies(struct server *srv,const int socket,netcomm_recv::N
 	send_message(socket,(netcomm_send::HeadPacket*)movies_rank.get());
 	return true;
 }
-
 }
 

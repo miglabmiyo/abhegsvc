@@ -52,7 +52,8 @@ private:
     bool OnBookInfo(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
         		const void* msg = NULL,const int len = 0);
 
-
+    bool OnGainMovieToken(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    			const void* msg = NULL,const int len = 0);
 private:
 
     bool ResolveChapterList(std::list<BookChapterCollection>& list,std::string& str);

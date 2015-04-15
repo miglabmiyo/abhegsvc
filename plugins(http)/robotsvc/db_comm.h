@@ -20,6 +20,9 @@ public:
 	static void Init(std::list<base::ConnAddr>& addrlist);
 	static void Dest();
 
+	//获取更新的电影
+	static bool GainMovie(const int64 from,const int32 count,
+			std::list<base_logic::Movies>& list);
 	//批量写入小说
 	static bool CollectionBookChapter(std::list<BookChapterCollection>& list);
 

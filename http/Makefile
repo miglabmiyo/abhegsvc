@@ -52,7 +52,7 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc
+proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc hackproc
 
 ######################movieproc###############################################
 MOVIENAME = movie_
@@ -135,7 +135,20 @@ $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getdimension.o:
 	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getdimension/getdimension.cc
 
 
+
+######################hackproc###############################################
+HACKPROC_PATH = /hack
+HACKPROC_VERSION = /1
+hackproc:wdjsummary.fcgi
+
+wdjsummary.fcgi: wdjsummary.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(HACKPROC_VERSION)/wdjsummary.fcgi
 	
+### 编译
+
+wdjsummary.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(HACKPROC_VERSION)/wdjsummary/wdjsummary.cc
+		
 ######################otherproc###############################################
 OTHERPROC_PATH = /other
 OTJERPROC_VERSION = /1
@@ -154,23 +167,29 @@ ROBOTNAME = robot_
 ROBOTPROC_PATH = /robot
 ROBOT_OBJECT_PATH = ./obj$(ROBOTPROC_PATH)
 OTJERPROC_VERSION = /1
-robotproc:$(ROBOTPROC_PATH)/spiderphone.fcgi
+robotproc:$(ROBOTPROC_PATH)/spiderphone.fcgi $(ROBOTPROC_PATH)/gainmovie.fcgi
 
 $(ROBOTPROC_PATH)/spiderphone.fcgi: $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)spiderphone.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/spiderphone.fcgi
+	
+$(ROBOTPROC_PATH)/gainmovie.fcgi: $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)gainmovie.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/gainmovie.fcgi
 	
 ### 编译
 
 $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)spiderphone.o:
 	$(COMPILE) .$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/spiderphone/spiderphone.cc
 	
+$(ROBOT_OBJECT_PATH)/$(ROBOTNAME)gainmovie.o:
+	$(COMPILE) .$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/gainmovie/gainmovie.cc
 ######################bookproc###############################################
 BOOKNAME = book_
 BOOKPROC_PATH = /book
 BOOK_OBJECT_PATH = ./obj$(BOOKPROC_PATH)
 OTJERPROC_VERSION = /1
 bookproc:$(BOOKPROC_PATH)/booklist.fcgi $(BOOKPROC_PATH)/searchtype.fcgi $(BOOKPROC_PATH)/wanted.fcgi $(BOOKPROC_PATH)/chapterlist.fcgi\
-	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi $(BOOKPROC_PATH)/complete.fcgi $(BOOKPROC_PATH)/searchkey.fcgi
+	$(BOOKPROC_PATH)/booksummary.fcgi $(BOOKPROC_PATH)/topics.fcgi $(BOOKPROC_PATH)/complete.fcgi $(BOOKPROC_PATH)/searchkey.fcgi\
+	$(BOOKPROC_PATH)/hotword.fcgi
 
 $(BOOKPROC_PATH)/topics.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/topics.fcgi
@@ -195,6 +214,9 @@ $(BOOKPROC_PATH)/complete.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o $(POBJ
 	
 $(BOOKPROC_PATH)/searchkey.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)searchkey.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchkey.fcgi
+	
+$(BOOKPROC_PATH)/hotword.fcgi: $(BOOK_OBJECT_PATH)/$(BOOKNAME)hotword.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/hotword.fcgi
 ### 编译
 
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)topics.o:
@@ -220,6 +242,9 @@ $(BOOK_OBJECT_PATH)/$(BOOKNAME)complete.o:
 
 $(BOOK_OBJECT_PATH)/$(BOOKNAME)searchkey.o:
 	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/searchkey/searchkey.cc
+
+$(BOOK_OBJECT_PATH)/$(BOOKNAME)hotword.o:
+	$(COMPILE) .$(BOOKPROC_PATH)$(OTJERPROC_VERSION)/hotword/hotword.cc
 	
 ######################storeproc###############################################
 STORENAME = store_
@@ -318,7 +343,7 @@ FINDPROC_PATH = /find
 FIND_OBJECT_PATH = ./obj$(FINDPROC_PATH)
 OTJERPROC_VERSION = /1
 findproc:$(FINDPROC_PATH)/appstore.fcgi $(FINDPROC_PATH)/bookstore.fcgi $(FINDPROC_PATH)/gamestore.fcgi $(FINDPROC_PATH)/main.fcgi\
-	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi
+	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi $(FINDPROC_PATH)/wandoujia.fcgi
 
 $(FINDPROC_PATH)/appstore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
@@ -340,6 +365,9 @@ $(FINDPROC_PATH)/apprank.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)apprank.o $(POBJ)
 
 $(FINDPROC_PATH)/moviestore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/moviestore.fcgi
+
+$(FINDPROC_PATH)/wandoujia.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/wandoujia.fcgi
 ### 编译
 
 $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o:
@@ -362,6 +390,9 @@ $(FIND_OBJECT_PATH)/$(FINDNAME)apprank.o:
 
 $(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o:
 	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/moviestore/moviestore.cc
+	
+$(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/wandoujia/wandoujia.cc
 clean:
 	-rm -f *.o
 	-rm -f $(OUTPUT_FILE)./*.fcgi

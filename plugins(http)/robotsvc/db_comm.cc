@@ -24,6 +24,49 @@ void DBComm::Dest(){
 }
 
 
+bool DBComm::GainMovie(const int64 from,const int32 count,
+		std::list<base_logic::Movies>& list){
+	bool r = false;
+	#if defined (_DB_POOL_)
+		base_db::AutoMysqlCommEngine auto_engine;
+		base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+	#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+	//call abheg.proc_RobotGainMovie(0,10)
+	os<<"call proc_RobotGainMovie("<<from<<","<<count<<");";
+
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::Movies movie;
+			if(rows[0]!=NULL)
+				movie.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				movie.set_token(rows[1]);
+			list.push_back(movie);
+		}
+		return true;
+	}
+	return true;
+
+}
+
 bool DBComm::GetCTPhoneNumber(std::list<std::string>& list){
 	bool r = false;
 	#if defined (_DB_POOL_)

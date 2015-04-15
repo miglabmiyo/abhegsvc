@@ -84,6 +84,9 @@ bool Robotlogic::OnRobotMessage(struct server *srv, const int socket, const void
 	 case ROBOT_GET_SPIDER_PHONENUMBER:
 		 OnGetSpiderPhoneNumber(srv,socket,value);
 		 break;
+	 case ROBOT_GAIN_MOVIE:
+		 OnGainMovieToken(srv,socket,value);
+		 break;
 	}
     return true;
 }
@@ -122,6 +125,29 @@ bool Robotlogic::OnIniTimer(struct server *srv){
 bool Robotlogic::OnTimeout(struct server *srv, char *id, int opcode, int time){
 
     return true;
+}
+
+bool Robotlogic::OnGainMovieToken(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+   			const void* msg,const int len){
+	scoped_ptr<netcomm_recv::GetMovieUnit> movie_unit(new netcomm_recv::GetMovieUnit(netbase));
+	int error_code = movie_unit->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+	std::list<base_logic::Movies> list;
+	robotsvc_logic::DBComm::GainMovie(movie_unit->from(),movie_unit->count(),list);
+	scoped_ptr<netcomm_send::GetUnit> gain_unit(new netcomm_send::GetUnit());
+	while(list.size()>0){
+		base_logic::Movies unit = list.front();
+		list.pop_front();
+		gain_unit->set_unit(unit.Release());
+	}
+
+	//发送
+	send_message(socket,(netcomm_send::HeadPacket*)gain_unit.get());
+	return true;
 }
 
 bool Robotlogic::OnGetSpiderPhoneNumber(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,

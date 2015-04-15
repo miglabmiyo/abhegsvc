@@ -136,6 +136,9 @@ public:
 	}
 };
 
+//获取热词
+typedef BookList HotWord;
+
 class BookTopics:public LoginHeadPacket{
 public:
 	BookTopics(NetBase* m)
@@ -348,6 +351,31 @@ public:
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;
 	scoped_ptr<base_logic::ListValue>             book_list_;
+};
+
+//热词
+class HotWord:public HeadPacket{
+public:
+	HotWord(){
+		base_.reset(new netcomm_send::NetBase());
+		hot_list_.reset(new base_logic::ListValue());
+	}
+
+	inline void SetHotWordList(base_logic::DictionaryValue* build){
+		hot_list_->Append(build);
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!hot_list_->empty())
+			this->base_->Set(L"list",hot_list_.release());
+
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>            base_;
+	scoped_ptr<base_logic::ListValue>            hot_list_;
 };
 
 

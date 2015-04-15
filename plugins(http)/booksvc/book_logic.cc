@@ -98,6 +98,9 @@ bool Booklogic::OnBookMessage(struct server *srv, const int socket, const void *
 		   case BOOK_SEARCH_KEY:
 			   OnBookSearchKey(srv,socket,value);
 			   break;
+		   case BOOK_HOT_WORD:
+			   OnGetHotWordList(srv,socket,value);
+			   break;
 
 		}
     return true;
@@ -343,6 +346,29 @@ bool Booklogic::OnGetBookSummary(struct server *srv,const int socket,netcomm_rec
 	bookl->set_label("临时数据1");
 	bookl->set_label("临时数据2");
 	send_message(socket,(netcomm_send::HeadPacket*)bookl.get());
+	return true;
+}
+
+bool Booklogic::OnGetHotWordList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::HotWord> hot(new netcomm_recv::HotWord(netbase));
+	bool r = false;
+	int error_code =hot->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	//获取热词单
+	scoped_ptr<netcomm_send::HotWord> hotword(new netcomm_send::HotWord());
+	std::list<booksvc_logic::HotWord> list;
+	booksvc_logic::DBComm::OnGetHotWork(list);
+	while(list.size()>0){
+		booksvc_logic::HotWord word = list.front();
+		list.pop_front();
+		hotword->SetHotWordList(word.Release());
+	}
+	send_message(socket,(netcomm_send::HeadPacket*)hotword.get());
 	return true;
 }
 

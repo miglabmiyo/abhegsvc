@@ -26,17 +26,31 @@ public:
 
 	const int64 id() const {return data_->id_;}
 	const int32 type() const {return data_->type_;}
+#if defined(__OLD_VERSION__)
 	const int32 subtype() const {return data_->subtype_;}
 	const int64 follower() const {return data_->follower_;}
 	const std::string& name() const {return data_->name_;}
+#else
+	const int64 subid() const {return data_->subid_;}
+	const int32 flag() const {return data_->flag_;}
+	const int32 out() const {return data_->out_;}
+	const std::string& url() const {return data_->url_;}
+#endif
 	const std::string& pic() const {return data_->pic_;}
 
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
+#if defined(__OLD_VERSION__)
 	void set_subtype(const int32 subtype){data_->subtype_ = subtype;}
 	void set_follower(const int64 follower){data_->follower_ = follower;}
 	void set_name(const std::string& name) {data_->name_ = name;}
+#else
+	void set_subid(const int64 subid){data_->subid_ = subid;}
+	void set_flag(const int32 flag) {data_->flag_ = flag;}
+	void set_out(const int32 out){data_->out_ = out;}
+	void set_url(const std::string& url){data_->url_ = url;}
+#endif
 	void set_pic(const std::string& pic){data_->pic_ = pic;}
 
 private:
@@ -45,17 +59,31 @@ private:
 		Data():refcount_(1)
 		,id_(0)
 		,type_(-1)
+#if defined(__OLD_VERSION__)
 		,subtype_(-1)
-		,follower_(-1){}
+		,follower_(-1)
+#else
+		,subid_(0)
+		,flag_(0)
+		,out_(0)
+#endif
+	{}
 	public:
 		void AddRef(){refcount_ ++;}
 		void Release(){if (!--refcount_)delete this;}
 	public:
 		int64        id_;
 		int32        type_;
+#if defined(__OLD_VERSION__)
 		int32        subtype_;
 		int64        follower_;
 		std::string  name_;
+#else
+		int64        subid_;
+		int32        flag_;
+		int32        out_;
+		std::string  url_;
+#endif
 		std::string  pic_;
 	private:
 		int refcount_;
@@ -292,6 +320,7 @@ public:
 	const std::string& url() const {return data_->url_;}
 	const std::string& logo() const {return data_->logo_;}
 	const std::string summary() const {return data_->summary_;}
+	const std::string& token() const {return data_->token_;}
 
 
 	void set_id(const int64 id){data_->id_ = id;}
@@ -304,6 +333,7 @@ public:
 	void set_url(const std::string& url){data_->url_ = url;}
 	void set_logo(const std::string& logo) {data_->logo_ = logo;}
 	void set_summary(const std::string& summary) {data_->summary_ = summary;}
+	void set_token(const std::string& token) {data_->token_ = token;}
 
 private:
 	class Data{
@@ -325,6 +355,7 @@ private:
 		std::string            url_;
 		std::string            logo_;
 		std::string            summary_;
+		std::string            token_;
 	private:
 		int refcount_;
 	};

@@ -40,6 +40,9 @@ public:
 	static bool OnGetBookSummary(const int64 uid,const int64 bookid,int32& issave,
 			base_logic::BookInfo& bookinfo);
 
+	//获取热词
+	static bool OnGetHotWork(std::list<booksvc_logic::HotWord>& list);
+
 
 	static bool OnGetBookChapters(const int64 uid,const int64 bid,const std::string& token,
 			const int64 from,const int64 count,

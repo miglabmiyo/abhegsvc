@@ -36,12 +36,25 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
 	if(data_->id_!=-1)
 		dict->SetBigInteger(L"id",data_->id_);
+#if defined(__OLD_VERSION__)
 	if(!data_->name_.empty())
 		dict->SetString(L"name",data_->name_);
-	if(data_->type_!=-1)
-		dict->SetInteger(L"type",data_->type_);
 	if(data_->subtype_!=-1)
 		dict->SetInteger(L"subtype",data_->subtype_);
+	if(data_->follower_!=-1)
+		dict->SetBigInteger("follwer",data_->follower_);
+#else
+	if(data_->subid_!=-1&&data_->out_==0&&data_->flag_==0){//内部广告
+		dict->SetBigInteger(L"subid",data_->subid_);
+		dict->SetInteger(L"flag",data_->flag_);
+		dict->SetBigInteger(L"out",data_->out_);
+	}else if(data_->out_==1&&!data_->url_.empty()){ //外链广告
+		dict->SetBigInteger(L"out",data_->out_);
+		dict->SetString(L"url",data_->url_);
+	}
+#endif
+	if(data_->type_!=-1)
+		dict->SetInteger(L"type",data_->type_);
 	if(!data_->pic_.empty())
 		dict->SetString(L"pic",data_->pic_);
 	return dict.release();
@@ -281,6 +294,10 @@ base_logic::DictionaryValue* Movies::Release(){
 		dict->SetString(L"pic",data_->logo_);
 		dict->SetString(L"logo",data_->logo_);
 	}
+
+	if(!data_->token_.empty())
+		dict->SetString(L"token",data_->token_);
+
 	if(!data_->summary_.empty())
 		dict->SetString(L"summary",data_->summary_);
 	if(data_->like_!=0&&data_->play_count_!=0)

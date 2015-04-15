@@ -14,7 +14,50 @@
 #include <list>
 namespace booksvc_logic{
 
+class HotWord{
+public:
+	explicit HotWord();
 
+	HotWord(const HotWord& hotword);
+	HotWord& operator = (const HotWord& hotword);
+
+	base_logic::DictionaryValue* Release();
+
+	const void set_id(const int64 id){data_->id_ = id;}
+	const void set_count(const int64 count) {data_->count_ = count;}
+	const void set_weight(const int32 weight) {data_->weight_ = weight;}
+	const void set_type(const int32 type) {data_->type_ = type;}
+	const void set_name(const std::string& name) {data_->name_ = name;}
+
+	const int64 id() const {return data_->id_;}
+	const int64 count() const {return data_->count_;}
+	const int32 weight() const {return data_->weight_;}
+	const int32 type() const {return data_->type_;}
+	const std::string& name() const {return data_->name_;}
+
+private:
+	class Data{
+	public:
+		Data()
+		:refcount_(1)
+		,id_(0)
+		,count_(0)
+		,weight_(0)
+		,type_(-1){}
+
+	public:
+		int64          id_;
+		int64          count_;
+		int32          weight_;
+		int32          type_;//0 系统推荐， 1，人工推荐
+		std::string    name_;
+		void AddRef(){refcount_ ++;}
+		void Release(){if (!--refcount_)delete this;}
+	private:
+		int refcount_;
+	};
+	Data*    data_;
+};
 class ChapterInfo{
 public:
 	explicit ChapterInfo();

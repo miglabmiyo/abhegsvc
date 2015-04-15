@@ -38,6 +38,7 @@ enum netoperatorcode{
 	BOOK_SUMMARY = 4105,//书籍详情
 	BOOK_COMP_INFO = 4106,//书籍完整信息
 	BOOK_SEARCH_KEY = 4107,//关键字搜索
+	BOOK_HOT_WORD = 4018,//获取热词
 
 	//影视
 	MOVIE_SUMMARY = 5100,//获取详情
@@ -48,12 +49,17 @@ enum netoperatorcode{
 	ROBOT_BOOK_COLLECTION = 6100,//添加书籍
 	ROBOT_CHAPTER_COLLECTION = 6101,//添加书籍章节
 	ROBOT_GET_SPIDER_PHONENUMBER = 6102,//获取爬虫号码
+	ROBOT_GAIN_MOVIE = 6103,//获取电影
 
 	//支付
 	PAY_PHONE_REGISTER = 7100,//支付前信息注册
 	PAY_PHONE_LOGIN = 7101,//支付前登录
 	PAY_GET_CHR = 7102,//获取计费点
-	PAY_UPDATE_STATE = 7103//更新流水状态
+	PAY_UPDATE_STATE = 7103,//更新流水状态
+
+
+	//
+	HACK_WANDOUJIA_SUMMARY = 8000,//豌豆荚详情页
 
 };
 
