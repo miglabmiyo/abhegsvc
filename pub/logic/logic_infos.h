@@ -37,7 +37,8 @@ public:
 	const std::string& url() const {return data_->url_;}
 #endif
 	const std::string& pic() const {return data_->pic_;}
-
+	const std::string& name() const {return data_->name_;}
+	const std::string& desc() const {return data_->desc_;}
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
@@ -52,6 +53,8 @@ public:
 	void set_url(const std::string& url){data_->url_ = url;}
 #endif
 	void set_pic(const std::string& pic){data_->pic_ = pic;}
+	void set_name(const std::string& name){data_->name_ = name;}
+	void set_desc(const std::string& desc){data_->desc_ = desc;}
 
 private:
 	class Data{
@@ -77,7 +80,6 @@ private:
 #if defined(__OLD_VERSION__)
 		int32        subtype_;
 		int64        follower_;
-		std::string  name_;
 #else
 		int64        subid_;
 		int32        flag_;
@@ -85,6 +87,8 @@ private:
 		std::string  url_;
 #endif
 		std::string  pic_;
+		std::string  name_;
+		std::string  desc_;
 	private:
 		int refcount_;
 	};

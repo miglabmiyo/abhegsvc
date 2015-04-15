@@ -37,8 +37,6 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 	if(data_->id_!=-1)
 		dict->SetBigInteger(L"id",data_->id_);
 #if defined(__OLD_VERSION__)
-	if(!data_->name_.empty())
-		dict->SetString(L"name",data_->name_);
 	if(data_->subtype_!=-1)
 		dict->SetInteger(L"subtype",data_->subtype_);
 	if(data_->follower_!=-1)
@@ -53,6 +51,10 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 		dict->SetString(L"url",data_->url_);
 	}
 #endif
+	if(!data_->name_.empty())
+		dict->SetString(L"name",data_->name_);
+	if(!data_->desc_/empty())
+		dict->SetString(L"desc",data_->desc_);
 	if(data_->type_!=-1)
 		dict->SetInteger(L"type",data_->type_);
 	if(!data_->pic_.empty())
