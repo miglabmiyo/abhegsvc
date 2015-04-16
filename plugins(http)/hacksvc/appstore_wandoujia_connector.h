@@ -23,9 +23,9 @@ public:
 	virtual void Init(std::list<base::ConnAddr>& addrlist) = 0; //初始化
 	virtual void Release() = 0;//释放
 
-	virtual bool GetAppSummaryInfo(const std::string& host,const std::string& path);
+	virtual bool OnRequestAppStoreInfo(const std::string& url,std::string& content);
 private:
-	std::string                     api_host_;
+	bool RequestWandoujiaUrl(const std::string& url,std::string& content);
 };
 
 }
