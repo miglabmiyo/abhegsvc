@@ -20,8 +20,8 @@ public:
 	AppStoreWandoujiaImpl();
 	virtual ~AppStoreWandoujiaImpl();
 public:
-	virtual void Init(std::list<base::ConnAddr>& addrlist) = 0; //初始化
-	virtual void Release() = 0;//释放
+	virtual void Init(std::list<base::ConnAddr>& addrlist); //初始化
+	virtual void Release();//释放
 
 	virtual bool OnRequestAppStoreInfo(const std::string& url,std::string& content);
 private:

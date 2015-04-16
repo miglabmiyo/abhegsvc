@@ -36,8 +36,8 @@ bool AppStoreWandoujiaImpl::OnRequestAppStoreInfo(const std::string& url,std::st
 
 	do{
 		r = RequestWandoujiaUrl(url,content);
-		if(!r)
-			return false;
+		if(r)
+			return true;
 		i++;
 		if(i>=3)
 			return false;

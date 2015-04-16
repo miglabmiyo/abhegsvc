@@ -4,6 +4,10 @@
 #include "logic/logic_comm.h"
 #include "common.h"
 #include <string>
+#include <sstream>
+
+
+#define TIME_TEST_GET_WANDOUJIASUAMMRY    10001//消息检测
 
 namespace hacksvc_logic{
 
@@ -19,6 +23,7 @@ Hacklogic::~Hacklogic(){
 }
 
 bool Hacklogic::Init(){
+	wandoujia_appstore_connector_engine_ = hacksvc_logic::AppStoreConnector::Create(IMPL_WANDOUJIA);
     return true;
 }
 
@@ -98,13 +103,19 @@ bool Hacklogic::OnBroadcastClose(struct server *srv, const int socket){
 }
 
 bool Hacklogic::OnIniTimer(struct server *srv){
-
+	srv->add_time_task(srv,"hack",TIME_TEST_GET_WANDOUJIASUAMMRY,2,1);
     return true;
 }
 
 
 
 bool Hacklogic::OnTimeout(struct server *srv, char *id, int opcode, int time){
+	std::string pnname = "com.og.danjiddz";
+	switch(opcode){
+		case TIME_TEST_GET_WANDOUJIASUAMMRY:
+			OnReplaceAppSummaryUnit(pnname);
+			break;
+	}
 
     return true;
 }
@@ -120,6 +131,45 @@ bool Hacklogic::OnHackWandoujiaSuammry(struct server *srv,const int socket,netco
 	//base_logic::LogicComm::SendFull(socket,message.c_str(),message.length());
 
 	return true;
+}
+
+bool Hacklogic::OnReplaceAppSummaryUnit(const std::string& pnname){
+	std::string content;
+	bool r = false;
+	hacksvc_logic::AppSummaryParam param;
+	param.set_pnname(pnname);
+	r = OnRequestAppSummary(param,content);
+	if(!r)
+		return false;
+	LOG_MSG2("%s",content.c_str());
+
+	//解析json
+	std::string alias;
+	base_logic::DictionaryValue* value = AppSummarySerialzer(content);
+	r = value->GetString(L"alias",&alias);
+	LOG_MSG2("%s",alias.c_str());
+	return true;
+}
+
+bool Hacklogic::OnRequestAppSummary(hacksvc_logic::AppSummaryParam& param,std::string& content){
+	//请求豌豆荚详细信息
+	bool r = false;
+	std::string url;
+	std::stringstream os;
+	/*
+	 * http://api.wandoujia.com/v1/apps/com.og.danjiddz?timestamp=1428992136630&id=wandoujia_android&f=phoenix2&v=4.25.1&u=5b1fff6e5dac4e49a9bf2b7faef2616a117ddaa0&max=20&start=0&token=f0ca1ccc1a60ef3e0ce6105b353ab762&vc=7955&ch=wandoujia_wap&net=WIFI&pos=m/games/index/section/0:198412830
+	 */
+	os<<"http://api.wandoujia.com/v1/apps/"<<param.pnname()<<"?timestamp=1428992136630&id=wandoujia_android&f=phoenix2&v=4.25.1&u=5b1fff6e5dac4e49a9bf2b7faef2616a117ddaa0&max=20&start=0&token=f0ca1ccc1a60ef3e0ce6105b353ab762&vc=7955&ch=wandoujia_wap&net=WIFI&pos=m/games/index/section/0:198412830";
+	url = os.str();
+	return wandoujia_appstore_connector_engine_->OnRequestAppStoreInfo(url,content);
+}
+
+base_logic::DictionaryValue* Hacklogic::AppSummarySerialzer(std::string& content){
+	std::string error_str;
+	int jerror_code = 0;
+	scoped_ptr<base_logic::ValueSerializer> serializer(base_logic::ValueSerializer::Create(base_logic::IMPL_JSON,&content));
+	base_logic::DictionaryValue*  value = (base_logic::DictionaryValue* )serializer->Deserialize(&jerror_code,&error_str);
+	return value;
 }
 
 }

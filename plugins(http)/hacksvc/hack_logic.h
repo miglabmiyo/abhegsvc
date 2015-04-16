@@ -1,5 +1,8 @@
 #ifndef __ABHEG__HACKSVC__HACK_LOGIC___
 #define __ABHEG__HACKSVC__HACK_LOGIC___
+
+#include "appstore_connector.h"
+#include "hack_basic_info.h"
 #include "net/operator_code.h"
 #include "net/error_comm.h"
 #include "net/comm_head.h"
@@ -44,8 +47,13 @@ private:
 private:
 
     bool Init();
+private:
+    bool OnReplaceAppSummaryUnit(const std::string& pnname);
+    bool OnRequestAppSummary(hacksvc_logic::AppSummaryParam& param,std::string& content);
 
-    bool OnRequestAppStoreSummary();
+    base_logic::DictionaryValue* AppSummarySerialzer(std::string& content);
+private:
+    hacksvc_logic::AppStoreConnector*              wandoujia_appstore_connector_engine_;
 };
 
 

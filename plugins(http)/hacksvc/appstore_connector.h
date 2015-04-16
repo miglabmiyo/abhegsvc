@@ -8,6 +8,9 @@
 #ifndef APP_STORE_CONNECTOR_H_
 #define APP_STORE_CONNECTOR_H_
 
+#include "basic/basic_info.h"
+#include <list>
+
 namespace hacksvc_logic{
 
 enum AppStoreType{
@@ -22,9 +25,10 @@ public:
 	virtual void Init(std::list<base::ConnAddr>& addrlist) = 0; //初始化
 	virtual void Release() = 0;//释放
 
-	virtual bool OnRequestAppStoreInfo(const std::string& url,std::string& content);
+	virtual bool OnRequestAppStoreInfo(const std::string& url,std::string& content) =0;
 };
 
+/*
 class AppStoreConnectorEngine{
 public:
 	AppStoreConnectorEngine(){}
@@ -45,7 +49,7 @@ public:
 
 private:
 	static AppStoreConnectorEngine* appstore_connector_engine_;
-};
+};*/
 }
 
 

@@ -21,7 +21,7 @@ CUSTOM_THIRD_PATH = $(LIB_DIR)/third_party
 LINK_PATHS = -L./ -L/usr/local/libmemcached-1.0.7/lib/  -L/usr/lib64/mysql
 
 # Flags passed to the preprocessor.
-CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_ -D_DEBUG -DUSR_LOG_MSG
+CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_ -D_DEBUG -DUSR_LOG_MSG -DPROCESS_WORK
 
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g  -Wextra -pthread -shared -fPIC
@@ -82,6 +82,15 @@ hack_init.o : ./hack_init.cc ./hack_init.h
 
 hack_logic.o : ./hack_logic.cc ./hack_logic.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_logic.cc $(INCLUDE_PATHS)
+	
+appstore_connector.o : ./appstore_connector.cc ./appstore_connector.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./appstore_connector.cc $(INCLUDE_PATHS)
+	
+appstore_wandoujia_connector.o : ./appstore_wandoujia_connector.cc ./appstore_wandoujia_connector.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./appstore_wandoujia_connector.cc $(INCLUDE_PATHS)
+	
+hack_basic_info.o : ./hack_basic_info.cc ./hack_basic_info.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_basic_info.cc $(INCLUDE_PATHS)
 
 comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/user_comm_head.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/net/comm_impl.cc $(INCLUDE_PATHS)
@@ -116,7 +125,7 @@ md5sum.o:$(THIRD_PATH)/basic/md5sum.cc
 radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/radom_in.cc $(INCLUDE_PATHS)
 
-$(PLUGIN) : hack_init.o hack_logic.o\
+$(PLUGIN) : hack_init.o hack_logic.o hack_basic_info.o appstore_wandoujia_connector.o appstore_connector.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \
