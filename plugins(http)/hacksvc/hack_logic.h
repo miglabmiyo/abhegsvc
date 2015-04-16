@@ -3,11 +3,15 @@
 
 #include "appstore_connector.h"
 #include "hack_basic_info.h"
+#include "config/config.h"
+#include "storage/storage.h"
 #include "net/operator_code.h"
 #include "net/error_comm.h"
 #include "net/comm_head.h"
 #include "logic/logic_infos.h"
 #include "common.h"
+
+#define DEFAULT_CONFIG_PATH     "./plugins/hacksvc/hacksvc_config.xml"
 
 namespace hacksvc_logic{
 
@@ -48,10 +52,15 @@ private:
 
     bool Init();
 private:
-    bool OnReplaceAppSummaryUnit(const std::string& pnname);
+    //从redis队列里面去数据
+    void OnQueueGetAppSummary();
+    bool OnReplaceAppSummary(const std::string& key,const std::string& pnname);
+    bool OnReplaceAppSummaryUnit(const std::string& pnname,std::string& result);
     bool OnRequestAppSummary(hacksvc_logic::AppSummaryParam& param,std::string& content);
+    bool OnExectReplaceSummary(base_logic::DictionaryValue* value);
 
     base_logic::DictionaryValue* AppSummarySerialzer(std::string& content);
+    void AppSummaryUnSerialzer(base_logic::DictionaryValue* value,std::string& content);
 private:
     hacksvc_logic::AppStoreConnector*              wandoujia_appstore_connector_engine_;
 };

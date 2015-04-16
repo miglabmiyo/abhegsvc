@@ -129,6 +129,6 @@ $(PLUGIN) : hack_init.o hack_logic.o hack_basic_info.o appstore_wandoujia_connec
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \
-	$(CUSTOM_THIRD_PATH)/dmg_fp/lib/dmg_fp.a $(LIB_DIR)/base/lib/mybase.a
+	$(CUSTOM_THIRD_PATH)/dmg_fp/lib/dmg_fp.a $(LIB_DIR)/base/lib/mybase.a $(LIB_DIR)/lib/libhiredis.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LINK_PATHS) -lpthread -lexpat -lrt -lpthread -ldl -liconv -lmysqlclient -lcurl \
 	$^ -o $@
