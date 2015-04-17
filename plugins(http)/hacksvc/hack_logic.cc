@@ -164,7 +164,7 @@ void Hacklogic::OnQueueGetAppSummary(){
 		std::string pnname;
 		pnname.assign(value,value_len);
 		LOG_DEBUG2("%s",pnname.c_str());
-		if(value_len<32&&value_len>4)
+		if(value_len<128&&value_len>4)
 			OnReplaceAppSummary(key,pnname);
 		delete[] value;
 	}
@@ -177,14 +177,15 @@ bool Hacklogic::OnReplaceAppSummary(const std::string& key,const std::string& pn
 	bool r = false;
 	std::stringstream os;
 	std::string result;
-	os<<pnname<<".wandoujia";
+	os<<pnname.c_str()<<".wandoujia";
 	key_str = os.str();
 	r = OnReplaceAppSummaryUnit(pnname,result);
 	if(r){//写入reids
 		base_dic::AutoDicCommEngine auto_engine;
 		base_storage::DictionaryStorageEngine* redis_engine_  = auto_engine.GetDicEngine();
 		LOG_DEBUG2("key:%s",key_str.c_str());
-		redis_engine_->SetValue(key_str.c_str(),key_str.length(),result.c_str(),result.length());
+		//ßLOG_DEBUG2("value: %s",result.c_str());
+		r = redis_engine_->SetValue(key_str.c_str(),key_str.length(),result.c_str(),result.length());
 	}
 	return true;
 }
