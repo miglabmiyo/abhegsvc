@@ -21,7 +21,7 @@ static void *OnMovieStart(){
 
     movies->name="movie";
 
-    movies->version="1.0";
+    movies->version="1.0.0";
 
     movies->provider="kerry";
 

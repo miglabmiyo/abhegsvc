@@ -17,13 +17,13 @@ static void *OnPayStart(){
     signal(SIGPIPE,SIG_IGN);
     struct payplugin* pay=(struct payplugin*)calloc(1,sizeof(struct payplugin));
 
-    pay->id="";
+    pay->id="pay";
 
-    pay->name="";
+    pay->name="pay";
 
-    pay->version="";
+    pay->version="1.0.0";
 
-    pay->provider="";
+    pay->provider="kerry";
 
     if(!paysvc_logic::Paylogic::GetInstance())
         assert(0);

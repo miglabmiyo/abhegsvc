@@ -29,7 +29,6 @@ public:
 #if defined(__OLD_VERSION__)
 	const int32 subtype() const {return data_->subtype_;}
 	const int64 follower() const {return data_->follower_;}
-	const std::string& name() const {return data_->name_;}
 #else
 	const int64 subid() const {return data_->subid_;}
 	const int32 flag() const {return data_->flag_;}
@@ -45,7 +44,6 @@ public:
 #if defined(__OLD_VERSION__)
 	void set_subtype(const int32 subtype){data_->subtype_ = subtype;}
 	void set_follower(const int64 follower){data_->follower_ = follower;}
-	void set_name(const std::string& name) {data_->name_ = name;}
 #else
 	void set_subid(const int64 subid){data_->subid_ = subid;}
 	void set_flag(const int32 flag) {data_->flag_ = flag;}

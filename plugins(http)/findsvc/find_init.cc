@@ -17,13 +17,13 @@ static void *OnFindStart(){
     signal(SIGPIPE,SIG_IGN);
     struct findplugin* find=(struct findplugin*)calloc(1,sizeof(struct findplugin));
 
-    find->id="";
+    find->id="find";
 
-    find->name="";
+    find->name="find";
 
-    find->version="";
+    find->version="1.0.0";
 
-    find->provider="";
+    find->provider="kerry";
 
     if(!findsvc_logic::Findlogic::GetInstance())
         assert(0);

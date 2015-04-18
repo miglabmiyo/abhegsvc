@@ -53,7 +53,7 @@ base_logic::DictionaryValue* AdvertInfos::Release(){
 #endif
 	if(!data_->name_.empty())
 		dict->SetString(L"name",data_->name_);
-	if(!data_->desc_/empty())
+	if(!data_->desc_.empty())
 		dict->SetString(L"desc",data_->desc_);
 	if(data_->type_!=-1)
 		dict->SetInteger(L"type",data_->type_);
