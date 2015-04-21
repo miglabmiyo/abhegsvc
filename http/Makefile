@@ -118,7 +118,7 @@ MUSICNAME = music_
 MUSICPROC_PATH = /music
 MUSIC_OBJECT_PATH = ./obj$(MUSICPROC_PATH)
 OTJERPROC_VERSION = /v1
-musicproc:$(MUSICPROC_PATH)/getcltsongs.fcgi $(MUSICPROC_PATH)/getdimension.fcgi
+musicproc:$(MUSICPROC_PATH)/getcltsongs.fcgi $(MUSICPROC_PATH)/getdimension.fcgi $(MUSICPROC_PATH)/collectsong.fcgi $(MUSICPROC_PATH)/delcltsong.fcgi
 
 $(MUSICPROC_PATH)/getcltsongs.fcgi: $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getcltsongs.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getcltsongs.fcgi
@@ -126,6 +126,11 @@ $(MUSICPROC_PATH)/getcltsongs.fcgi: $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getcltsongs
 $(MUSICPROC_PATH)/getdimension.fcgi: $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getdimension.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getdimension.fcgi
 
+$(MUSICPROC_PATH)/collectsong.fcgi: $(MUSIC_OBJECT_PATH)/$(MUSICNAME)collectsong.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/collectsong.fcgi
+	
+$(MUSICPROC_PATH)/delcltsong.fcgi: $(MUSIC_OBJECT_PATH)/$(MUSICNAME)delcltsong.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/delcltsong.fcgi
 ### 编译
 
 $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getcltsongs.o:
@@ -134,7 +139,11 @@ $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getcltsongs.o:
 $(MUSIC_OBJECT_PATH)/$(MUSICNAME)getdimension.o:
 	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/getdimension/getdimension.cc
 
+$(MUSIC_OBJECT_PATH)/$(MUSICNAME)collectsong.o:
+	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/collectsong/collectsong.cc
 
+$(MUSIC_OBJECT_PATH)/$(MUSICNAME)delcltsong.o:
+	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/delcltsong/delcltsong.cc
 
 ######################hackproc###############################################
 HACKPROC_PATH = /hack
@@ -167,14 +176,17 @@ ROBOTNAME = robot_
 ROBOTPROC_PATH = /robot
 ROBOT_OBJECT_PATH = ./obj$(ROBOTPROC_PATH)
 OTJERPROC_VERSION = /1
-robotproc:$(ROBOTPROC_PATH)/spiderphone.fcgi $(ROBOTPROC_PATH)/gainmovie.fcgi
+robotproc:$(ROBOTPROC_PATH)/spiderphone.fcgi $(ROBOTPROC_PATH)/gainmovie.fcgi $(ROBOTPROC_PATH)/updatemovie.fcgi
 
 $(ROBOTPROC_PATH)/spiderphone.fcgi: $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)spiderphone.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/spiderphone.fcgi
 	
 $(ROBOTPROC_PATH)/gainmovie.fcgi: $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)gainmovie.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/gainmovie.fcgi
-	
+
+$(ROBOTPROC_PATH)/updatemovie.fcgi: $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)updatemovie.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/updatemovie.fcgi
+		
 ### 编译
 
 $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)spiderphone.o:
@@ -182,6 +194,9 @@ $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)spiderphone.o:
 	
 $(ROBOT_OBJECT_PATH)/$(ROBOTNAME)gainmovie.o:
 	$(COMPILE) .$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/gainmovie/gainmovie.cc
+	
+$(ROBOT_OBJECT_PATH)/$(ROBOTNAME)updatemovie.o:
+	$(COMPILE) .$(ROBOTPROC_PATH)$(OTJERPROC_VERSION)/updatemovie/updatemovie.cc
 ######################bookproc###############################################
 BOOKNAME = book_
 BOOKPROC_PATH = /book

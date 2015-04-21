@@ -7,6 +7,7 @@
 #include "net/error_comm.h"
 #include "logic/logic_comm.h"
 #include "config/config.h"
+#include "basic/base64.h"
 #include "common.h"
 
 namespace robotsvc_logic{
@@ -87,6 +88,9 @@ bool Robotlogic::OnRobotMessage(struct server *srv, const int socket, const void
 	 case ROBOT_GAIN_MOVIE:
 		 OnGainMovieToken(srv,socket,value);
 		 break;
+	 case ROBOT_UPDATE_MOVIE:
+		 OnGainSubmiUnitMovie(srv,socket,value);
+		 break;
 	}
     return true;
 }
@@ -125,6 +129,48 @@ bool Robotlogic::OnIniTimer(struct server *srv){
 bool Robotlogic::OnTimeout(struct server *srv, char *id, int opcode, int time){
 
     return true;
+}
+
+bool Robotlogic::OnGainSubmiUnitMovie(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+			const void* msg,const int len){
+	scoped_ptr<netcomm_recv::SumbitUnitMovie> submit(new netcomm_recv::SumbitUnitMovie(netbase));
+	int error_code = submit->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+
+	//解析json
+	bool r = false;
+	std::string error_str;
+	int jerror_code = 0;
+	std::string urlcontent;
+	std::string content = submit->unit();
+	base::BasicUtil::UrlDecode(content,urlcontent);
+	LOG_DEBUG2("%s",urlcontent.c_str());
+
+	scoped_ptr<base_logic::ValueSerializer> serializer(base_logic::ValueSerializer::Create(base_logic::IMPL_JSON,&urlcontent));
+	base_logic::DictionaryValue*  value = (base_logic::DictionaryValue* )serializer->Deserialize(&jerror_code,&error_str);
+	int64  id;
+	std::string name;
+	std::string url;
+	std::string logo;
+	std::string desc;
+
+	r = value->GetBigInteger(L"id",&id);
+	r = value->GetString(L"name",&name);
+	r = value->GetString(L"url",&url);
+	r = value->GetString(L"logo",&logo);
+	r = value->GetString(L"desc",&desc);
+
+	robotsvc_logic::DBComm::UpdateMovie(id,name,url,logo,desc);
+
+	scoped_ptr<netcomm_send::HeadPacket> packet(new netcomm_send::HeadPacket());
+	//发送
+	send_message(socket,(netcomm_send::HeadPacket*)packet.get());
+	return true;
 }
 
 bool Robotlogic::OnGainMovieToken(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,

@@ -21,6 +21,7 @@ public:
 	std::list<base_logic::AppInfos>      find_app_list_;
 	std::list<base_logic::AppInfos>      find_game_list_;
 	std::list<base_logic::BookInfo>      find_book_list_;
+	std::list<base_logic::Movies>        find_move_list_;
 
 	std::list<base_logic::AppInfos>      app_store_list_; //应用商场推荐，热门，人气APP
 	std::list<base_logic::AdvertInfos>   app_adver_list_;//应用商场广告

@@ -54,7 +54,11 @@ enum neterrorcode{
 	MONEY_LACK = -1114,
 	STATE_LACK = -1115,
 	SERIAL_NUMBER_LACK = -1116,
-	PAY_USER_LACK = -1117
+	PAY_USER_LACK = -1117,
+
+	//机器人相关
+	MOVIE_CONTENT_LACK = -1200
+
 };
 
 
@@ -95,6 +99,9 @@ enum neterrorcode{
 #define STATE_LACK_STR                    "缺少状态"
 #define SERIAL_NUMBER_LACK_STR            "缺少流水号"
 #define PAY_USER_LACK_STR                 "用户未注册"
+
+
+#define MOVIE_CONTENT_LACK_STR            "缺少电影内容"
 
 
 const char*

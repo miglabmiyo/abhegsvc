@@ -710,7 +710,56 @@ bool DBComm::GetFindGame(std::list<base_logic::AppInfos>& list){
 	return false;
 }
 
+bool DBComm::GetFindMovie(std::list<base_logic::Movies>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
 
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetFindMovie()
+	os<<"call proc_GetFindMovie();";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::Movies movieinfo;
+			if(rows[0]!=NULL)
+				movieinfo.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				movieinfo.set_name(rows[1]);
+			if(rows[2]!=NULL)
+				movieinfo.set_logo(rows[2]);
+			if(rows[3]!=NULL)
+				movieinfo.set_summary(rows[3]);
+			if(rows[4]!=NULL)
+				movieinfo.set_type(atol(rows[4]));
+			if(rows[5]!=NULL)
+				movieinfo.set_play_count(atoll(rows[5]));
+			if(rows[6]!=NULL)
+				movieinfo.set_like(atoll(rows[6]));
+			list.push_back(movieinfo);
+		}
+		return true;
+	}
+	return false;
+}
 
 
 bool DBComm::GetAdver(std::list<base_logic::AdvertInfos>& list){

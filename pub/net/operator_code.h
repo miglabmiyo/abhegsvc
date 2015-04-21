@@ -28,6 +28,8 @@ enum netoperatorcode{
 	//音乐
 	MUSIC_GAIN_COLLECT_LIST = 4001,//获取红心歌单
 	MUSIC_GAIN_DIMENSION_LIST = 4002,//获取单维度歌曲
+	MUSIC_GAIN_SET_COLLECT = 4004,//新增红心歌单
+	MUSIC_GAIN_DEL_COLLECT = 4005,//删除红心歌单
 
 	//书城
 	BOOK_TOPICS = 4100,//专题活动
@@ -50,6 +52,7 @@ enum netoperatorcode{
 	ROBOT_CHAPTER_COLLECTION = 6101,//添加书籍章节
 	ROBOT_GET_SPIDER_PHONENUMBER = 6102,//获取爬虫号码
 	ROBOT_GAIN_MOVIE = 6103,//获取电影
+	ROBOT_UPDATE_MOVIE = 6104,//更新电影
 
 	//支付
 	PAY_PHONE_REGISTER = 7100,//支付前信息注册

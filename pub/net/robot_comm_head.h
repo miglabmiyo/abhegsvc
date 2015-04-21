@@ -51,6 +51,23 @@ private:
 	int64 count_;
 };
 
+class SumbitUnitMovie:public HeadPacket{
+public:
+	SumbitUnitMovie(NetBase* m)
+	:HeadPacket(m){
+		Init();
+	}
+
+	inline void Init(){
+		bool r = false;
+		r = m_->GetString(L"unit",&unit_);
+		if(!r) error_code_ = MOVIE_CONTENT_LACK;
+	}
+
+	const std::string& unit() const {return this->unit_;}
+private:
+	std::string unit_;
+};
 
 }
 

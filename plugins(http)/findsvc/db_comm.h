@@ -24,6 +24,8 @@ public:
 	static bool GetFindApp(std::list<base_logic::AppInfos>& list);
 	static bool GetFindBook(std::list<base_logic::BookInfo>& list);
 	static bool GetFindGame(std::list<base_logic::AppInfos>& list);
+	static bool GetFindMovie(std::list<base_logic::Movies>& list);
+
 	static bool GetAdver(std::list<base_logic::AdvertInfos>& list);
 
 	static bool GetFindStoreApp(std::list<base_logic::AppInfos>& list);

@@ -23,6 +23,10 @@ public:
 	//获取更新的电影
 	static bool GainMovie(const int64 from,const int32 count,
 			std::list<base_logic::Movies>& list);
+
+	//更新电影
+	static bool UpdateMovie(const int64 id,const std::string& name,const std::string& url,
+			const std::string& logo,const std::string& desc);
 	//批量写入小说
 	static bool CollectionBookChapter(std::list<BookChapterCollection>& list);
 

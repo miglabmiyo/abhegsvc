@@ -174,4 +174,39 @@ bool DBComm::CollectionBookChapter(std::list<BookChapterCollection>& list){
 	return true;
 }
 
+bool DBComm::UpdateMovie(const int64 id,const std::string& name,const std::string& url,
+			const std::string& logo,const std::string& desc){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+	/*call proc_UpdateMovieInfo(3,'翔飞人十二载光辉岁月 细数刘翔身边风云人物','http://pl.youku.com/playlist/m3u8?ctype=12&ep=eiaWE0yKX8wE7SPciD8bYX7icSEHXJZ1kmaA%2fLYxAsZQH%2bzQnz%2fSwg%3d%3d&ev=1&keyframe=1&oip=1019168418&sid=8429579248030126b05f8&token=6135&type=flv&vid=XOTI5MTc2MDg4','http://g2.ykimg.com/1100641F4655241FE14F6A042CFD0A13320779-EA9C-C23A-D8BB-0CE31F0796B8','视频简介:翔飞人十二载光辉岁月 细数刘翔身边风云人物的视频描述稍后补充')
+	 *
+	 *
+	 *
+	 */
+
+	os<<"call proc_UpdateMovieInfo("<<id<<",\'"<<name.c_str()<<"\',\'"<<url.c_str()<<"\',\'"
+			<<logo.c_str()<<"\',\'"<<desc.c_str()<<"\');";
+
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+	return true;
+}
+
 }

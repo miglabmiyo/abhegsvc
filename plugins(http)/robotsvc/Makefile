@@ -122,9 +122,12 @@ md5sum.o:$(THIRD_PATH)/basic/md5sum.cc
 radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/radom_in.cc $(INCLUDE_PATHS)
 
+base64.o:$(THIRD_PATH)/basic/base64.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/base64.cc $(INCLUDE_PATHS)
+
 $(PLUGIN) : robot_init.o robot_logic.o db_comm.o robot_basic_info.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
-	logic_infos.o logic_unit.o basic_util.o config.o \
+	logic_infos.o logic_unit.o basic_util.o config.o  base64.o\
 	md5sum.o radom_in.o \
 	$(CUSTOM_THIRD_PATH)/dmg_fp/lib/dmg_fp.a $(LIB_DIR)/base/lib/mybase.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LINK_PATHS) -lpthread -lexpat -lrt -lpthread -ldl -liconv -lmysqlclient -lcurl \
