@@ -164,7 +164,7 @@ void Hacklogic::OnQueueGetAppSummary(){
 		std::string pnname;
 		pnname.assign(value,value_len);
 		LOG_DEBUG2("%s",pnname.c_str());
-		if(value_len<128&&value_len>4)
+		if(value_len<128&&value_len>4&&(strcmp(pnname.c_str(),"detailCards")!=0)&&(strcmp(pnname.c_str(),"importantApps")!=0))
 			OnReplaceAppSummary(key,pnname);
 		delete[] value;
 	}
