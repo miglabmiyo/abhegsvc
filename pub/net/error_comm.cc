@@ -61,6 +61,10 @@ buddha_strerror(int error_code){
 		  return SIGN_LACK_STR;
 	  case MOVIE_ID_LACK:
 		  return MOVIE_ID_LACK_STR;
+	  case BEACON_MAC_LACK:
+		  return BEACON_MAC_LACK_STR;
+	  case BEACON_UUID_LACK:
+		  return BEACON_UUID_LACK_STR;
 	  default:
 		  return "未知错误";
 	}

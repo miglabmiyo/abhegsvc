@@ -24,6 +24,7 @@ enum netoperatorcode{
 	APP_SEARCH_TYPE = 3105,//类别搜索
 	GAME_STRATEGY_CATALOG = 3106,//获取攻略目录
 	GAME_STRATEGY_DETAILS = 3107,//获取攻略详情
+	APP_SHAK = 3108,//摇一摇
 
 	//音乐
 	MUSIC_GAIN_COLLECT_LIST = 4001,//获取红心歌单
@@ -63,6 +64,10 @@ enum netoperatorcode{
 
 	//
 	HACK_WANDOUJIA_SUMMARY = 8000,//豌豆荚详情页
+	HACK_SNSSDK_ARTICLE = 8001,//今日头条
+
+	//beacon
+	BEACON_SHARK = 9001,//摇一摇
 
 };
 

@@ -12,6 +12,7 @@
 #include "logic/logic_comm.h"
 #include "basic/scoped_ptr.h"
 #include "basic/basic_util.h"
+#include "http/http_method.h"
 #include "basic/md5sum.h"
 #include "basic/radom_in.h"
 #include <stdio.h>
@@ -242,6 +243,29 @@ double LogicUnit::CalculationMovieStar(const int64 play,const int64 like){
 
 	double star  =  (fiveper * 100 *5) + (fourper * 100 *4) + (threeper * 100 *3) + (twoper * 100 *2)+(oneper * 100 *1);
 	return star/100>5?5:(star/100);
+}
+
+
+bool LogicUnit::RequestGetMethod(const std::string& url,std::string& content,const int count){
+	http::HttpMethodGet http(url);
+	int32 i = 0;
+	bool r = false;
+	do{
+		r = http.Get();
+		if(r)
+			break;
+		i++;
+		if(i>=count)
+			break;
+
+	}while(true);
+
+	if(!r)
+		return false;
+	r = http.GetContent(content);
+	if(!r)
+		return r;
+	return true;
 }
 
 

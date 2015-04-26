@@ -66,7 +66,7 @@ private:
     bool OnGameStrategyDetails(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
 			const void* msg = NULL,const int len = 0);
 
-    bool OnSharkGame(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    bool OnSharkStore(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
 			const void* msg = NULL,const int len = 0);
 
 private:

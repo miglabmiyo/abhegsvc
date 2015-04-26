@@ -28,7 +28,7 @@ CXXFLAGS += -g  -Wextra -pthread -shared -fPIC
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-PLUGIN = $(SO_DIR)/hacksvc/hack.so
+PLUGIN = $(SO_DIR)/beaconsvc/beacon.so
                 
 INCLUDE_PATHS = -I/usr/local/libmemcached-1.0.7/include \
 				-I$(LIB_DIR)/core \
@@ -77,27 +77,18 @@ clean :
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-hack_init.o : ./hack_init.cc ./hack_init.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_init.cc $(INCLUDE_PATHS) 
+beacon_init.o : ./beacon_init.cc ./beacon_init.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./beacon_init.cc $(INCLUDE_PATHS) 
 
-hack_logic.o : ./hack_logic.cc ./hack_logic.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_logic.cc $(INCLUDE_PATHS)
-
-news_connector.o : ./news_connector.cc ./news_connector.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./news_connector.cc $(INCLUDE_PATHS)
+beacon_logic.o : ./beacon_logic.cc ./beacon_logic.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./beacon_logic.cc $(INCLUDE_PATHS)
 	
-news_snssdk_connector.o : ./news_snssdk_connector.cc ./news_snssdk_connector.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./news_snssdk_connector.cc $(INCLUDE_PATHS)
-		
-appstore_connector.o : ./appstore_connector.cc ./appstore_connector.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./appstore_connector.cc $(INCLUDE_PATHS)
+beacon_basic_info.o : ./beacon_basic_info.cc ./beacon_basic_info.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./beacon_basic_info.cc $(INCLUDE_PATHS)
 	
-appstore_wandoujia_connector.o : ./appstore_wandoujia_connector.cc ./appstore_wandoujia_connector.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./appstore_wandoujia_connector.cc $(INCLUDE_PATHS)
+db_comm.o : ./db_comm.cc ./db_comm.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./db_comm.cc $(INCLUDE_PATHS)
 	
-hack_basic_info.o : ./hack_basic_info.cc ./hack_basic_info.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_basic_info.cc $(INCLUDE_PATHS)
-
 comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/user_comm_head.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/net/comm_impl.cc $(INCLUDE_PATHS)
 
@@ -131,12 +122,10 @@ md5sum.o:$(THIRD_PATH)/basic/md5sum.cc
 radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/radom_in.cc $(INCLUDE_PATHS)
 
-$(PLUGIN) : hack_init.o hack_logic.o hack_basic_info.o\
-	appstore_wandoujia_connector.o appstore_connector.o\
-	news_snssdk_connector.o news_connector.o\
+$(PLUGIN) : beacon_init.o beacon_logic.o db_comm.o beacon_basic_info.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \
-	$(CUSTOM_THIRD_PATH)/dmg_fp/lib/dmg_fp.a $(LIB_DIR)/base/lib/mybase.a $(LIB_DIR)/lib/libhiredis.a
+	$(CUSTOM_THIRD_PATH)/dmg_fp/lib/dmg_fp.a $(LIB_DIR)/base/lib/mybase.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(LINK_PATHS) -lpthread -lexpat -lrt -lpthread -ldl -liconv -lmysqlclient -lcurl \
 	$^ -o $@

@@ -43,6 +43,9 @@ public:
 	static bool GetGameStrategyDetail(const int64 strategy_id,storesvc_logic::GameStrategy& strategy);
 
 	static bool GetAppPicList(const int64 appid,const int32 tclass,base_logic::AppInfos& appinfo);
+
+
+	static bool ShakAppInfo(const double latitude,const double longtiude,std::list<base_logic::AppInfos>& list);
 };
 
 }

@@ -203,6 +203,28 @@ private:
 	int64   strategy_id_;
 };
 
+class ShakStore:public LoginHeadPacket{
+public:
+	ShakStore(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	void Init(){
+		bool r = false;
+		r = m_->GetReal(L"latitude",&latitude_);
+		r = m_->GetReal(L"longitude",&longitude_);
+	}
+
+
+	const double latitude() const {return this->latitude_;}
+	const double longitude() const {return this->longitude_;}
+
+private:
+	double latitude_;
+	double longitude_;
+};
+
 }
 
 namespace netcomm_send{

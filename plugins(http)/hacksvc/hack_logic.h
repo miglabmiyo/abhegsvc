@@ -2,6 +2,7 @@
 #define __ABHEG__HACKSVC__HACK_LOGIC___
 
 #include "appstore_connector.h"
+#include "news_connector.h"
 #include "hack_basic_info.h"
 #include "config/config.h"
 #include "storage/storage.h"
@@ -48,6 +49,9 @@ public:
 private:
     bool OnHackWandoujiaSuammry(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
     		const void* msg = NULL,const int len = 0);
+
+    bool OnHackSNSSDKArticel(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();
@@ -63,6 +67,7 @@ private:
     void AppSummaryUnSerialzer(base_logic::DictionaryValue* value,std::string& content);
 private:
     hacksvc_logic::AppStoreConnector*              wandoujia_appstore_connector_engine_;
+    hacksvc_logic::NewsConnector*                  snsskd_connector_engine_;
 };
 
 

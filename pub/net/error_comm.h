@@ -57,7 +57,11 @@ enum neterrorcode{
 	PAY_USER_LACK = -1117,
 
 	//机器人相关
-	MOVIE_CONTENT_LACK = -1200
+	MOVIE_CONTENT_LACK = -1200,
+
+	//beacon
+	BEACON_MAC_LACK = -1600,
+	BEACON_UUID_LACK = -1601
 
 };
 
@@ -102,6 +106,9 @@ enum neterrorcode{
 
 
 #define MOVIE_CONTENT_LACK_STR            "缺少电影内容"
+
+#define BEACON_MAC_LACK_STR               "缺少网卡地址"
+#define BEACON_UUID_LACK_STR              "缺少设备号"
 
 
 const char*

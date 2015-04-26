@@ -47,12 +47,12 @@ LINKALL = $(COMPILER) $(LINK_FLAGS) $(LINK_PATHS) $?  $(LINK_LIBRARYS)
 
 
 
-POBJ =  mig_log.o core_interface.o
+POBJ =  mig_log.o core_interface.o http_formate.o
 OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc hackproc
+proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc hackproc beaconproc
 
 ######################movieproc###############################################
 MOVIENAME = movie_
@@ -146,17 +146,40 @@ $(MUSIC_OBJECT_PATH)/$(MUSICNAME)delcltsong.o:
 	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/delcltsong/delcltsong.cc
 
 ######################hackproc###############################################
+HACKNAME = hack_
 HACKPROC_PATH = /hack
-HACKPROC_VERSION = /1
-hackproc:wdjsummary.fcgi
+HACK_OBJECT_PATH = ./obj$(HACKPROC_PATH)
+OTJERPROC_VERSION = /v1
+hackproc:$(HACKPROC_PATH)/wdjsummary.fcgi $(HACKPROC_PATH)/snssdk.fcgi
 
-wdjsummary.fcgi: wdjsummary.o $(POBJ)
-	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(HACKPROC_VERSION)/wdjsummary.fcgi
+$(HACKPROC_PATH)/wdjsummary.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/wdjsummary.fcgi
+
+$(HACKPROC_PATH)/snssdk.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)snssdk.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/snssdk.fcgi
+		
+### 编译
+
+$(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/wdjsummary/wdjsummary.cc
+	
+$(HACK_OBJECT_PATH)/$(HACKNAME)snssdk.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/snssdk/snssdk.cc
+	
+######################beaconproc###############################################
+BEACONNAME = beacon_
+BEACONPROC_PATH = /beacon
+BEACON_OBJECT_PATH = ./obj$(BEACONPROC_PATH)
+OTJERPROC_VERSION = /v1
+beaconproc:$(BEACONPROC_PATH)/shark.fcgi
+
+$(BEACONPROC_PATH)/shark.fcgi: $(BEACON_OBJECT_PATH)/$(BEACONNAME)shark.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(BEACONPROC_PATH)$(OTJERPROC_VERSION)/shark.fcgi
 	
 ### 编译
 
-wdjsummary.o:
-	$(COMPILE) .$(HACKPROC_PATH)$(HACKPROC_VERSION)/wdjsummary/wdjsummary.cc
+$(BEACON_OBJECT_PATH)/$(BEACONNAME)shark.o:
+	$(COMPILE) .$(BEACONPROC_PATH)$(OTJERPROC_VERSION)/shark/shark.cc
 		
 ######################otherproc###############################################
 OTHERPROC_PATH = /other
@@ -268,7 +291,7 @@ STORE_OBJECT_PATH = ./obj$(STOREPROC_PATH)
 OTJERPROC_VERSION = /1
 storeproc:$(STOREPROC_PATH)/summary.fcgi $(STOREPROC_PATH)/wanted.fcgi $(STOREPROC_PATH)/like.fcgi \
 	$(STOREPROC_PATH)/topics.fcgi $(STOREPROC_PATH)/searchkey.fcgi $(STOREPROC_PATH)/searchtype.fcgi\
-	$(STOREPROC_PATH)/strcatalog.fcgi $(STOREPROC_PATH)/strdetail.fcgi
+	$(STOREPROC_PATH)/strcatalog.fcgi $(STOREPROC_PATH)/strdetail.fcgi $(STOREPROC_PATH)/shark.fcgi
 
 $(STOREPROC_PATH)/wanted.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)wanted.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/wanted.fcgi
@@ -294,7 +317,8 @@ $(STOREPROC_PATH)/strcatalog.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)strcatalog.o
 $(STOREPROC_PATH)/strdetail.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)strdetail.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strdetail.fcgi
 
-
+$(STOREPROC_PATH)/shark.fcgi: $(STORE_OBJECT_PATH)/$(STORENAME)shark.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(STOREPROC_PATH)$(OTJERPROC_VERSION)/shark.fcgi
 	
 ### 编译
 
@@ -322,7 +346,8 @@ $(STORE_OBJECT_PATH)/$(STORENAME)strcatalog.o:
 $(STORE_OBJECT_PATH)/$(STORENAME)strdetail.o:
 	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/strdetail/strdetail.cc
 	
-
+$(STORE_OBJECT_PATH)/$(STORENAME)shark.o:
+	$(COMPILE) .$(STOREPROC_PATH)$(OTJERPROC_VERSION)/shark/shark.cc
 	
 ######################userproc###############################################
 USERNAME = user_
@@ -358,7 +383,7 @@ FINDPROC_PATH = /find
 FIND_OBJECT_PATH = ./obj$(FINDPROC_PATH)
 OTJERPROC_VERSION = /1
 findproc:$(FINDPROC_PATH)/appstore.fcgi $(FINDPROC_PATH)/bookstore.fcgi $(FINDPROC_PATH)/gamestore.fcgi $(FINDPROC_PATH)/main.fcgi\
-	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi $(FINDPROC_PATH)/wandoujia.fcgi
+	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi
 
 $(FINDPROC_PATH)/appstore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
@@ -421,3 +446,6 @@ mig_log.o:
 
 core_interface.o:
 	$(COMPILE) $(LIB_DIR)/public/comm/core_interface.cc
+	
+http_formate.o:
+	$(COMPILE) $(LIB_DIR)/public/http/http_formate.cc
