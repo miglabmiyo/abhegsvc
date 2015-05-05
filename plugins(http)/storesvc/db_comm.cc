@@ -217,6 +217,8 @@ bool DBComm::SearchKeyApp(const std::string& key,std::list<base_logic::AppInfos>
 				appinfo.set_down(atoll(rows[5]));
 			if(rows[6]!=NULL)
 				appinfo.set_summary(rows[6]);
+			if(rows[7]!=NULL)
+				appinfo.set_attr(atol(rows[7]));
 
 			list.push_back(appinfo);
 		}

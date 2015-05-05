@@ -292,6 +292,16 @@ bool FindCacheManager::SendFindMain(netcomm_send::FindMain* main){
 			main->set_book(bookinfo.Release());
 		}
 	}
+	//音乐
+	if(find_cache_->find_dimension_list_.size()>0){
+		std::list<base_logic::Dimension>::iterator dimension_iterator;
+		for(dimension_iterator=find_cache_->find_dimension_list_.begin();
+				dimension_iterator!=find_cache_->find_dimension_list_.end();
+				dimension_iterator++){
+			base_logic::Dimension dimension = (*dimension_iterator);
+			main->set_music(dimension.Release());
+		}
+	}
 	//影视
 	if(find_cache_->find_move_list_.size()>0){
 		std::list<base_logic::Movies>::iterator movieinfo_iterator;
@@ -385,6 +395,7 @@ void CacheManagerOp::FetchDBFindMain(){
 	findsvc_logic::DBComm::GetFindApp(find_cache->find_app_list_);
 	findsvc_logic::DBComm::GetFindBook(find_cache->find_book_list_);
 	findsvc_logic::DBComm::GetFindGame(find_cache->find_game_list_);
+	findsvc_logic::DBComm::GetFindMusic(find_cache->find_dimension_list_);
 	findsvc_logic::DBComm::GetFindMovie(find_cache->find_move_list_);
 	findsvc_logic::DBComm::GetAdver(find_cache->find_adver_list_);
 }

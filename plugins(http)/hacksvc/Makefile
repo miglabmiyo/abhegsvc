@@ -21,7 +21,7 @@ CUSTOM_THIRD_PATH = $(LIB_DIR)/third_party
 LINK_PATHS = -L./ -L/usr/local/libmemcached-1.0.7/lib/  -L/usr/lib64/mysql
 
 # Flags passed to the preprocessor.
-CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_ -D_DEBUG -DUSR_LOG_MSG -DPROCESS_WORK
+CPPFLAGS += -isystem -shared -fPIC -D_DB_POOL_ -D_DEBUG -DUSR_LOG_MSG -DPROCESS_WORK -D__OLD_INTERFACE__
 
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g  -Wextra -pthread -shared -fPIC
@@ -95,6 +95,9 @@ appstore_connector.o : ./appstore_connector.cc ./appstore_connector.h
 appstore_wandoujia_connector.o : ./appstore_wandoujia_connector.cc ./appstore_wandoujia_connector.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./appstore_wandoujia_connector.cc $(INCLUDE_PATHS)
 	
+qihoostore_connector.o : ./qihoostore_connector.cc ./qihoostore_connector.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./qihoostore_connector.cc $(INCLUDE_PATHS)
+	
 hack_basic_info.o : ./hack_basic_info.cc ./hack_basic_info.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./hack_basic_info.cc $(INCLUDE_PATHS)
 
@@ -133,7 +136,7 @@ radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 
 $(PLUGIN) : hack_init.o hack_logic.o hack_basic_info.o\
 	appstore_wandoujia_connector.o appstore_connector.o\
-	news_snssdk_connector.o news_connector.o\
+	news_snssdk_connector.o news_connector.o qihoostore_connector.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \

@@ -52,6 +52,24 @@ private:
 
     bool OnHackSNSSDKArticel(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
     		const void* msg = NULL,const int len = 0);
+
+    bool OnHackPPAdvert(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnHackPPRecommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnHack360Recommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnHackTianyaPeacock(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnHackTianyaAdRecommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+            		const void* msg = NULL,const int len = 0);
+
+    bool OnHackTianyaRecommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+        		const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();
@@ -67,6 +85,7 @@ private:
     void AppSummaryUnSerialzer(base_logic::DictionaryValue* value,std::string& content);
 private:
     hacksvc_logic::AppStoreConnector*              wandoujia_appstore_connector_engine_;
+    hacksvc_logic::AppStoreConnector*              qihoo_store_connector_engine_;
     hacksvc_logic::NewsConnector*                  snsskd_connector_engine_;
 };
 

@@ -339,6 +339,39 @@ class AppSearchResult:public HeadPacket{
 public:
 	AppSearchResult(){
 		base_.reset(new netcomm_send::NetBase());
+		hot_list_.reset(new base_logic::ListValue());
+		new_list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!new_list_->empty())
+			this->base_->Set(L"new",new_list_.release());
+		if(!hot_list_->empty())
+			this->base_->Set(L"hot",hot_list_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	inline void set_new_list(base_logic::DictionaryValue* app){
+		new_list_->Append(app);
+	}
+
+	inline void set_hot_list(base_logic::DictionaryValue* app){
+		hot_list_->Append(app);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>             base_;
+	scoped_ptr<base_logic::ListValue>             hot_list_;
+	scoped_ptr<base_logic::ListValue>             new_list_;
+
+};
+
+class AppSharkResult:public HeadPacket{
+public:
+	AppSharkResult(){
+		base_.reset(new netcomm_send::NetBase());
 		list_.reset(new base_logic::ListValue());
 	}
 
@@ -353,6 +386,7 @@ public:
 	inline void set_list(base_logic::DictionaryValue* app){
 		list_->Append(app);
 	}
+
 
 private:
 	scoped_ptr<netcomm_send::NetBase>             base_;

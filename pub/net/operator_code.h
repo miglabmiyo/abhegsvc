@@ -14,6 +14,7 @@ enum netoperatorcode{
 	FIND_GAME_RANK = 2104,//游戏排行榜
 	FIND_APP_RANK = 2105,//应用排行榜
 	FIND_STORE_MOVIE = 2106,//影视推荐
+	FIND_PERSONAL = 2107,//个人推荐
 
 	//商城
 	SUMMARY_INFOS = 3100, // 应用详情
@@ -65,6 +66,12 @@ enum netoperatorcode{
 	//
 	HACK_WANDOUJIA_SUMMARY = 8000,//豌豆荚详情页
 	HACK_SNSSDK_ARTICLE = 8001,//今日头条
+	HACK_PP_ADVERT =  8002,//PP助手广告
+	HACK_PP_RECOMMEND = 8003,//PP助手推荐
+	HACK_360_RECOMMEND = 8004,//360推荐页
+	HACK_TIANYA_PEACOCK = 8005,//天涯开屏
+	HACK_TIANYA_RECOMMEND = 8006,//天涯市场
+	HACK_TIANYA_AD_RECOMMEND =8007,//天涯推荐
 
 	//beacon
 	BEACON_SHARK = 9001,//摇一摇

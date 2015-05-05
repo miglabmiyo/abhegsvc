@@ -304,6 +304,53 @@ public:
 	Data*    data_;
 };
 
+class Dimension{
+public:
+	explicit Dimension();
+	Dimension(const Dimension& dimension);
+	Dimension& operator = (const Dimension& dimension);
+
+	base_logic::DictionaryValue* Release();
+
+	const int64 id() const {return data_->id_;}
+	const int32 sid() const {return data_->sid_;}
+	const int64 like() const {return data_->like_;}
+	const std::string& name() const {return data_->name_;}
+	const std::string& logo() const {return data_->logo_;}
+	const std::string& dimension() const {return data_->dimension_;}
+	const std::string& desc() const {return data_->desc_;}
+
+	void set_id(const int64 id){data_->id_ = id;}
+	void set_sid(const int32 sid){data_->sid_ = sid;}
+	void set_like(const int64 like){data_->like_ = like;}
+	void set_name(const std::string& name){data_->name_ = name;}
+	void set_logo(const std::string& logo){data_->logo_ = logo;}
+	void set_dimension(const std::string& dimension){data_->dimension_ = dimension;}
+	void set_desc(const std::string& desc){data_->desc_ = desc;}
+private:
+	class Data{
+	public:
+		Data():refcount_(1)
+			,id_(0)
+			,sid_(0)
+			,like_(0){}
+	public:
+		int64           id_;
+		int32           sid_;
+		int64           like_;
+		std::string     name_;
+		std::string     logo_;
+		std::string     dimension_;
+		std::string     desc_;
+
+		void AddRef(){refcount_ ++;}
+		void Release(){if (!--refcount_)delete this;}
+	private:
+		int refcount_;
+	};
+	Data*    data_;
+
+};
 class Movies{
 public:
 	explicit Movies();

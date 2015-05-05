@@ -64,7 +64,19 @@ private:
     bool OnFindMovies(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
     		const void* msg = NULL,const int len = 0);
 
+    bool OnFindPersonal(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
 private:
+    /*
+    template <typename ELEMENT>
+    bool FindPersonalT(const int64 uid,
+    		bool (*db_get)(const int64,std::list<ELEMENT>&),
+    		void (*set_info)(base_logic::DictionaryValue*));*/
+
+    template <typename ELEMENT>
+    bool FindPersonalT(const int64 uid,const int socket,int32 type,
+    		bool (*db_get)(const int64,std::list<ELEMENT>&));
 
     bool Init();
 

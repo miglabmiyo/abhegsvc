@@ -24,6 +24,11 @@ public:
 	virtual void Release();//释放
 
 	virtual bool OnRequestAppStoreInfo(const std::string& url,std::string& content);
+
+	virtual bool OnRequestAppStoreInfo(const int32 type){return true;}
+	virtual bool GetTestContent(std::string& content){return true;}
+
+	virtual void OnTimeCheck(){}
 private:
 	bool RequestWandoujiaUrl(const std::string& url,std::string& content);
 };

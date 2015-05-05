@@ -28,6 +28,32 @@ public:
 	}
 };
 
+//个人推荐
+class FindPersonal:public LoginHeadPacket{
+public:
+	FindPersonal(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	inline void Init(){
+		bool r = false;
+		r = m_->GetBigInteger(L"category",&category_);
+		if(!r) error_code_ = STORE_SEACH_BTYPE_LACK;
+		r = m_->GetReal(L"latitude",&latitude_);
+		if(!r) latitude_ = 0.0;
+		r = m_->GetReal(L"longitude",&longitude_);
+		if(!r) longitude_ = 0.0;
+	}
+
+	const int64 category() const {return this->category_;}
+	const double latitude() const {return this->latitude_;}
+	const double longitude() const {return this->longitude_;}
+private:
+	int64      category_;
+	double     latitude_;
+	double     longitude_;
+};
 
 }
 
@@ -474,6 +500,61 @@ private:
 
 };
 
+class FindPersonal:public HeadPacket{
+public:
+	FindPersonal(){
+		base_.reset(new netcomm_send::NetBase());
+		app_list_.reset(new base_logic::ListValue());
+		game_list_.reset(new base_logic::ListValue());
+		book_list_.reset(new base_logic::ListValue());
+		movie_list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!app_list_->empty())
+			this->base_->Set(L"app",app_list_.release());
+		if(!game_list_->empty())
+			this->base_->Set(L"game",game_list_.release());
+		if(!book_list_->empty())
+			this->base_->Set(L"book",book_list_.release());
+		if(!movie_list_->empty())
+			this->base_->Set(L"movie",movie_list_.release());
+
+		if(category_.get()!=NULL)
+				this->base_->Set(L"category",category_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	void set_app_list(base_logic::DictionaryValue* app){
+		app_list_->Append(app);
+	}
+
+	void set_game_list(base_logic::DictionaryValue* game){
+		game_list_->Append(game);
+	}
+
+	void set_book_list(base_logic::DictionaryValue* book){
+		book_list_->Append(book);
+	}
+
+	void set_movie_list(base_logic::DictionaryValue* movie){
+		movie_list_->Append(movie);
+	}
+
+	void set_category(const int32 category){
+		category_.reset(new base_logic::FundamentalValue(category));
+	}
+private:
+	scoped_ptr<netcomm_send::NetBase>              base_;
+	scoped_ptr<base_logic::FundamentalValue>       category_;
+	scoped_ptr<base_logic::ListValue>              app_list_;//应用
+	scoped_ptr<base_logic::ListValue>              game_list_;//游戏
+	scoped_ptr<base_logic::ListValue>              book_list_;//书籍
+	scoped_ptr<base_logic::ListValue>              movie_list_;//电影
+
+};
 
 }
 #endif /* _NET_USER_COMM_HEAD_H_ */

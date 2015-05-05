@@ -89,8 +89,8 @@ db_comm.o : ./db_comm.cc ./db_comm.h
 find_cache_mgr.o : ./find_cache_mgr.cc ./find_cache_mgr.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./find_cache_mgr.cc $(INCLUDE_PATHS)
 	
-user_basic_info.o : ./user_basic_info.cc ./user_basic_info.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./user_basic_info.cc $(INCLUDE_PATHS)
+personal_recommend.o : ./personal_recommend.cc ./personal_recommend.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./personal_recommend.cc $(INCLUDE_PATHS)
 
 comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/user_comm_head.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/net/comm_impl.cc $(INCLUDE_PATHS)
@@ -125,7 +125,7 @@ md5sum.o:$(THIRD_PATH)/basic/md5sum.cc
 radom_in.o:$(THIRD_PATH)/basic/radom_in.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(THIRD_PATH)/basic/radom_in.cc $(INCLUDE_PATHS)
 
-$(PLUGIN) : find_init.o find_logic.o db_comm.o find_cache_mgr.o\
+$(PLUGIN) : find_init.o find_logic.o db_comm.o find_cache_mgr.o personal_recommend.o\
 	http_packet.o mig_log.o basictypes.o comm_impl.o error_comm.o\
 	logic_infos.o logic_unit.o basic_util.o config.o \
 	md5sum.o radom_in.o \

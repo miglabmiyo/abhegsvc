@@ -1,6 +1,7 @@
 #include "find_logic.h"
 #include "find_cache_mgr.h"
 #include "db_comm.h"
+#include "personal_recommend.h"
 #include "logic/logic_unit.h"
 #include "logic/logic_comm.h"
 #include "common.h"
@@ -19,6 +20,7 @@ Findlogic::~Findlogic(){
 	findsvc_logic::DBComm::Dest();
 	findsvc_logic::CacheManagerOp::FreeCacheManagerOp();
 	findsvc_logic::CacheManagerOp::FreeFindCacheManager();
+	findsvc_logic::PersonalRecommend::FreeInstance();
 }
 
 bool Findlogic::Init(){
@@ -29,6 +31,7 @@ bool Findlogic::Init(){
 		return false;
 	r = config->LoadConfig(path);
 
+	findsvc_logic::PersonalRecommend::GetInstance();
 	findsvc_logic::DBComm::Init(config->mysql_db_list_);
 
 	findsvc_logic::CacheManagerOp::GetCacheManagerOp();
@@ -107,6 +110,9 @@ bool Findlogic::OnFindMessage(struct server *srv, const int socket, const void *
 		   break;
 	   case FIND_STORE_MOVIE:
 		   OnFindMovies(srv,socket,value);
+		   break;
+	   case FIND_PERSONAL:
+		   OnFindPersonal(srv,socket,value);
 		   break;
 	}
 
@@ -312,5 +318,98 @@ bool Findlogic::OnFindMovies(struct server *srv,const int socket,netcomm_recv::N
 	send_message(socket,(netcomm_send::HeadPacket*)movies_rank.get());
 	return true;
 }
+
+bool Findlogic::OnFindPersonal(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::FindPersonal> find(new netcomm_recv::FindPersonal(netbase));
+	bool r = false;
+	int error_code = find->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	switch(find->category()){
+	case 1:
+		/*r = FindPersonalT<base_logic::AppInfos>(find->uid(),findsvc_logic::DBComm::GetPersonalApp,
+			result->set_app_list);*/
+		r = FindPersonalT<base_logic::AppInfos>(find->uid(),socket,find->category(),
+				findsvc_logic::DBComm::GetPersonalApp);
+		break;
+
+	case 2:
+		r = FindPersonalT<base_logic::AppInfos>(find->uid(),socket,find->category(),
+						findsvc_logic::DBComm::GetPersonalGame);
+		/*
+		r = FindPersonalT<base_logic::AppInfos>(find->uid(),findsvc_logic::DBComm::GetPersonalGame,
+				result->set_game_list);*/
+		break;
+	case 3:
+		r = FindPersonalT<base_logic::BookInfo>(find->uid(),socket,find->category(),
+						findsvc_logic::DBComm::GetPersonalBook);
+		/*
+		r = FindPersonalT<base_logic::BookInfo>(find->uid(),findsvc_logic::DBComm::GetPersonalBook,
+				result->set_book_list);*/
+		break;
+	case 4:
+		r = FindPersonalT<base_logic::Movies>(find->uid(),socket,find->category(),
+						findsvc_logic::DBComm::GetPersonalMovie);
+		/*
+		r = FindPersonalT<base_logic::Movies>(find->uid(),findsvc_logic::DBComm::GetPersonalMovie,
+				result->set_movie_list);*/
+		break;
+	default:
+		break;
+	}
+
+	//send_message(socket,(netcomm_send::HeadPacket*)result.get());
+	return true;
+}
+
+
+template <typename ELEMENT>
+bool  Findlogic::FindPersonalT(const int64 uid,const int socket,int32 type,
+ 		bool (*db_get)(const int64,std::list<ELEMENT>&)){
+	bool r = false;
+	scoped_ptr<netcomm_send::FindPersonal> result(new netcomm_send::FindPersonal());
+	std::list<ELEMENT> list;
+	r = db_get(uid,list);
+	if(!r||list.size()<=0)
+		return false;
+	while(list.size()>0){
+		ELEMENT info = list.front();
+		list.pop_front();
+		if(type==1)
+			result->set_app_list(info.Release());
+		else if(type==2)
+			result->set_game_list(info.Release());
+		else if(type==3)
+			result->set_book_list(info.Release());
+		else if(type==4)
+			result->set_movie_list(info.Release());
+	}
+	result->set_category(type);
+	send_message(socket,(netcomm_send::HeadPacket*)result.get());
+	return true;
+}
+/*
+template <typename ELEMENT>
+bool  Findlogic::FindPersonalT(const int64 uid,
+    		bool (*db_get)(const int64,std::list<ELEMENT>&),
+    		void (*set_info)(base_logic::DictionaryValue*)){
+	bool r = false;
+	std::list<ELEMENT> list;
+	r = db_get(uid,list);
+	if(!r||list.size()<=0)
+		return false;
+	while(list.size()>0){
+		ELEMENT info = list.front();
+		list.pop_front();
+		//set_info(info.Release());
+	}
+	return true;
+}*/
+
 }
 

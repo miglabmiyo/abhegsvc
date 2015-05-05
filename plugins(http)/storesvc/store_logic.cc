@@ -147,6 +147,7 @@ bool Storelogic::OnTimeout(struct server *srv, char *id, int opcode, int time){
 
 bool Storelogic::OnSearchByType(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
 				const void* msg,const int len){
+	/*
 	scoped_ptr<netcomm_recv::AppSearchType> search_type(new netcomm_recv::AppSearchType(netbase));
 	bool r = false;
 	int error_code = search_type->GetResult();
@@ -167,7 +168,7 @@ bool Storelogic::OnSearchByType(struct server *srv,const int socket,netcomm_recv
 		list.pop_front();
 		result->set_list(appinfo.Release());
 	}
-	send_message(socket,(netcomm_send::HeadPacket*)result.get());
+	send_message(socket,(netcomm_send::HeadPacket*)result.get());*/
 	return true;
 }
 
@@ -190,7 +191,11 @@ bool Storelogic::OnSearchByKey(struct server *srv,const int socket,netcomm_recv:
 	while(list.size()>0){
 		base_logic::AppInfos appinfo = list.front();
 		list.pop_front();
-		result->set_list(appinfo.Release());
+		if(appinfo.attr()==1)
+			result->set_hot_list(appinfo.Release());
+		else if(appinfo.attr()==2)
+			result->set_new_list(appinfo.Release());
+		//result->set_list(appinfo.Release());
 	}
 	send_message(socket,(netcomm_send::HeadPacket*)result.get());
 }
@@ -378,7 +383,7 @@ bool Storelogic::OnSharkStore(struct server *srv,const int socket,netcomm_recv::
 
 	std::list<base_logic::AppInfos> list;
 	r = storesvc_logic::DBComm::ShakAppInfo(shak->latitude(),shak->longitude(),list);
-	scoped_ptr<netcomm_send::AppSearchResult> result(new netcomm_send::AppSearchResult());
+	scoped_ptr<netcomm_send::AppSharkResult> result(new netcomm_send::AppSharkResult());
 	while(list.size()>0){
 		base_logic::AppInfos appinfo = list.front();
 		list.pop_front();

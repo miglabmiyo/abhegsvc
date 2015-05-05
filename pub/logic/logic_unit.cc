@@ -268,5 +268,27 @@ bool LogicUnit::RequestGetMethod(const std::string& url,std::string& content,con
 	return true;
 }
 
+bool LogicUnit::RequestPostMethod(const std::string& url,const std::string& post_content,
+		std::string& content,const int count){
+	http::HttpMethodPost http(url);
+	int32 i = 0;
+	bool r = false;
+	do{
+		r = http.Post(post_content.c_str());
+		if(r)
+			break;
+		i++;
+		if(i>=count)
+			break;
+
+	}while(true);
+
+	if(!r)
+		return false;
+	r = http.GetContent(content);
+	if(!r)
+		return r;
+	return true;
+}
 
 }

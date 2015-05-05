@@ -224,8 +224,10 @@ base_logic::DictionaryValue* BookInfo::Release(){
 		dict->SetInteger(L"type",data_->type_);
 	if(data_->chapter_!=-1)
 		dict->SetBigInteger(L"chapter",data_->chapter_);
-	if(data_->free_count_!=-1&&data_->down_!=-1)
+	if(data_->free_count_!=-1&&data_->down_!=-1){
+		dict->SetBigInteger(L"read",data_->free_count_+data_->down_);
 		dict->SetReal(L"star",base_logic::LogicUnit::CalculationBookStar(data_->free_count_,data_->down_));
+	}
 	//if(data_->star_!=0.0)
 		//dict->SetReal(L"star",4.5);
 
@@ -303,11 +305,55 @@ base_logic::DictionaryValue* Movies::Release(){
 	if(!data_->summary_.empty())
 		dict->SetString(L"summary",data_->summary_);
 	if(data_->like_!=0&&data_->play_count_!=0)
-		dict->SetBigInteger(L"star",base_logic::LogicUnit::CalculationMovieStar(data_->play_count_,data_->like_));
+		dict->SetReal(L"star",base_logic::LogicUnit::CalculationMovieStar(data_->play_count_,data_->like_));
 	else
 		dict->SetBigInteger(L"star",0.0);
 	return dict.release();
 }
+
+Dimension::Dimension(){
+	data_ = new Data();
+}
+
+Dimension::Dimension(const Dimension& dimension)
+:data_(dimension.data_){
+	if(data_!=NULL){
+		data_->AddRef();
+	}
+}
+
+Dimension& Dimension::operator =(const Dimension& dimension){
+	if(dimension.data_!=NULL){
+		dimension.data_->AddRef();
+	}
+
+	if(data_!=NULL){
+		data_->Release();
+	}
+	data_ = dimension.data_;
+	return (*this);
+}
+
+base_logic::DictionaryValue* Dimension::Release(){
+	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
+	if(data_->id_!=0)
+		dict->SetBigInteger(L"id",data_->id_);
+	if(data_->sid_!=0)
+		dict->SetInteger(L"sid",data_->sid_);
+	if(!data_->name_.empty())
+		dict->SetString(L"name",data_->name_);
+	if(!data_->logo_.empty())
+		dict->SetString(L"logo",data_->logo_);
+	if(!data_->dimension_.empty())
+		dict->SetString(L"dimension",data_->dimension_);
+	if(!data_->desc_.empty())
+		dict->SetString(L"summary",data_->desc_);
+	//if(data_->like_!=0)
+		dict->SetBigInteger(L"like",time(NULL)/12123);
+
+	return dict.release();
+}
+
 
 LBSInfos::LBSInfos(){
 	data_ = new Data();

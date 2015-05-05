@@ -150,14 +150,29 @@ HACKNAME = hack_
 HACKPROC_PATH = /hack
 HACK_OBJECT_PATH = ./obj$(HACKPROC_PATH)
 OTJERPROC_VERSION = /v1
-hackproc:$(HACKPROC_PATH)/wdjsummary.fcgi $(HACKPROC_PATH)/snssdk.fcgi
+hackproc:$(HACKPROC_PATH)/wdjsummary.fcgi $(HACKPROC_PATH)/snssdk.fcgi $(HACKPROC_PATH)/PPAdvert.fcgi $(HACKPROC_PATH)/PPRecommnd.fcgi\
+	$(HACKPROC_PATH)/360Recommnd.fcgi $(HACKPROC_PATH)/tianyapeacock.fcgi $(HACKPROC_PATH)/tianyaRecommend.fcgi 
 
 $(HACKPROC_PATH)/wdjsummary.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/wdjsummary.fcgi
 
 $(HACKPROC_PATH)/snssdk.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)snssdk.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/snssdk.fcgi
-		
+
+$(HACKPROC_PATH)/PPAdvert.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)PPAdvert.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/PPAdvert.fcgi
+
+$(HACKPROC_PATH)/PPRecommnd.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)PPRecommnd.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/PPRecommnd.fcgi
+	
+$(HACKPROC_PATH)/360Recommnd.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)360Recommnd.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/360Recommnd.fcgi		
+
+$(HACKPROC_PATH)/tianyapeacock.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)tianyapeacock.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyapeacock.fcgi
+	
+$(HACKPROC_PATH)/tianyaRecommend.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)tianyaRecommend.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyaRecommend.fcgi
 ### 编译
 
 $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o:
@@ -166,6 +181,20 @@ $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o:
 $(HACK_OBJECT_PATH)/$(HACKNAME)snssdk.o:
 	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/snssdk/snssdk.cc
 	
+$(HACK_OBJECT_PATH)/$(HACKNAME)PPAdvert.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/PPAdvert/PPAdvert.cc
+	
+$(HACK_OBJECT_PATH)/$(HACKNAME)PPRecommnd.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/PPRecommnd/PPRecommnd.cc
+
+$(HACK_OBJECT_PATH)/$(HACKNAME)360Recommnd.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/360Recommnd/360Recommnd.cc
+
+$(HACK_OBJECT_PATH)/$(HACKNAME)tianyapeacock.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyapeacock/tianyapeacock.cc
+
+$(HACK_OBJECT_PATH)/$(HACKNAME)tianyaRecommend.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyaRecommend/tianyaRecommend.cc
 ######################beaconproc###############################################
 BEACONNAME = beacon_
 BEACONPROC_PATH = /beacon
@@ -383,7 +412,7 @@ FINDPROC_PATH = /find
 FIND_OBJECT_PATH = ./obj$(FINDPROC_PATH)
 OTJERPROC_VERSION = /1
 findproc:$(FINDPROC_PATH)/appstore.fcgi $(FINDPROC_PATH)/bookstore.fcgi $(FINDPROC_PATH)/gamestore.fcgi $(FINDPROC_PATH)/main.fcgi\
-	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi
+	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi $(FINDPROC_PATH)/personal.fcgi
 
 $(FINDPROC_PATH)/appstore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
@@ -408,6 +437,9 @@ $(FINDPROC_PATH)/moviestore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o $(
 
 $(FINDPROC_PATH)/wandoujia.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/wandoujia.fcgi
+	
+$(FINDPROC_PATH)/personal.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)personal.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/personal.fcgi
 ### 编译
 
 $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o:
@@ -433,6 +465,9 @@ $(FIND_OBJECT_PATH)/$(FINDNAME)moviestore.o:
 	
 $(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o:
 	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/wandoujia/wandoujia.cc
+	
+$(FIND_OBJECT_PATH)/$(FINDNAME)personal.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/personal/personal.cc
 clean:
 	-rm -f *.o
 	-rm -f $(OUTPUT_FILE)./*.fcgi

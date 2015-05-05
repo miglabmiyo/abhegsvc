@@ -6,6 +6,7 @@
  */
 #include "appstore_connector.h"
 #include "appstore_wandoujia_connector.h"
+#include "qihoostore_connector.h"
 
 
 
@@ -20,6 +21,9 @@ AppStoreConnector* AppStoreConnector::Create(int32 type){
         case IMPL_WANDOUJIA:
         	engine = new AppStoreWandoujiaImpl();
             break;
+        case IMPL_QIHOOSTORE:
+        	engine = new QIHOOStoreImpl();
+        	break;
         default:
         	break;
     }

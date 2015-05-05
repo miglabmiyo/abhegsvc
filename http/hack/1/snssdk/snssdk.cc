@@ -47,17 +47,26 @@ static void GetRequestMethod(const char* query){
 
 	std::string content;
 	std::string respone;
-	int flag,code;
-	http::HttpFormate::SetHttpGetMethod(GET_TYPE,query,content);
-	bool r = net::core_get(0,content.c_str(),content.length(),
+	std::stringstream os;
+	int flag;
+	int code;
+	bool r = false;
+	char* addr = getenv("REMOTE_ADDR");
+	os<<std::string(query)<<"&remote_addr="<<addr<<"&type="<<GET_TYPE<<"\n";
+	content = os.str();
+	/*content.assign(query);
+	content.append("&addr=");
+	content.append(addr);
+	content.append("&type=" std::to_string(GET_TYPE) "\n");
+	*/
+	MIG_INFO(USER_LEVEL,"%s",content.c_str());
+	r = net::core_get(0,content.c_str(),content.length(),
 		respone,flag,code);
-	MIG_DEBUG(USER_LEVEL,"%s",respone.c_str());
-	//http::HttpFormate::SetHttpResponse(respone);
-	if (!respone.empty()&&r)
-		//std::cout.write("Content-type: application/json;charset=utf-8\r\n\r\n1111",10);
-		printf("Content-type: application/json;charset=utf-8\r\n"
-			  "\r\n"
-			"%s",respone.c_str());
+	MIG_INFO(USER_LEVEL,"%s",respone.c_str());
+	if (!respone.empty())
+		printf("Content-type: text/html\r\n"
+		"\r\n"
+		"%s",respone.c_str());
 }
 
 static void PostRequestMethod(std::string& content){

@@ -1,5 +1,6 @@
 #include "beacon_logic.h"
 #include "db_comm.h"
+#include "basic/basic_util.h"
 #include "logic/logic_unit.h"
 #include "logic/logic_comm.h"
 #include "common.h"
@@ -128,9 +129,17 @@ bool Beaconlogic::OnSharkBeacon(struct server *srv,const int socket,netcomm_recv
 		return false;
 	}
 
+	//网卡地址
+	std::string mac;
+	std::string urlcodemac;
+	mac = shark->mac();
+	if(!shark->mac().empty())
+		base::BasicUtil::UrlDecode(mac,urlcodemac);
+	else
+		urlcodemac = shark->mac();
 	beaconsvc_logic::BeaconInfo  info;
 	info.set_uuid(shark->uuid());
-	info.set_mac(shark->mac());
+	info.set_mac(urlcodemac);
 	beaconsvc_logic::BeaconMerchant  merchant;
 
 	beaconsvc_logic::DBComm::GetBeaconMerchantInfo(info,merchant);

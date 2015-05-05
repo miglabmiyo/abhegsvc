@@ -25,6 +25,7 @@ public:
 	static bool GetFindBook(std::list<base_logic::BookInfo>& list);
 	static bool GetFindGame(std::list<base_logic::AppInfos>& list);
 	static bool GetFindMovie(std::list<base_logic::Movies>& list);
+	static bool GetFindMusic(std::list<base_logic::Dimension>& list);
 
 	static bool GetAdver(std::list<base_logic::AdvertInfos>& list);
 
@@ -45,6 +46,16 @@ public:
 
 	static bool GetAdverMoviesStore(std::list<base_logic::AdvertInfos>& list);
 	static bool GetFindStoreMovies(std::list<base_logic::Movies>& list);
+
+
+	///personal///
+	static bool GetPersonalAppAndGame(const int64 uid,const int32 type,
+			std::list<base_logic::AppInfos>& list);
+
+	static bool GetPersonalApp(const int64 uid,std::list<base_logic::AppInfos>& list);
+	static bool GetPersonalGame(const int64 uid,std::list<base_logic::AppInfos>& list);
+	static bool GetPersonalBook(const int64 uid,std::list<base_logic::BookInfo>& list);
+	static bool GetPersonalMovie(const int64 uid, std::list<base_logic::Movies>& list);
 };
 
 }

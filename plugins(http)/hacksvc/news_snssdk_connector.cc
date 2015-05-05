@@ -197,6 +197,7 @@ bool NewsSnsSDKImpl::OnReplaceRecommend(base_logic::Value* value,const bool del_
 	}
 	if(ad_value_!=NULL)
 		list->Append((base_logic::Value*)ad_value_.get());
+	dict->SetInteger(L"total_number",list_size);
 	return true;
 }
 

@@ -4,11 +4,12 @@
 #include <iostream>
 #include <sstream>
 #include "net/operator_code.h"
+#include "http/http_formate.h"
 //#include "client/linux/handler/exception_handler.h"
 
 // TODO: 设置请求类型
-#define GET_TYPE		QUICK_LOGIN
-#define POST_TYPE		QUICK_LOGIN
+#define GET_TYPE		HACK_PP_ADVERT
+#define POST_TYPE		HACK_PP_ADVERT
 
 #if defined (FCGI_STD)
 #include "fcgi_stdio.h"
@@ -81,7 +82,7 @@ static void PostRequestMethod(std::string& content){
 	  return;
 #endif
   char* addr = getenv("REMOTE_ADDR");
-  os<<content<<"&remote_addr="<<addr<<"&type="<<POST_TYPE<<"\n";
+  os<<content<<"&remote_addr="<<addr<<"&type1="<<POST_TYPE<<"\n";
   content = os.str();
   MIG_INFO(USER_LEVEL,"%s",content.c_str());
   r = net::core_get(0,content.c_str(),content.length(),

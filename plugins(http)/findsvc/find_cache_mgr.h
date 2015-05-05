@@ -22,6 +22,7 @@ public:
 	std::list<base_logic::AppInfos>      find_game_list_;
 	std::list<base_logic::BookInfo>      find_book_list_;
 	std::list<base_logic::Movies>        find_move_list_;
+	std::list<base_logic::Dimension>     find_dimension_list_;//维度音乐
 
 	std::list<base_logic::AppInfos>      app_store_list_; //应用商场推荐，热门，人气APP
 	std::list<base_logic::AdvertInfos>   app_adver_list_;//应用商场广告
@@ -35,6 +36,8 @@ public:
 	std::list<base_logic::BookInfo>      book_store_list_; //书城推荐
 	std::list<base_logic::AdvertInfos>   book_adver_list_;//书城广告
 	std::list<base_logic::Topics>        book_topics_list_;//书城专题
+
+
 
 	std::list<base_logic::AdvertInfos>   movies_adver_list_;//影视广告
 	std::list<base_logic::Movies>        movies_store_list_;//推荐 热门 人气电影
