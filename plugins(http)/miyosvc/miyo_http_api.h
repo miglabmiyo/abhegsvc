@@ -18,6 +18,11 @@ public:
 	virtual ~MiyoHttpAPI(){}
 public:
 	static bool ThirdLogin(base_logic::DictionaryValue* value,miyosvc_logic::UserInfo& userinfo);
+	static bool GainCollectMusicList(base_logic::DictionaryValue* value,std::string& content);
+	static bool GainDimensionMusicList(base_logic::DictionaryValue* value,std::string& content);
+	static bool SetCollectMusic(base_logic::DictionaryValue* value,std::string& content);
+	static bool DelCollectMusic(base_logic::DictionaryValue* value,std::string& content);
+	static bool SetHateMusic(base_logic::DictionaryValue* value,std::string& content);
 
 private:
 	static base_logic::DictionaryValue*  ResolveMiyoJson(std::string& response);

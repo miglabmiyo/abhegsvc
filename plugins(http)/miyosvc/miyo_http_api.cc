@@ -66,6 +66,49 @@ bool MiyoHttpAPI::ThirdLogin(base_logic::DictionaryValue* value,miyosvc_logic::U
 	return true;
 }
 
+bool MiyoHttpAPI::GainCollectMusicList(base_logic::DictionaryValue* value,std::string& content){
+	std::string url;
+	url = std::string(MIYO_HOST)+std::string(MIYO_GAIN_COLLECT);
+	base_http::HttpAPI::RequestPostMethod(url,value,content);
+	if(content.empty())
+		return false;
+	return true;
+}
+bool MiyoHttpAPI::GainDimensionMusicList(base_logic::DictionaryValue* value,std::string& content){
+	std::string url;
+	url = std::string(MIYO_HOST)+std::string(MIYO_GAIN_DIMENSION);
+	base_http::HttpAPI::RequestPostMethod(url,value,content);
+	if(content.empty())
+		return false;
+	return true;
+}
+
+bool MiyoHttpAPI::SetCollectMusic(base_logic::DictionaryValue* value,std::string& content){
+	std::string url;
+	url = std::string(MIYO_HOST)+std::string(MIYO_SET_COLLECT);
+	base_http::HttpAPI::RequestPostMethod(url,value,content);
+	if(content.empty())
+		return false;
+	return true;
+}
+
+bool MiyoHttpAPI::DelCollectMusic(base_logic::DictionaryValue* value,std::string& content){
+	std::string url;
+	url = std::string(MIYO_HOST)+std::string(MIYO_DEL_COLLECT);
+	base_http::HttpAPI::RequestPostMethod(url,value,content);
+	if(content.empty())
+		return false;
+	return true;
+}
+
+bool MiyoHttpAPI::SetHateMusic(base_logic::DictionaryValue* value,std::string& content){
+	std::string url;
+	url = std::string(MIYO_HOST)+std::string(MIYO_DEL_HATE);
+	base_http::HttpAPI::RequestPostMethod(url,value,content);
+	if(content.empty())
+		return false;
+	return true;
+}
 
 base_logic::DictionaryValue*  MiyoHttpAPI::ResolveMiyoJson(std::string& response){
 	bool r =false;
@@ -81,6 +124,8 @@ base_logic::DictionaryValue*  MiyoHttpAPI::ResolveMiyoJson(std::string& response
 	r = dict->GetDictionary(L"result",&result);
 	return result;
 }
+
+
 
 }
 

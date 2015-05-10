@@ -126,9 +126,6 @@ public:
 		return m_->DeepCopy();
 	}
 
-	inline base_logic::DictionaryValue* Ptr(){
-		return m_;
-	}
 
 	const inline int32 machine() const {return this->machine_;}
 	const inline std::string&  nickanme() const {return this->nickname_;}
@@ -145,10 +142,7 @@ public:
 	const inline std::string& imei() const {return this->imei_;}
 	const inline std::string& session() const {return this->session_;}
 
-	inline bool RemoveElement(const std::wstring& key){
-		base_logic::Value* value = NULL;
-		return m_->Remove(key,&value);
-	}
+
 
 
 private:

@@ -24,6 +24,7 @@ public:
 	static void Dest();
 public:
 	static void SetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& userinfo);
+	static bool GetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& userinfo);
 };
 
 }

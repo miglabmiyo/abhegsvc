@@ -42,6 +42,22 @@ public:
 private:
     bool OnThirdLogin(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
         		const void* msg = NULL,const int len = 0);
+
+    bool OnGainCollectList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnGainDimensionList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnSetCollectMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnDelCollectMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
+    bool OnSetHateMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
+
 private:
 
     bool Init();

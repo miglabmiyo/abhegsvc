@@ -70,7 +70,17 @@ public:
 
 	void set_longitude(double longitude){m_->SetReal("longitude",longitude);}
 
+	inline bool RemoveElement(const std::wstring& key){
+		base_logic::Value* value = NULL;
+		return m_->Remove(key,&value);
+	}
 
+	inline base_logic::DictionaryValue* Ptr(){
+		return m_;
+	}
+
+
+	inline void set_uid(const int64 uid) {m_->SetBigInteger(L"uid",uid);}
 
 	/*inline void Init(){
 

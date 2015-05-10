@@ -47,6 +47,26 @@ void RedisComm::SetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& userinf
 			content.length());
 
 }
+bool RedisComm::GetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& userinfo){
+	std::string key;
+	std::string hash_name;
+	char* value;
+	size_t value_len = 0;
+	std::string content;
+	hash_name = "miyo:userinfo";
+	key = base::BasicUtil::StringUtil::Int64ToString(uid);
+	base_dic::AutoDicCommEngine auto_engine;
+	base_storage::DictionaryStorageEngine* redis_engine_  = auto_engine.GetDicEngine();
+	LOG_DEBUG2("key:%s",key.c_str());
+	bool r = redis_engine_->GetHashElement(hash_name.c_str(),key.c_str(),key.length(),&value,
+			&value_len);
+	content.assign(value,value_len);
+	if (value){
+		free(value);
+		value = NULL;
+	}
+	return userinfo.JsonDeserialization(content);
+}
 
 
 }

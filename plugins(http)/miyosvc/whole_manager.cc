@@ -5,6 +5,7 @@
  *      Author: pro
  */
 #include "whole_manager.h"
+#include "dic_comm.h"
 #include "logic/logic_comm.h"
 #include "basic/template.h"
 
@@ -32,9 +33,21 @@ bool WholeManager::SetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& user
 }
 
 bool WholeManager::GetMiyoUserInfo(const int64 uid,miyosvc_logic::UserInfo& userinfo){
-	base_logic::RLockGd lk(lock_);
-	return base::MapGet<std::map<int64,miyosvc_logic::UserInfo>,std::map<int64,miyosvc_logic::UserInfo>::iterator,int64,miyosvc_logic::UserInfo>
-		(whole_cache_->user_miyo_info_,uid,userinfo);
+	bool r =false;
+	{
+		base_logic::RLockGd lk(lock_);
+		r =  base::MapGet<std::map<int64,miyosvc_logic::UserInfo>,std::map<int64,miyosvc_logic::UserInfo>::iterator,int64,miyosvc_logic::UserInfo>
+			(whole_cache_->user_miyo_info_,uid,userinfo);
+	}
+	if(r)
+		return r;
+	//存储介质读取
+	r = miyosvc_logic::RedisComm::GetMiyoUserInfo(uid,userinfo);
+	{
+		base_logic::WLockGd lk(lock_);
+		whole_cache_->user_miyo_info_[uid] = userinfo;
+	}
+	return true;
 }
 
 bool WholeManager::DelMiyoUserInfo(const int64 uid){

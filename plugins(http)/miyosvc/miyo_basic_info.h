@@ -32,6 +32,7 @@ public:
 	const std::string& token() const {return data_->token_;}
 
 	bool JsonSerialization(std::string& json);
+	bool JsonDeserialization(std::string& json);
 
 private:
 	class Data{

@@ -4,6 +4,7 @@
 #include "miyo_basic_info.h"
 #include "miyo_http_api.h"
 #include "whole_manager.h"
+#include "net/miyo_comm_head.h"
 #include "logic/logic_unit.h"
 #include "logic/logic_comm.h"
 #include "common.h"
@@ -88,6 +89,21 @@ bool Miyologic::OnMiyoMessage(struct server *srv, const int socket, const void *
 	   case THIRID_LOGIN:
 		   OnThirdLogin(srv,socket,value,msg,len);
 		   break;
+	   case MUSIC_GAIN_COLLECT_LIST:
+		   OnGainCollectList(srv,socket,value);
+		   break;
+	   case MUSIC_GAIN_DIMENSION_LIST:
+		   OnGainDimensionList(srv,socket,value);
+		   break;
+	   case MUSIC_GAIN_SET_COLLECT:
+		   OnSetCollectMusic(srv,socket,value);
+		   break;
+	   case MUSIC_GAIN_DEL_COLLECT:
+		   OnDelCollectMusic(srv,socket,value);
+		   break;
+	   case MUSIC_GAIN_SET_HATE:
+		   OnSetHateMusic(srv,socket,value);
+		   break;
 	}
     return true;
 }
@@ -163,6 +179,135 @@ bool Miyologic::OnThirdLogin(struct server *srv,const int socket,netcomm_recv::N
 	CacheManagerOp::GetWholeCacheManager()->SetMiyoUserInfo(abheg_userinfo.uid(),miyo_userinfo);
 	//写入存储介质
 	miyosvc_logic::RedisComm::SetMiyoUserInfo(abheg_userinfo.uid(),miyo_userinfo);
+	return true;
+}
+
+
+bool Miyologic::OnGainCollectList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::Collect> collect(new netcomm_recv::Collect(netbase));
+	int error_code = collect->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	bool r = false;
+
+	miyosvc_logic::UserInfo userinfo;
+	//替换ID删除多余的参数
+	collect->RemoveElement(L"type");
+	collect->RemoveElement(L"remote_addr");
+
+	CacheManagerOp::GetWholeCacheManager()->GetMiyoUserInfo(collect->uid(),userinfo);
+	collect->set_tid(userinfo.uid());
+	collect->set_uid(userinfo.uid());
+	std::string content;
+	r = miyosvc_logic::MiyoHttpAPI::GainCollectMusicList(collect->Ptr(),content);
+	//发送用户
+	base_logic::LogicComm::SendFull(socket,content.c_str(),content.length());
+	return true;
+}
+
+bool Miyologic::OnGainDimensionList(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::Dimension> dimension(new netcomm_recv::Dimension(netbase));
+	int error_code = dimension->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	bool r = false;
+
+	miyosvc_logic::UserInfo userinfo;
+	//替换ID删除多余的参数
+	dimension->RemoveElement(L"type");
+	dimension->RemoveElement(L"remote_addr");
+
+	std::string content;
+	CacheManagerOp::GetWholeCacheManager()->GetMiyoUserInfo(dimension->uid(),userinfo);
+	dimension->set_uid(userinfo.uid());
+	r = miyosvc_logic::MiyoHttpAPI::GainDimensionMusicList(dimension->Ptr(),content);
+	//发送用户
+	base_logic::LogicComm::SendFull(socket,content.c_str(),content.length());
+	return true;
+}
+
+
+bool Miyologic::OnSetCollectMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::SetCollect> collect(new netcomm_recv::SetCollect(netbase));
+	int error_code = collect->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	bool r = false;
+
+	miyosvc_logic::UserInfo userinfo;
+	//替换ID删除多余的参数
+	collect->RemoveElement(L"type");
+	collect->RemoveElement(L"remote_addr");
+
+	std::string content;
+	CacheManagerOp::GetWholeCacheManager()->GetMiyoUserInfo(collect->uid(),userinfo);
+	collect->set_uid(userinfo.uid());
+	r = miyosvc_logic::MiyoHttpAPI::SetCollectMusic(collect->Ptr(),content);
+	//发送用户
+	base_logic::LogicComm::SendFull(socket,content.c_str(),content.length());
+	return true;
+}
+
+bool Miyologic::OnDelCollectMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::DelCollect> delcollect(new netcomm_recv::DelCollect(netbase));
+	int error_code = delcollect->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	bool r = false;
+
+	miyosvc_logic::UserInfo userinfo;
+	//替换ID删除多余的参数
+	delcollect->RemoveElement(L"type");
+	delcollect->RemoveElement(L"remote_addr");
+	delcollect->set_uid(userinfo.uid());
+	std::string content;
+	CacheManagerOp::GetWholeCacheManager()->GetMiyoUserInfo(delcollect->uid(),userinfo);
+	delcollect->set_uid(userinfo.uid());
+	r = miyosvc_logic::MiyoHttpAPI::DelCollectMusic(delcollect->Ptr(),content);
+	//发送用户
+	base_logic::LogicComm::SendFull(socket,content.c_str(),content.length());
+	return true;
+}
+
+
+bool Miyologic::OnSetHateMusic(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::SetHateCollect> sethate(new netcomm_recv::SetHateCollect(netbase));
+	int error_code = sethate->GetResult();
+	if(error_code!=0){
+		send_error(error_code,socket);
+		return false;
+	}
+
+	bool r = false;
+
+	miyosvc_logic::UserInfo userinfo;
+	//替换ID删除多余的参数
+	sethate->RemoveElement(L"type");
+	sethate->RemoveElement(L"remote_addr");
+	sethate->set_uid(userinfo.uid());
+	std::string content;
+	CacheManagerOp::GetWholeCacheManager()->GetMiyoUserInfo(sethate->uid(),userinfo);
+	sethate->set_uid(userinfo.uid());
+	r = miyosvc_logic::MiyoHttpAPI::SetHateMusic(sethate->Ptr(),content);
+	//发送用户
+	base_logic::LogicComm::SendFull(socket,content.c_str(),content.length());
 	return true;
 }
 

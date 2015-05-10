@@ -98,7 +98,7 @@ whole_manager.o : ./whole_manager.cc ./whole_manager.h
 miyo_basic_info.o : ./miyo_basic_info.cc ./miyo_basic_info.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c ./miyo_basic_info.cc $(INCLUDE_PATHS)
 
-comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/user_comm_head.h
+comm_impl.o :  $(USER_DIR)/net/comm_impl.cc $(USER_DIR)/net/miyo_comm_head.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/net/comm_impl.cc $(INCLUDE_PATHS)
 
 error_comm.o :  $(USER_DIR)/net/error_comm.cc $(USER_DIR)/net/error_comm.h

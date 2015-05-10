@@ -42,6 +42,83 @@ UserInfo& UserInfo::operator =(const UserInfo& userinfo){
 	return (*this);
 }
 
+bool UserInfo::JsonDeserialization(std::string& json){
+	std::string error_str;
+	int error_code = 0;
+	bool r = false;
+	base_logic::ValueSerializer* engine = base_logic::ValueSerializer::Create(base_logic::IMPL_JSON,&json);
+	base_logic::DictionaryValue*  value = (base_logic::DictionaryValue*)(engine->Deserialize(&error_code,&error_str));
+	if(value==NULL)
+		return false;
+	int64 uid = 0;
+	int64 sex = 0;
+	int64 machine = 0;
+	int64 logintime = 0;
+	int64 type = 0;
+	int64 miyo_id =0;
+	int64 last_time = 0;
+	std::string session;
+	std::string imei;
+	std::string nickname;
+	std::string city;
+	std::string head;
+	std::string token;
+
+	r = value->GetBigInteger(L"uid",&uid);
+	if(r)
+		base_logic::UserInfo::set_uid(uid);
+
+	r = value->GetBigInteger(L"sex",&sex);
+	if(r)
+		base_logic::UserInfo::set_sex(sex);
+
+	r = value->GetBigInteger(L"machine",&machine);
+	if(r)
+		base_logic::UserInfo::set_machine(machine);
+
+	r = value->GetBigInteger(L"logintime",&logintime);
+	if(r)
+		base_logic::UserInfo::set_logintime(logintime);
+
+	r = value->GetBigInteger(L"type",&type);
+	if(r)
+		base_logic::UserInfo::set_type(type);
+
+	r = value->GetBigInteger(L"miyo_id",&miyo_id);
+	if(r)
+		data_->miyo_id_ = miyo_id;
+
+	r = value->GetBigInteger(L"last_time",&last_time);
+	if(r)
+		data_->latest_time_ = last_time;
+
+	r = value->GetString(L"session",&session);
+	if(r)
+		base_logic::UserInfo::set_session(session);
+
+	r = value->GetString(L"imei",&imei);
+	if(r)
+		base_logic::UserInfo::set_imei(imei);
+
+	r = value->GetString(L"nickname",&nickname);
+	if(r)
+		base_logic::UserInfo::set_nickname(nickname);
+
+	r = value->GetString(L"city",&city);
+	if(r)
+		base_logic::UserInfo::set_city(city);
+
+	r = value->GetString(L"head",&head);
+	if(r)
+		base_logic::UserInfo::set_head(head);
+
+	r = value->GetString(L"token",&token);
+	if(r)
+		data_->token_ = token;
+
+	return true;
+}
+
 bool UserInfo::JsonSerialization(std::string& json){
 	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
 	if(base_logic::UserInfo::uid()!=0)

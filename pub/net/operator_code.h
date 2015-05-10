@@ -32,6 +32,7 @@ enum netoperatorcode{
 	MUSIC_GAIN_DIMENSION_LIST = 4002,//获取单维度歌曲
 	MUSIC_GAIN_SET_COLLECT = 4004,//新增红心歌单
 	MUSIC_GAIN_DEL_COLLECT = 4005,//删除红心歌单
+	MUSIC_GAIN_SET_HATE = 4006,//
 
 	//书城
 	BOOK_TOPICS = 4100,//专题活动
