@@ -44,8 +44,10 @@ public:
 
 
 	static bool RequestGetMethod(const std::string& url,std::string& content,const int count = 3);
+
 	static bool RequestPostMethod(const std::string& url,const std::string& post_content,
 			std::string& content,const int count = 3);
+
 	//static double CalculationBookStar(const int64 down,const int64 down_total);
 };
 }

@@ -72,6 +72,7 @@ enum netoperatorcode{
 	HACK_TIANYA_PEACOCK = 8005,//天涯开屏
 	HACK_TIANYA_RECOMMEND = 8006,//天涯市场
 	HACK_TIANYA_AD_RECOMMEND =8007,//天涯推荐
+	HACK_MM_MARK_GAME_RECOMMEND = 8008,//移动MM游戏推荐
 
 	//beacon
 	BEACON_SHARK = 9001,//摇一摇

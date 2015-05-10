@@ -151,7 +151,8 @@ HACKPROC_PATH = /hack
 HACK_OBJECT_PATH = ./obj$(HACKPROC_PATH)
 OTJERPROC_VERSION = /v1
 hackproc:$(HACKPROC_PATH)/wdjsummary.fcgi $(HACKPROC_PATH)/snssdk.fcgi $(HACKPROC_PATH)/PPAdvert.fcgi $(HACKPROC_PATH)/PPRecommnd.fcgi\
-	$(HACKPROC_PATH)/360Recommnd.fcgi $(HACKPROC_PATH)/tianyapeacock.fcgi $(HACKPROC_PATH)/tianyaRecommend.fcgi 
+	$(HACKPROC_PATH)/360Recommnd.fcgi $(HACKPROC_PATH)/tianyapeacock.fcgi $(HACKPROC_PATH)/tianyaRecommend.fcgi\
+	$(HACKPROC_PATH)/mmgmrecommend.fcgi
 
 $(HACKPROC_PATH)/wdjsummary.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/wdjsummary.fcgi
@@ -173,6 +174,9 @@ $(HACKPROC_PATH)/tianyapeacock.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)tianyapeacoc
 	
 $(HACKPROC_PATH)/tianyaRecommend.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)tianyaRecommend.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyaRecommend.fcgi
+
+$(HACKPROC_PATH)/mmgmrecommend.fcgi: $(HACK_OBJECT_PATH)/$(HACKNAME)mmgmrecommend.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(HACKPROC_PATH)$(OTJERPROC_VERSION)/mmgmrecommend.fcgi
 ### 编译
 
 $(HACK_OBJECT_PATH)/$(HACKNAME)wdjsummary.o:
@@ -195,6 +199,9 @@ $(HACK_OBJECT_PATH)/$(HACKNAME)tianyapeacock.o:
 
 $(HACK_OBJECT_PATH)/$(HACKNAME)tianyaRecommend.o:
 	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/tianyaRecommend/tianyaRecommend.cc
+	
+$(HACK_OBJECT_PATH)/$(HACKNAME)mmgmrecommend.o:
+	$(COMPILE) .$(HACKPROC_PATH)$(OTJERPROC_VERSION)/mmgmrecommend/mmgmrecommend.cc
 ######################beaconproc###############################################
 BEACONNAME = beacon_
 BEACONPROC_PATH = /beacon

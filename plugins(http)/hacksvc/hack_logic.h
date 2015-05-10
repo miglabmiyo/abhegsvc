@@ -70,6 +70,9 @@ private:
 
     bool OnHackTianyaRecommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
         		const void* msg = NULL,const int len = 0);
+
+    bool OnMMMarkGameRecommend(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    			const void* msg = NULL,const int len = 0);
 private:
 
     bool Init();
