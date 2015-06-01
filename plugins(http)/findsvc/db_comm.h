@@ -48,6 +48,9 @@ public:
 	static bool GetFindStoreMovies(std::list<base_logic::Movies>& list);
 
 
+	static bool GetMovieRank(int32 type,std::list<base_logic::Movies>& list);
+
+
 	///personal///
 	static bool GetPersonalAppAndGame(const int64 uid,const int32 type,
 			std::list<base_logic::AppInfos>& list);

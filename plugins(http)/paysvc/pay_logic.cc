@@ -238,5 +238,10 @@ bool Paylogic::OnUpdateSerialnumber(struct server *srv,const int socket,netcomm_
 	return true;
 }
 
+bool OnWeixinUnifiedorder(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg,const int len){
+	return true;
+}
+
 }
 

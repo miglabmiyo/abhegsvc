@@ -114,6 +114,9 @@ bool Findlogic::OnFindMessage(struct server *srv, const int socket, const void *
 	   case FIND_PERSONAL:
 		   OnFindPersonal(srv,socket,value);
 		   break;
+	   case FIND_MOVIE_RANK:
+		   OnFindMovieRank(srv,socket,value);
+		   break;
 	}
 
 	return true;
@@ -280,6 +283,23 @@ bool Findlogic::OnFindGameRank(struct server *srv,const int socket,netcomm_recv:
 	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendGameRank(game_rank.get());
 
 	send_message(socket,(netcomm_send::HeadPacket*)game_rank.get());
+	return true;
+}
+
+bool Findlogic::OnFindMovieRank(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg,const int len){
+	scoped_ptr<netcomm_recv::MovieRank> rank(new netcomm_recv::MovieRank(netbase));
+	bool r = false;
+	int error_code = rank->GetResult();
+	if(error_code!=0){
+		//发送错误数据
+		send_error(error_code,socket);
+		return false;
+	}
+
+	scoped_ptr<netcomm_send::MovieRank> movie_rank(new netcomm_send::MovieRank());
+	findsvc_logic::CacheManagerOp::GetFindCacheManager()->SendMovieRank(rank->category(),movie_rank.get());
+	send_message(socket,(netcomm_send::HeadPacket*)movie_rank.get());
 	return true;
 }
 

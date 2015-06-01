@@ -15,6 +15,7 @@ enum netoperatorcode{
 	FIND_APP_RANK = 2105,//应用排行榜
 	FIND_STORE_MOVIE = 2106,//影视推荐
 	FIND_PERSONAL = 2107,//个人推荐
+	FIND_MOVIE_RANK = 2108,//影视排行榜
 
 	//商城
 	SUMMARY_INFOS = 3100, // 应用详情

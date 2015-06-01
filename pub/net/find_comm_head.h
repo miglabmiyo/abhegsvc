@@ -55,6 +55,24 @@ private:
 	double     longitude_;
 };
 
+//影视排行榜
+class MovieRank:public LoginHeadPacket{
+public:
+	MovieRank(NetBase* m)
+	:LoginHeadPacket(m){
+		Init();
+	}
+
+	inline void Init(){
+		bool r = false;
+		r = m_->GetBigInteger(L"category",&category_);
+		if(!r) category_ = 0;
+	}
+	const int64 category() const {return this->category_;}
+private:
+	int64      category_;
+};
+
 }
 
 
@@ -498,6 +516,30 @@ private:
 	scoped_ptr<base_logic::ListValue>             person_;//个人推荐
 
 
+};
+
+class MovieRank:public HeadPacket{
+public:
+	MovieRank(){
+		base_.reset(new netcomm_send::NetBase());
+		movie_list_.reset(new base_logic::ListValue());
+	}
+
+	netcomm_send::NetBase* release(){
+		if(!movie_list_->empty())
+			this->base_->Set(L"movie",movie_list_.release());
+		head_->Set("result",base_.release());
+		this->set_status(1);
+		return head_.release();
+	}
+
+	void set_movie_list(base_logic::DictionaryValue* movie){
+		movie_list_->Append(movie);
+	}
+
+private:
+	scoped_ptr<netcomm_send::NetBase>              base_;
+	scoped_ptr<base_logic::ListValue>              movie_list_;//电影
 };
 
 class FindPersonal:public HeadPacket{

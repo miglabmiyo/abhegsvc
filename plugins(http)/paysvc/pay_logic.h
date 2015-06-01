@@ -56,6 +56,10 @@ private:
 
     bool OnUpdateSerialnumber(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
     		const void* msg = NULL,const int len = 0);
+
+
+    bool OnWeixinUnifiedorder(struct server *srv,const int socket,netcomm_recv::NetBase* netbase,
+    		const void* msg = NULL,const int len = 0);
 };
 
 

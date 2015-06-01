@@ -165,6 +165,8 @@ base_logic::DictionaryValue* AppInfos::Release(bool summary){
 		dict->SetString(L"logo",data_->logo_);
 	if(!data_->name_.empty())
 		dict->SetString(L"name",data_->name_);
+	if(!data_->packet_name_.empty())
+		dict->SetString(L"packetname",data_->packet_name_);
 	if(!data_->summary_.empty())
 		dict->SetString(L"summary",data_->summary_);
 	if(!data_->content_.empty())

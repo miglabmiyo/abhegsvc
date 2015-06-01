@@ -419,7 +419,8 @@ FINDPROC_PATH = /find
 FIND_OBJECT_PATH = ./obj$(FINDPROC_PATH)
 OTJERPROC_VERSION = /1
 findproc:$(FINDPROC_PATH)/appstore.fcgi $(FINDPROC_PATH)/bookstore.fcgi $(FINDPROC_PATH)/gamestore.fcgi $(FINDPROC_PATH)/main.fcgi\
-	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi $(FINDPROC_PATH)/personal.fcgi
+	$(FINDPROC_PATH)/gamerank.fcgi $(FINDPROC_PATH)/apprank.fcgi $(FINDPROC_PATH)/moviestore.fcgi $(FINDPROC_PATH)/personal.fcgi\
+	$(FINDPROC_PATH)/movierank.fcgi
 
 $(FINDPROC_PATH)/appstore.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/appstore.fcgi
@@ -447,6 +448,9 @@ $(FINDPROC_PATH)/wandoujia.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o $(PO
 	
 $(FINDPROC_PATH)/personal.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)personal.o $(POBJ)
 	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/personal.fcgi
+
+$(FINDPROC_PATH)/movierank.fcgi: $(FIND_OBJECT_PATH)/$(FINDNAME)movierank.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(FINDPROC_PATH)$(OTJERPROC_VERSION)/movierank.fcgi
 ### 编译
 
 $(FIND_OBJECT_PATH)/$(FINDNAME)appstore.o:
@@ -475,6 +479,9 @@ $(FIND_OBJECT_PATH)/$(FINDNAME)wandoujia.o:
 	
 $(FIND_OBJECT_PATH)/$(FINDNAME)personal.o:
 	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/personal/personal.cc
+	
+$(FIND_OBJECT_PATH)/$(FINDNAME)movierank.o:
+	$(COMPILE) .$(FINDPROC_PATH)$(OTJERPROC_VERSION)/movierank/movierank.cc
 clean:
 	-rm -f *.o
 	-rm -f $(OUTPUT_FILE)./*.fcgi

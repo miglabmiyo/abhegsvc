@@ -330,6 +330,33 @@ bool FindCacheManager::SendAdverMoviesInfos(netcomm_send::FindMovies* moviefind)
 	return true;
 }
 
+bool FindCacheManager::SendMovieRank(const int64 type,netcomm_send::MovieRank* rank){
+	base_logic::RLockGd lk(lock_);
+	bool r = false;
+	if(type==0)
+		r = SendMovieRankT(find_cache_->day_movies_rank_list_,rank);
+	else if(type==1)
+		r = SendMovieRankT(find_cache_->week_movies_rank_list_,rank);
+	else if(type==2)
+		r = SendMovieRankT(find_cache_->month_movies_rank_list_,rank);
+	else if(type==3)
+		r = SendMovieRankT(find_cache_->year_movies_rank_list_,rank);
+
+	return r;
+
+}
+
+bool FindCacheManager::SendMovieRankT(std::list<base_logic::Movies>& list,netcomm_send::MovieRank* rank){
+	std::list<base_logic::Movies>::iterator movieinfo_iterator;
+	for(movieinfo_iterator=list.begin();
+			movieinfo_iterator!=list.end();
+			movieinfo_iterator++){
+		base_logic::Movies movieinfo = (*movieinfo_iterator);
+		rank->set_movie_list(movieinfo.Release());
+	}
+	return true;
+}
+
 bool FindCacheManager::SendFindMoviesInfos(netcomm_send::FindMovies* moviefind){
 	base_logic::RLockGd lk(lock_);
 	if(find_cache_->movies_store_list_.size()<=0)
@@ -364,7 +391,14 @@ void CacheManagerOp::FetchDBFindMoviesStore(){
 	//获取全部电影
 	findsvc_logic::DBComm::GetFindStoreMovies(find_cache->movies_store_list_);
 
+	//排行榜
+	findsvc_logic::DBComm::GetMovieRank(0,find_cache->day_movies_rank_list_);
+	findsvc_logic::DBComm::GetMovieRank(1,find_cache->week_movies_rank_list_);
+	findsvc_logic::DBComm::GetMovieRank(2,find_cache->month_movies_rank_list_);
+	findsvc_logic::DBComm::GetMovieRank(3,find_cache->year_movies_rank_list_);
 }
+
+
 
 void CacheManagerOp::FetchDBFindAppStore(){
 	FindCache* find_cache = find_cache_manager_->GetFindCache();

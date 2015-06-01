@@ -1088,6 +1088,55 @@ bool DBComm::GetPersonalBook(const int64 uid,std::list<base_logic::BookInfo>& li
 	return false;
 }
 
+bool DBComm::GetMovieRank(int32 type,std::list<base_logic::Movies>& list){
+	bool r = false;
+#if defined (_DB_POOL_)
+	base_db::AutoMysqlCommEngine auto_engine;
+	base_storage::DBStorageEngine* engine  = auto_engine.GetDBEngine();
+#endif
+	std::stringstream os;
+	MYSQL_ROW rows;
+
+	if (engine==NULL){
+		LOG_ERROR("GetConnection Error");
+		return false;
+	}
+
+    //call proc_GetPersonalMovie(1008)
+	os<<"call proc_GetMovieRank("<<type<<");";
+	std::string sql = os.str();
+	LOG_MSG2("[%s]", sql.c_str());
+	r = engine->SQLExec(sql.c_str());
+
+	if (!r) {
+		LOG_ERROR("exec sql error");
+		return false;
+	}
+
+
+	int num = engine->RecordCount();
+	if(num>0){
+		while(rows = (*(MYSQL_ROW*)(engine->FetchRows())->proc)){
+			base_logic::Movies movie;
+			if(rows[0]!=NULL)
+				movie.set_id(atoll(rows[0]));
+			if(rows[1]!=NULL)
+				movie.set_name(rows[1]);
+			if(rows[2]!=NULL)
+				movie.set_logo(rows[2]);
+			if(rows[3]!=NULL)
+				movie.set_type(atol(rows[3]));
+			if(rows[4]!=NULL)
+				movie.set_play_count(atoll(rows[4]));
+			if(rows[5]!=NULL)
+				movie.set_like(atoll(rows[5]));
+			list.push_back(movie);
+
+		}
+		return true;
+	}
+	return false;
+}
 bool DBComm::GetPersonalMovie(const int64 uid, std::list<base_logic::Movies>& list){
 	bool r = false;
 #if defined (_DB_POOL_)

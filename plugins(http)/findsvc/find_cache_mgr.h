@@ -41,7 +41,10 @@ public:
 
 	std::list<base_logic::AdvertInfos>   movies_adver_list_;//影视广告
 	std::list<base_logic::Movies>        movies_store_list_;//推荐 热门 人气电影
-
+	std::list<base_logic::Movies>        day_movies_rank_list_;//影视排行榜(天)
+	std::list<base_logic::Movies>        week_movies_rank_list_;//影视排行榜(周)
+	std::list<base_logic::Movies>        month_movies_rank_list_;//影视排行榜(月)
+	std::list<base_logic::Movies>        year_movies_rank_list_;//影视排行榜(年)
 };
 
 
@@ -89,6 +92,11 @@ public:
 
 	//影视内容发送
 	bool SendFindMoviesInfos(netcomm_send::FindMovies* moviefind);
+
+	//影视排行榜
+	bool SendMovieRank(const int64 type,netcomm_send::MovieRank* rank);
+
+	bool SendMovieRankT(std::list<base_logic::Movies>& list,netcomm_send::MovieRank* rank);
 
 public:
 	FindCache* GetFindCache(){return this->find_cache_;}

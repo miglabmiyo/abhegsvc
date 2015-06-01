@@ -158,9 +158,11 @@ public:
 	const std::string& name() const {return data_->name_;}
 	const std::string& summary() const {return data_->summary_;}
 	const std::string& content() const {return data_->content_;}
+	const std::string& packetname() const {return data_->packet_name_;}
 
-	const int32 emblem_pic_size() const {data_->emblem_pic_list_.size();}
-	const int32 summary_pic_size() const {data_->summary_pic_list_.size();}
+	const int32 emblem_pic_size() const {return data_->emblem_pic_list_.size();}
+	const int32 summary_pic_size() const {return data_->summary_pic_list_.size();}
+
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
@@ -178,7 +180,7 @@ public:
 	void set_name(const std::string& name){data_->name_ = name;}
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
 	void set_content(const std::string& content){data_->content_ = content;}
-
+	void set_packetname(const std::string& packet_name){data_->packet_name_ = packet_name;}
 	void set_emblem_pic(const std::string& pic){
 		data_->emblem_pic_list_.push_back(pic);
 	}
@@ -219,6 +221,7 @@ private:
 		std::string            name_;
 		std::string            summary_;
 		std::string            content_;
+		std::string            packet_name_;
 		std::list<std::string> emblem_pic_list_;
 		std::list<std::string> summary_pic_list_;
 	private:
