@@ -159,8 +159,6 @@ public:
 	const std::string& summary() const {return data_->summary_;}
 	const std::string& content() const {return data_->content_;}
 	const std::string& packetname() const {return data_->packet_name_;}
-	const std::string& introduction() const {return data_->introduction_;}
-	const std::string& developer_name() const {return data_->developer_name_;}
 
 
 
@@ -168,13 +166,16 @@ public:
 	const int32 emblem_pic_size() const {return data_->emblem_pic_list_.size();}
 	const int32 summary_pic_size() const {return data_->summary_pic_list_.size();}
 
-	void summary_pic(std::list<std::string>& summary_pic){
-		summary_pic = data_->summary_pic_list_;
-	}
-
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
+	void set_str_type(const std::string& str_type){
+		if(str_type=="GAME")
+			data_->type_ = 2;
+		else
+			data_->type_ = 1;
+	}
+
 	void set_down(const int64 down) {data_->down_ = down;}
 	void set_like(const int64 like) {data_->like_ = like;}
 	void set_lang(const int lang) {data_->lang_ = lang;}
@@ -189,9 +190,7 @@ public:
 	void set_name(const std::string& name){data_->name_ = name;}
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
 	void set_content(const std::string& content){data_->content_ = content;}
-	void set_introduction(const std::string& introduction){data_->introduction_ = introduction;}
 	void set_packetname(const std::string& packet_name){data_->packet_name_ = packet_name;}
-	void set_developer_name(const std::string& developer_name){data_->developer_name_ = developer_name;}
 	void set_emblem_pic(const std::string& pic){
 		data_->emblem_pic_list_.push_back(pic);
 	}
@@ -231,10 +230,8 @@ private:
 		std::string            logo_;
 		std::string            name_;
 		std::string            summary_;
-		std::string            introduction_;
 		std::string            content_;
 		std::string            packet_name_;
-		std::string            developer_name_;
 		std::list<std::string> emblem_pic_list_;
 		std::list<std::string> summary_pic_list_;
 	private:

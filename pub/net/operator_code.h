@@ -79,6 +79,9 @@ enum netoperatorcode{
 	//beacon
 	BEACON_SHARK = 9001,//摇一摇
 
+	//游戏盒子
+	GAME_BOX_CHECK_GAME = 10000,//是否是游戏
+
 };
 
 
