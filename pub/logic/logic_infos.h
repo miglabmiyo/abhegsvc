@@ -159,6 +159,8 @@ public:
 	const std::string& summary() const {return data_->summary_;}
 	const std::string& content() const {return data_->content_;}
 	const std::string& packetname() const {return data_->packet_name_;}
+	const std::string& introduction() const {return data_->introduction_;}
+	const std::string& developer_name() const {return data_->developer_name_;}
 
 
 
@@ -191,6 +193,9 @@ public:
 	void set_summary(const std::string& summary){data_->summary_ = summary;}
 	void set_content(const std::string& content){data_->content_ = content;}
 	void set_packetname(const std::string& packet_name){data_->packet_name_ = packet_name;}
+	void set_introduction(const std::string& introduction){data_->introduction_ = introduction;}
+	void set_developer_name(const std::string& developer_name){data_->developer_name_ = developer_name;}
+
 	void set_emblem_pic(const std::string& pic){
 		data_->emblem_pic_list_.push_back(pic);
 	}
@@ -232,6 +237,9 @@ private:
 		std::string            summary_;
 		std::string            content_;
 		std::string            packet_name_;
+		std::string            introduction_;
+		std::string            developer_name_;
+
 		std::list<std::string> emblem_pic_list_;
 		std::list<std::string> summary_pic_list_;
 	private:
