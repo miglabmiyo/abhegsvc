@@ -162,6 +162,9 @@ public:
 	const std::string& introduction() const {return data_->introduction_;}
 	const std::string& developer_name() const {return data_->developer_name_;}
 
+
+
+
 	const int32 emblem_pic_size() const {return data_->emblem_pic_list_.size();}
 	const int32 summary_pic_size() const {return data_->summary_pic_list_.size();}
 
