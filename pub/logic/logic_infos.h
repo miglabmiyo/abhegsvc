@@ -166,6 +166,13 @@ public:
 
 	void set_id(const int64 id){data_->id_ = id;}
 	void set_type(const int32 type){data_->type_ = type;}
+	void set_str_type(const std::string& str_type){
+		if(str_type=="GAME")
+			data_->type_ = 2;
+		else
+			data_->type_ = 1;
+	}
+
 	void set_down(const int64 down) {data_->down_ = down;}
 	void set_like(const int64 like) {data_->like_ = like;}
 	void set_lang(const int lang) {data_->lang_ = lang;}
