@@ -52,7 +52,7 @@ OUTPUT_FILE = /var/www/cgi-bin/abheg
 #############################################################################################################################
 all: clean proc delete-temp-file
 
-proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc hackproc beaconproc
+proc: otherproc userproc findproc bookproc musicproc robotproc storeproc payproc movieporc hackproc beaconproc gameboxproc
 
 ######################movieproc###############################################
 MOVIENAME = movie_
@@ -144,6 +144,27 @@ $(MUSIC_OBJECT_PATH)/$(MUSICNAME)collectsong.o:
 
 $(MUSIC_OBJECT_PATH)/$(MUSICNAME)delcltsong.o:
 	$(COMPILE) .$(MUSICPROC_PATH)$(OTJERPROC_VERSION)/delcltsong/delcltsong.cc
+	
+######################gameboxproc###############################################
+GAMEBOXNAME = gamebox_
+GAMEBOXPROC_PATH = /gamebox
+GAMEBOX_OBJECT_PATH = ./obj$(GAMEBOXPROC_PATH)
+OTJERPROC_VERSION = /v1
+gameboxproc:$(GAMEBOXPROC_PATH)/checkgame.fcgi $(GAMEBOXPROC_PATH)/shark.fcgi
+
+$(GAMEBOXPROC_PATH)/checkgame.fcgi: $(GAMEBOX_OBJECT_PATH)/$(GAMEBOXNAME)checkgame.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(GAMEBOXPROC_PATH)$(OTJERPROC_VERSION)/checkgame.fcgi
+
+$(GAMEBOXPROC_PATH)/shark.fcgi: $(GAMEBOX_OBJECT_PATH)/$(GAMEBOXNAME)shark.o $(POBJ)
+	$(LINKALL) -o $(OUTPUT_FILE)$(GAMEBOXPROC_PATH)$(OTJERPROC_VERSION)/shark.fcgi
+	
+### 编译
+$(GAMEBOX_OBJECT_PATH)/$(GAMEBOXNAME)checkgame.o:
+	$(COMPILE) .$(GAMEBOXPROC_PATH)$(OTJERPROC_VERSION)/checkgame/checkgame.cc
+	
+$(GAMEBOX_OBJECT_PATH)/$(GAMEBOXNAME)shark.o:
+	$(COMPILE) .$(GAMEBOXPROC_PATH)$(OTJERPROC_VERSION)/shark/shark.cc
+
 
 ######################hackproc###############################################
 HACKNAME = hack_

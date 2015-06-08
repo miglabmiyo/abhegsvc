@@ -137,7 +137,7 @@ AppInfos& AppInfos::operator =(const AppInfos& appinfo){
 }
 
 
-base_logic::DictionaryValue* AppInfos::Release(bool summary){
+base_logic::DictionaryValue* AppInfos::Release(bool summary,bool introduct, bool content){
 	scoped_ptr<base_logic::DictionaryValue> dict(new base_logic::DictionaryValue());
 	if(data_->id_!=-1)
 		dict->SetBigInteger(L"id",data_->id_);
@@ -167,12 +167,16 @@ base_logic::DictionaryValue* AppInfos::Release(bool summary){
 		dict->SetString(L"name",data_->name_);
 	if(!data_->packet_name_.empty())
 		dict->SetString(L"packetname",data_->packet_name_);
-	if(!data_->summary_.empty())
+	if(!data_->summary_.empty()&&summary)
 		dict->SetString(L"summary",data_->summary_);
-	if(!data_->content_.empty())
-		dict->SetString(L"summary",data_->content_);
 	if(data_->like_!=-1&&data_->down_!=-1)
 		dict->SetReal(L"star",base_logic::LogicUnit::CalculationAppStar(data_->down_,data_->like_));
+
+	if(!data_->introduction_.empty()&&introduct)
+		dict->SetString(L"intro",data_->introduction_);
+
+	if(!data_->content_.empty()&&content)
+		dict->SetString(L"content",data_->content_);
 
 	bool r = false;
 	scoped_ptr<base_logic::ListValue> pic;

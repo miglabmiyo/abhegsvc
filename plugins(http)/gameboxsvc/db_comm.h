@@ -10,6 +10,7 @@
 
 #include "logic/logic_infos.h"
 #include "config/config.h"
+#include <map>
 #include <list>
 
 namespace gameboxsvc_logic{
@@ -19,10 +20,15 @@ public:
 	DBComm();
 	virtual ~DBComm();
 public:
-	static bool Init(std::list<base::ConnAddr>& addrlist);
-	static bool Dest();
+	static void Init(std::list<base::ConnAddr>& addrlist);
+	static void Dest();
 public:
-	static bool GetAllGame(std::list<base_logic::AppInfos>& list);
+	static bool GetAllGame(std::map<std::string,base_logic::AppInfos>& packet_map,
+			std::map<int64,base_logic::AppInfos>& id_map);
+
+	static bool GetAllApp(std::map<std::string,base_logic::AppInfos>& map);
+
+	static bool GetRecommendGame(std::map<int64,base_logic::AppInfos>& map,std::vector<int64>& vec);
 };
 }
 

@@ -140,7 +140,7 @@ public:
 	AppInfos(const AppInfos& appinfo);
 	AppInfos& operator = (const AppInfos& appinfo);
 
-	base_logic::DictionaryValue* Release(bool summary = true);
+	base_logic::DictionaryValue* Release(bool summary = true,bool introduct = true, bool content = true);
 
 	const int64 id() const {return data_->id_;}
 	const int32 type() const {return data_->type_;}

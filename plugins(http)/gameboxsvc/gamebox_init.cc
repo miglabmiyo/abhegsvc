@@ -1,10 +1,10 @@
-#include "extension_init.h"
-#include "extension_logic.h"
+#include "gamebox_init.h"
+#include "gamebox_logic.h"
 #include "common.h"
 #include "plugins.h"
 
 
-struct extensionplugin{
+struct gameboxplugin{
     char* id;
     char* name;
     char* version;
@@ -12,50 +12,50 @@ struct extensionplugin{
 };
 
 
-static void *OnExtensionStart(){
+static void *OnGameboxStart(){
 
     signal(SIGPIPE,SIG_IGN);
-    struct extensionplugin* extension=(struct extensionplugin*)calloc(1,sizeof(struct extensionplugin));
+    struct gameboxplugin* gamebox=(struct gameboxplugin*)calloc(1,sizeof(struct gameboxplugin));
 
-    extension->id="";
+    gamebox->id="gamebox";
 
-    extension->name="";
+    gamebox->name="gamebox";
 
-    extension->version="";
+    gamebox->version="1.0.0";
 
-    extension->provider="";
+    gamebox->provider="kerry";
 
-    if(!extensionsvc_logic::Extensionlogic::GetInstance())
+    if(!gameboxsvc_logic::Gameboxlogic::GetInstance())
         assert(0);
 
-    return extension ;
+    return gamebox ;
 
 }
 
-static handler_t OnExtensionShutdown(struct server* srv,void* pd){
+static handler_t OnGameboxShutdown(struct server* srv,void* pd){
 
-    extensionsvc_logic::Extensionlogic::FreeInstance();
+    gameboxsvc_logic::Gameboxlogic::FreeInstance();
 
     return HANDLER_GO_ON;
 }
 
-static handler_t OnExtensionConnect(struct server *srv, int fd, void *data, int len){
+static handler_t OnGameboxConnect(struct server *srv, int fd, void *data, int len){
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnExtensionConnect(srv,fd);
-
-    return HANDLER_GO_ON;
-}
-
-static handler_t OnExtensionMessage(struct server *srv, int fd, void *data, int len){
-
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnExtensionMessage(srv,fd,data,len);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnGameboxConnect(srv,fd);
 
     return HANDLER_GO_ON;
 }
 
-static handler_t OnExtensionClose(struct server *srv, int fd){
+static handler_t OnGameboxMessage(struct server *srv, int fd, void *data, int len){
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnExtensionClose(srv,fd);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnGameboxMessage(srv,fd,data,len);
+
+    return HANDLER_GO_ON;
+}
+
+static handler_t OnGameboxClose(struct server *srv, int fd){
+
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnGameboxClose(srv,fd);
 
     return HANDLER_GO_ON;
 }
@@ -70,7 +70,7 @@ static handler_t OnUnknow(struct server *srv, int fd, void *data, int len){
 static handler_t OnBroadcastConnect(struct server* srv, int fd, void *data, int len){
 
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnBroadcastConnect(srv,fd,data,len);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnBroadcastConnect(srv,fd,data,len);
 
     return HANDLER_GO_ON;
 
@@ -79,7 +79,7 @@ static handler_t OnBroadcastConnect(struct server* srv, int fd, void *data, int 
 static handler_t OnBroadcastClose(struct server* srv, int fd){ 
 
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnBroadcastClose(srv,fd);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnBroadcastClose(srv,fd);
 
     return HANDLER_GO_ON;
 
@@ -89,7 +89,7 @@ static handler_t OnBroadcastClose(struct server* srv, int fd){
 static handler_t OnBroadcastMessage(struct server* srv, int fd, void *data, int len){
 
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnBroadcastMessage(srv,fd,data,len);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnBroadcastMessage(srv,fd,data,len);
 
     return HANDLER_GO_ON;
 
@@ -99,7 +99,7 @@ static handler_t OnBroadcastMessage(struct server* srv, int fd, void *data, int 
 static handler_t OnIniTimer(struct server* srv){ 
 
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnIniTimer(srv);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnIniTimer(srv);
 
     return HANDLER_GO_ON;
 
@@ -109,7 +109,7 @@ static handler_t OnIniTimer(struct server* srv){
 static handler_t OnTimeOut(struct server* srv,char* id, int opcode, int time){ 
 
 
-    extensionsvc_logic::Extensionlogic::GetInstance()->OnTimeout(srv,id,opcode,time);
+    gameboxsvc_logic::Gameboxlogic::GetInstance()->OnTimeout(srv,id,opcode,time);
 
     return HANDLER_GO_ON;
 
@@ -121,16 +121,16 @@ static handler_t OnTimeOut(struct server* srv,char* id, int opcode, int time){
 
 
 
-int extension_plugin_init(struct plugin *pl){
+int gamebox_plugin_init(struct plugin *pl){
 
 
-    pl->init=OnExtensionStart;
+    pl->init=OnGameboxStart;
 
-    pl->clean_up = OnExtensionShutdown;
+    pl->clean_up = OnGameboxShutdown;
 
-    pl->connection = OnExtensionConnect;
+    pl->connection = OnGameboxConnect;
 
-    pl->connection_close = OnExtensionClose;
+    pl->connection_close = OnGameboxClose;
 
     pl->connection_close_srv = OnBroadcastClose;
 
@@ -138,7 +138,7 @@ int extension_plugin_init(struct plugin *pl){
 
     pl->handler_init_time = OnIniTimer;
 
-    pl->handler_read = OnExtensionMessage;
+    pl->handler_read = OnGameboxMessage;
 
     pl->handler_read_srv = OnBroadcastMessage;
 

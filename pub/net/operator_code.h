@@ -3,7 +3,7 @@
 
 enum netoperatorcode{
 	QUICK_LOGIN = 1000, //快速登录
-	THIRID_LOGIN = 10001, //第三方登陆
+	THIRID_LOGIN = 1001, //第三方登陆
 	BD_BIND_PUSH = 1100, //百度推送绑定
 
 	//推荐
@@ -81,6 +81,7 @@ enum netoperatorcode{
 
 	//游戏盒子
 	GAME_BOX_CHECK_GAME = 10000,//是否是游戏
+	GAME_BOK_SHARK_GAME = 10001,//摇一摇
 
 };
 
